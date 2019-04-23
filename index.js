@@ -6,9 +6,12 @@ const express = require('express'),
     cookieSession = require('cookie-session');
     request = require('request');
     properties=require('./properties');
-
-auth(passport);
+    
+    auth(passport);
 app.use(passport.initialize());
+
+
+app.use(express.static(__dirname+'/build')); 
 
 app.use(cookieSession({
     name: 'session',
@@ -64,10 +67,8 @@ app.get('/auth/google/callback',
 );
 
 app.get('/', (req, res) => {  
-    if ( req.cookies['userId']) {
-        res.json({
-            status: req.cookies['userId']
-        });
+    if ( req.cookies['userId']) {         
+        res.sendFile(__dirname+'/build/'+'ui.html');
     } 
     else
     {   
