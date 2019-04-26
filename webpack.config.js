@@ -1,8 +1,15 @@
 import path from "path";
 
 import HtmlWebpackPlugin from "html-webpack-plugin";
+import prop from './properties';
 
 module.exports = {
+  mode: process.env.NODE_ENV || 'development',
+  devServer: {
+    contentBase: path.resolve(__dirname, "/src"),
+    compress: true,
+    port:prop.uiDevPort
+  },
   entry: path.join(__dirname,'src','index.js'),
   output: {
     path: path.join(__dirname,'build'),
@@ -11,9 +18,7 @@ module.exports = {
   resolve: {
     modules: [path.resolve(__dirname,'src'),'node_modules']
   },
-  devServer: {
-    contentBase: path.join(__dirname,'src')
-  },
+  
   plugins: [
     new HtmlWebpackPlugin({
       template: path.join(__dirname,'src','ui.html'),
