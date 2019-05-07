@@ -1,5 +1,23 @@
-.header-container{
-    .header-tab{
-        background: black;
+.header-container{  
+    height:80px;
+    box-shadow: 1px 1px 5px #b2acac;
+    .header-subcontainer{
+        .title{
+            width: 16%;
+            float: left;
+            font-family: 'Satisfy', cursive;
+            padding-top: 25px;
+            padding: 25px 2% 0 2%;
+            color: gray;
+            font-size: 25px;
+        }
+        .header-tabs{
+            width:60%;
+            float:left;
+            .header-tab{
+                width:200px;
+                float:left;                     
+            }
+        }
     }
 }

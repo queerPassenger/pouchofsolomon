@@ -10,9 +10,11 @@ export default class HomePage extends React.Component{
     render(){
         return(
             <>
-                <Header />
-                <Content />
-                <Footer />
+                <div className="wrapper">
+                    <Header />
+                    <Content />
+                    <Footer />
+                </div>
             </>
         )
     }
