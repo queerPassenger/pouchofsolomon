@@ -1,6 +1,6 @@
 import React from 'react';
 
-const tabs=['Daily Expense Recorder','Consolidated View']
+
 export default class Header extends React.Component{
     render(){
         return(
@@ -10,9 +10,9 @@ export default class Header extends React.Component{
                         Pouch Of Solomon
                     </div>
                     <div className="header-tabs">
-                        {tabs.map((tab,ind)=>{
+                        {this.props.tabs.map((tab,ind)=>{
                             return(
-                                <div className="header-tab" key={'HeaderTab'+ind}>
+                                <div className={("header-tab ")+(this.props.tabSelected===tab?"selected":"")} key={'HeaderTab'+ind} onClick={()=>{this.props.onTabClick(tab)}}>
                                     {tab}
                                 </div>
                             )

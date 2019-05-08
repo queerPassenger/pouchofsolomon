@@ -6,12 +6,10 @@ const express = require('express'),
     cookieSession = require('cookie-session');
     request = require('request');
     properties=require('./properties');
+    bodyParser = require('body-parser');
     
-    auth(passport);
+auth(passport);
 app.use(passport.initialize());
-
-
-app.use(express.static(__dirname+'/build')); 
 
 app.use(cookieSession({
     name: 'session',
@@ -19,7 +17,14 @@ app.use(cookieSession({
     maxAge: 24 * 60 * 60 * 1000
 }));
 app.use(cookieParser());
- 
+
+
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json())
+app.use(express.static(__dirname+'/build')); 
+
+require('./controller')(app);
+
 app.get('/error',(req,res)=>{
     console.log('Route Hit /error');
     res.send('Error Occured');
@@ -38,7 +43,7 @@ app.get('/auth/google/callback',
         let profileObj=req.session.passport.user.profile;
         if(profileObj){            
             request.post({
-                    url: properties.apiPath+'/getUserId',
+                    url: properties.apiUrl+'/getUserId',
                     body: profileObj,
                     json: true
                 }, 
@@ -67,7 +72,8 @@ app.get('/auth/google/callback',
 );
 
 app.get('/', (req, res) => {  
-    if ( req.cookies['userId']) {         
+    if ( req.cookies['userId']) {   
+        console.log('req.cookies["userId"]',req.cookies["userId"]);      
         res.sendFile(__dirname+'/build/'+'ui.html');
     } 
     else
@@ -86,6 +92,8 @@ app.get('/logout', function(req, res){
     }
     res.redirect('/');
 });
+
+
 
 
 

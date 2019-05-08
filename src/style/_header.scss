@@ -8,15 +8,28 @@
             font-family: 'Satisfy', cursive;
             padding-top: 25px;
             padding: 25px 2% 0 2%;
-            color: gray;
+            color: rgba(133,20,75,1);
             font-size: 25px;
         }
         .header-tabs{
-            width:60%;
-            float:left;
+            width: 60%;
+            float: left;
+            padding-top: 43px;
             .header-tab{
-                width:200px;
-                float:left;                     
+                width: 100px;
+                float: left;
+                font-family: 'Roboto', sans-serif;
+                color: gray;
+                cursor: pointer;   
+                text-align:center;            
+            }
+            .selected{
+                border-bottom: 2px solid rgba(133,20,75,1);
+                padding-bottom: 11px;
+                font-weight: bold;
+                color: rgba(133,20,75,1);
+                font-family: Dancing script;
+                font-size:20px;
             }
         }
     }
