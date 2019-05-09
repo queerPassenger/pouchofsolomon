@@ -2,6 +2,48 @@
     width: 80%;
     float: left;
     margin: 0 10% 0 10%;
-    min-height:200px;
-    border:1px solid black;
+    .record-container{
+        width:100%;
+        float:left;
+        .record{
+            width:62%;
+            float:left;
+            padding-left:38%;
+            margin-top:50px;
+            .record-item,.record-item-half{
+                float:left;
+                margin-top:10px;
+                margin-bottom:10px;
+                select{
+                    width: 250px;
+                    padding-top: 5px;
+                    padding-bottom: 5px;
+                    border-radius: 2px;
+                    font-family: Mali;
+                }
+                input{
+                    width: 238px;
+                    padding-top: 5px;
+                    padding-bottom: 5px;
+                    font-family: Mali;
+                    padding-left: 2%;                
+                }
+                textarea{
+                    width: 423px;
+                    height: 100px;
+                    padding-top: 10px;
+                    padding-left: 1%;
+                }
+            }
+            .record-item{                
+                width:100%;
+            }
+            .record-item-half{
+                width:50%;
+                select{
+                    width: 50px;
+                }
+            }
+        }
+    }
 }
