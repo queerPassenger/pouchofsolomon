@@ -3,7 +3,7 @@ import Header from './Header.js';
 import Content from './Content.js';
 import Footer from './Footer.js';
 
-const tabs=['Record','View'];
+const tabs=['Entry','View'];
 
 export default class HomePage extends React.Component{
     constructor(props){

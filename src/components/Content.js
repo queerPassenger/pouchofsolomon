@@ -6,7 +6,7 @@ export default class Content extends React.Component{
     render(){
         return(
             <div className="content-container">
-                {this.props.tabSelected==='Record'?
+                {this.props.tabSelected==='Entry'?
                     <Record />
                 :
                     null
