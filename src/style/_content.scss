@@ -29,7 +29,7 @@
                     padding-left: 2%;                
                 }
                 textarea{
-                    width: 423px;
+                    width: 300px;
                     height: 100px;
                     padding-top: 10px;
                     padding-left: 1%;
@@ -39,10 +39,29 @@
                 width:100%;
             }
             .record-item-half{
-                width:50%;
+                width: 35%;
                 select{
                     width: 50px;
                 }
+            }
+            
+        }
+        .action-items{
+            width:62%;
+            float:left;
+            padding-left:38%;
+            margin-top:30px;
+            button{
+                margin-right: 3%;
+                width: 150px;
+                padding-top: 5px;
+                padding-bottom: 5px;
+                background: white;
+                border: 1px solid #d9d9d9;
+                border-radius: 3px;
+                font-family: Mali;
+                font-weight: bold;
+                box-shadow: 1px 1px 1px grey;
             }
         }
     }

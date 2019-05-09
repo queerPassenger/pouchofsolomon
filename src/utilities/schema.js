@@ -3,22 +3,22 @@ export function schemaGenerator(_schema,_type){
 }
 const apiSchema={
     transaction:{
-        createdTimeStamp: null,
-        lastUpdatedTimeStamp: null,
-        transactionTypeId:null,
-        timeStamp:null,
+        createdTimeStamp: '',
+        lastUpdatedTimeStamp: '',
+        transactionTypeId:'',
+        timeStamp:'',
         comment: '',
-        amount: null,
-        amountTypeId:null,
+        amount: '',
+        amountTypeId:'',
     }
 }
 const uiSchema={
     transaction:{
         transactionTypeId:'',
         transactionClassification:'',
-        timeStamp:null,
-        amount:null,
-        amountTypeId:null,
+        timeStamp:'',
+        amount:'',
+        amountTypeId:'',
         comment:''
     }
 }
