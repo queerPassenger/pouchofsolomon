@@ -106,15 +106,27 @@ export default class Record extends React.Component{
             }
             let convertedSchemaObj=schemaGenerator('apiSchema','transaction');
             convertedSchemaObj['createdTimeStamp']=new Date();
-            convertedSchemaObj['transactionTypeId']=entryList[i]['transactionTypeId'];
+            convertedSchemaObj['transactionTypeId']=Number(entryList[i]['transactionTypeId']);
             convertedSchemaObj['timeStamp']=entryList[i]['timeStamp'];
             convertedSchemaObj['comment']=entryList[i]['comment'];
-            convertedSchemaObj['amount']=entryList[i]['amount'];
-            convertedSchemaObj['amountTypeId']=entryList[i]['amountTypeId'];
+            convertedSchemaObj['amount']=Number(entryList[i]['amount']);
+            convertedSchemaObj['amountTypeId']=Number(entryList[i]['amountTypeId']);
             convertedSchema.push(convertedSchemaObj);
         }
         if(!errFlag){
             console.log('convertedSchema',JSON.stringify(convertedSchema));
+            
+            let data={
+                apiPath:'/recordTransaction',
+                type:'POST',
+                query:null,
+                payload:convertedSchema
+            }
+            apiCall(data)
+            .then(res=>{
+               console.log('Submitted',res);
+            })
+            .catch(err=>{console.log('err',err)});
         }
 
     }

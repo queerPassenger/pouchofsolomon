@@ -66,3 +66,46 @@
         }
     }
 }
+.view-container{
+    width: 80%;
+    float: left;
+    margin: 0 10% 0 10%;
+    padding-top:20px;
+    .filter-container{
+        width:100%;
+        float:left;
+        margin-top:20px;
+        .filter-item{
+            width:30%;
+            float:left;
+            margin-right:1%;
+            .filter-item-title{
+                font-family: Mali;
+            }
+            input{
+                width: 238px;
+                padding-top: 5px;
+                padding-bottom: 5px;
+                font-family: Mali;
+                padding-left: 2%;                
+            }
+        }
+        .action-items{            
+            width: 100%;
+            float: left;
+            margin-top: 20px;
+            button{
+                margin-right: 3%;
+                width: 100px;
+                padding-top: 5px;
+                padding-bottom: 5px;
+                background: white;
+                border: 1px solid #d9d9d9;
+                border-radius: 3px;
+                font-family: Mali;
+                font-weight: bold;
+                box-shadow: 1px 1px 1px grey;
+            }
+        }
+    }
+}

@@ -23,5 +23,27 @@ module.exports=(app)=>{
                 }
             );
        }
+       else if(reqBody.type==='POST'){
+           console.log('ControllerJS');
+            request.post({
+                url: properties.apiUrl+reqBody.apiPath+'?id='+req.cookies['userId'],
+                body: reqBody.payload,
+                json: true
+            }, 
+            (error, response, body)=>{
+                if(!error){
+                    let responseBody=body;                    
+                    if(responseBody.status){
+                        res.send(body);                        
+                    }
+                    else{   
+                        res.send({status:false,msg:'Something went wrong'});
+                    }
+                }
+                else{
+                    res.send({status:false,msg:'Something went wrong'});
+                }       
+            });
+       }
     })
 };
