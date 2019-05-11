@@ -99,5 +99,5 @@ app.get('/logout', function(req, res){
 
 let port =process.env.PORT || 3000 ;
 app.listen(port, () => {
-    console.log('Server is running on port'+point);
+    console.log('Server is running on port'+port);
 });
