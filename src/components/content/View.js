@@ -1,13 +1,15 @@
 import React from 'react';
 import DatePicker from 'react-datepicker';
 import {apiCall} from '../../utilities/apiCall';
+let date = new Date();
 
 export default class View extends React.Component{
     constructor(props){
         super(props);
         this.state={
-            fromDate:new Date(),
+            fromDate:new Date(date.getFullYear(), date.getMonth(), 1),
             toDate:new Date(),
+            result:[],
         };
         this.handleFilter=this.handleFilter.bind(this);
     }
@@ -30,13 +32,25 @@ export default class View extends React.Component{
             query:null,
             payload
         }
+        this.props.handleLoading(true);
         apiCall(data)
         .then(res=>{
-           console.log('Submitted',res);
+            this.props.handleLoading(false);
+            let {result} =this.state;
+            res.data.map((entry)=>{
+                result.push(entry);
+            })
+            this.setState({
+                result
+            })
         })
-        .catch(err=>{console.log('err',err)});        
+        .catch(err=>{
+            this.props.handleLoading(false);
+            console.log('err',err)}
+        );        
     }
     render(){
+        console.log('Result',this.state.result);
         return(
             <div className="view-container">
                 <div className="filter-container">
@@ -74,6 +88,27 @@ export default class View extends React.Component{
                             <button type="button" onClick={this.handleRefresh}>Clear</button>
                         </div>
                     </div>
+                </div>
+                <div className="result-container">
+                    {this.state.result.map((res)=>{
+                        
+                        return(
+                            <div className="result">
+                                <div className="item">
+                                    {res.timeStamp}
+                                </div>
+                                <div className="item">
+                                    {res.transactionTypeId}
+                                </div>
+                                <div className="item">
+                                    {res.amount}
+                                </div>
+                                <div className="item">
+                                    {res.amountTypeId}
+                                </div>
+                            </div>
+                        )
+                    })}
                 </div>
             </div>
         )

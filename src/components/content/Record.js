@@ -8,69 +8,34 @@ export default class Record extends React.Component{
     constructor(props){
         super(props);
         this.state={
-            entryList:[schemaGenerator('uiSchema','transaction')] 
-
+            entryList:[schemaGenerator('uiSchema','transaction')],
+            transactionClassificationSet:props.transactionClassificationSet,
+            transactionTypeSet:props.transactionTypeSet,
+            amountTypeSet:props.amountTypeSet,
         };  
-        this.transactionClassificationSet=[];
-        this.transactionTypeSet=[];
-        this.amountTypeSet=[];
         this.handleSubmit=this.handleSubmit.bind(this);
         this.handleRefresh=this.handleRefresh.bind(this);
     }
-    componentDidMount(){
-        this.getTransactionList();
-        this.getamountTypeSet();
-    }
-    getTransactionList(){
-        let data={
-            apiPath:'/getTransactionTypeList',
-            type:'GET',
-            query:null
-        }
-        apiCall(data)
-        .then(res=>{
-            this.transactionClassificationSet=[];
-            this.transactionTypeSet=[];
-            let entryList=this.state.entryList;
-            let flag=true;
-            res.data.map(transaction=>{
-                if(this.transactionClassificationSet.indexOf(transaction.transactionClassification)===-1){
-                    this.transactionClassificationSet.push(transaction.transactionClassification);
-                    if(flag){
-                        //entryList[0]['transactionClassification']=transaction.transactionClassification;
-                        //entryList[0]['transactionTypeId']=transaction.transactionTypeId;
-                        entryList[0]['timeStamp']=new Date();
-                        flag=false;
-                    }
-                }
-                this.transactionTypeSet.push(transaction);
-            });          
-            this.setState({
-                entryList
-            });
-        })
-        .catch(err=>{console.log('err',err)});
-    }
-    getamountTypeSet(){
-        let data={
-            apiPath:'/getAmountTypeList',
-            type:'GET',
-            query:null
-        }
-        apiCall(data)
-        .then(res=>{
-            this.amountTypeSet=[];
-            let entryList=this.state.entryList;
-            res.data.map((amount)=>{
-                this.amountTypeSet.push(amount);
-            })
+    static getDerivedStateFromProps(nextProps, prevState) {
+        console.log('calling derivedStatefromProps');
+        if( JSON.stringify(prevState.transactionClassificationSet)!==JSON.stringify(nextProps.transactionClassification) || 
+            JSON.stringify(prevState.transactionTypeSet)!==JSON.stringify(nextProps.transactionTypeSet) ||
+            JSON.stringify(prevState.amountTypeSet)!==JSON.stringify(nextProps.amountTypeSet)
+        ){
+            console.log('calling derivedStatefromProps inside if');
+            let entryList=prevState.entryList;
             entryList[0]['amountTypeId']=49;
-            this.setState({
-                entryList
-            });
-        })
-        .catch(err=>{console.log('err',err)});
-    }
+            entryList[0]['timeStamp']=new Date();
+            return{
+                transactionClassificationSet:nextProps.transactionClassificationSet,
+                transactionTypeSet:nextProps.transactionTypeSet,
+                amountTypeSet:nextProps.amountTypeSet,
+            }
+        }      
+        // Return null to indicate no change to state.
+        return null;      
+    }    
+    
     handleChange(key,ind,e){
         if(key!=='amount' && key!=='comment'){
             if(e.target.value===''){
@@ -115,7 +80,7 @@ export default class Record extends React.Component{
         }
         if(!errFlag){
             console.log('convertedSchema',JSON.stringify(convertedSchema));
-            
+            this.props.handleLoading(true);
             let data={
                 apiPath:'/recordTransaction',
                 type:'POST',
@@ -124,9 +89,14 @@ export default class Record extends React.Component{
             }
             apiCall(data)
             .then(res=>{
-               console.log('Submitted',res);
+                this.props.handleLoading(false);
+                alert('successfully Recorded');
+                this.handleRefresh();
             })
-            .catch(err=>{console.log('err',err)});
+            .catch(err=>{
+                this.props.handleLoading(false);
+                console.log('err',err)
+            });
         }
 
     }
@@ -145,7 +115,7 @@ export default class Record extends React.Component{
             return(
                 <div className="record-container">
                     {this.state.entryList.map((entry,ind)=>{
-                        let filteredTransactionTypeSet=this.transactionTypeSet.filter(x=>{if(x.transactionClassification===entry['transactionClassification']){return x}});
+                        let filteredTransactionTypeSet=this.state.transactionTypeSet.filter(x=>{if(x.transactionClassification===entry['transactionClassification']){return x}});
                         return(
                             <div className="record" key={"entry"+ind}>
                                 <div className="record-item">
@@ -162,7 +132,7 @@ export default class Record extends React.Component{
                                 <div className="record-item">
                                     <select value={entry['transactionClassification']} onChange={this.handleChange.bind(this,'transactionClassification',ind)}>
                                         <option value="">Transaction Classification</option>
-                                        {this.transactionClassificationSet.map((value,ind)=>{
+                                        {this.state.transactionClassificationSet.map((value,ind)=>{
                                             
                                             return(
                                                 <option key={"transactionClassification"+ind} value={value}>{value}</option>
@@ -186,7 +156,7 @@ export default class Record extends React.Component{
                                 <div className="record-item-half">
                                 <select value={entry['amountTypeId']} onChange={this.handleChange.bind(this,'amountTypeId',ind)}>
                                         <option value="">Currency Type</option>
-                                        {this.amountTypeSet.map((value,ind)=>{                                            
+                                        {this.state.amountTypeSet.map((value,ind)=>{                                            
                                             return(
                                                 <option key={"amountType"+ind} value={value.amountTypeId}>{value.amountSymbol}</option>
                                             )
