@@ -6,8 +6,10 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "webpack": "babel-node ./node_modules/webpack/bin/webpack",
-    "start": "babel-node ./node_modules/webpack-dev-server/bin/webpack-dev-server --open && babel-node index.js",
-    "establish": "babel-node ./node_modules/webpack/bin/webpack && node index.js"
+    "startUI": "babel-node ./node_modules/webpack-dev-server/bin/webpack-dev-server --open && babel-node index.js",
+    "establish": "babel-node ./node_modules/webpack/bin/webpack && node index.js",
+    "start":"node index",
+    "build":"node index"
   },
   "keywords": [
     "react",
