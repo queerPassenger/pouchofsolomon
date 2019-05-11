@@ -108,4 +108,55 @@
             }
         }
     }
+    .result-container{
+        width:100%;
+        float:left;
+        margin-top:50px;
+        .result-wrapper{
+            width:100%;
+            float:left;
+            height:400px;
+            overflow-y:auto;
+        }
+        .result,.result-header{
+            width:100%;
+            float:left;   
+            font-size:16px;
+            .item{
+                width:16%;
+                float:left;
+            }   
+            .amount{
+                text-align: right;
+                padding-right: 8%;
+                float: left;
+                width: 10%;            
+                span:first-child{
+                    margin-right: 5%;
+                }
+            }
+        }
+        .result{
+            width: 100%;
+            float: left;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            font-family: monospace;
+        }
+        .result:nth-child(even) {
+            background: #f3ecec;
+        }
+        .result-header{
+            padding-top: 10px;
+            padding-bottom: 10px;
+            font-family: Dancing script;
+            font-size: 17px;
+            font-weight: bold;
+        }
+        .no-records{
+            text-align: center;
+            font-family: Dancing script;
+            font-size: 17px;
+        }
+    }
 }

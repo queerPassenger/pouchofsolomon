@@ -24,7 +24,6 @@ module.exports=(app)=>{
             );
        }
        else if(reqBody.type==='POST'){
-           console.log('ControllerJS');
             request.post({
                 url: properties.apiUrl+reqBody.apiPath+'?id='+req.cookies['userId'],
                 body: reqBody.payload,

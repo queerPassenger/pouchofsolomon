@@ -10,7 +10,7 @@ class HomePage extends React.Component{
     constructor(props){
         super(props);
         this.state={
-            tabSelected:tabs[0]
+            tabSelected:tabs[1]
         };
         this.onTabClick=this.onTabClick.bind(this);
     }

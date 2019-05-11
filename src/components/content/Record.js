@@ -17,12 +17,10 @@ export default class Record extends React.Component{
         this.handleRefresh=this.handleRefresh.bind(this);
     }
     static getDerivedStateFromProps(nextProps, prevState) {
-        console.log('calling derivedStatefromProps');
         if( JSON.stringify(prevState.transactionClassificationSet)!==JSON.stringify(nextProps.transactionClassification) || 
             JSON.stringify(prevState.transactionTypeSet)!==JSON.stringify(nextProps.transactionTypeSet) ||
             JSON.stringify(prevState.amountTypeSet)!==JSON.stringify(nextProps.amountTypeSet)
         ){
-            console.log('calling derivedStatefromProps inside if');
             let entryList=prevState.entryList;
             entryList[0]['amountTypeId']=49;
             entryList[0]['timeStamp']=new Date();
