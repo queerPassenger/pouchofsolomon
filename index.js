@@ -93,5 +93,5 @@ app.get('/logout', function(req, res){
 });
 
 app.listen(getProperties('port'), () => {
-    console.log('Server started at '+getProperties('port'));
+    console.log('Server started at '+ getProperties('port'));
 });
