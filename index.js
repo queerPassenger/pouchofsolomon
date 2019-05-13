@@ -5,12 +5,13 @@ const express = require('express'),
     cookieParser = require('cookie-parser'),
     cookieSession = require('cookie-session');
     request = require('request');
-    properties=require('./properties');
+    getProperties=require('./properties').getProperties;
     bodyParser = require('body-parser');
     
 auth(passport);
 app.use(passport.initialize());
 
+console.log('SET NODE_ENV=',process.env.NODE_ENV);
 app.use(cookieSession({
     name: 'session',
     keys: ['SECRECT KEY'],
@@ -28,7 +29,7 @@ require('./controller')(app);
 app.get('/error',(req,res)=>{
     console.log('Route Hit /error');
     res.send('Error Occured');
-})
+});
 
 app.get('/auth/google', passport.authenticate('google', {
     scope: ['https://www.googleapis.com/auth/userinfo.profile']
@@ -43,7 +44,7 @@ app.get('/auth/google/callback',
         let profileObj=req.session.passport.user.profile;
         if(profileObj){            
             request.post({
-                    url: properties.apiUrl+'/getUserId',
+                    url: getProperties('apiUrl')+'/getUserId',
                     body: profileObj,
                     json: true
                 }, 
@@ -93,11 +94,6 @@ app.get('/logout', function(req, res){
     res.redirect('/');
 });
 
-
-
-
-
-let port =process.env.PORT || 3000 ;
-app.listen(port, () => {
-    console.log('Server is running on port'+port);
+app.listen(getProperties('port'), () => {
+    console.log('Server is running on port'+ getProperties('port'));
 });
