@@ -8,7 +8,9 @@
     "webpack": "babel-node ./node_modules/webpack/bin/webpack",
     "startUI": "babel-node ./node_modules/webpack-dev-server/bin/webpack-dev-server --open && babel-node index.js",
     "establish": "babel-node ./node_modules/webpack/bin/webpack && node index.js",
-    "start":"node index"
+    "start":"node index",
+    "devStart":"SET NODE_ENV=development&& node index",
+    "devEstablish":"SET NODE_ENV=development&& babel-node ./node_modules/webpack/bin/webpack && node index.js"
   },
   "keywords": [
     "react",

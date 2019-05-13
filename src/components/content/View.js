@@ -55,11 +55,16 @@ export default class View extends React.Component{
         .then(res=>{
             this.props.handleLoading(false);
             let {result} =this.state;
-            result=res.data;
-            //result=[{"_id":"5cd512888871f945c03fc1ff","createdTimeStamp":"2019-05-10T05:56:24.256Z","lastUpdatedTimeStamp":"","transactionTypeId":2,"timeStamp":"2019-05-10T05:56:17.743Z","comment":"fd","amount":50,"amountTypeId":49,"userId":"5cb2d5bf295cb507c41e3074","transactionId":"5cd512888871f945c03fc1fe"},{"_id":"5cd51ed6e28fa22e583b11cb","createdTimeStamp":"2019-05-10T06:48:53.741Z","lastUpdatedTimeStamp":"","transactionTypeId":1,"timeStamp":"2019-05-10T06:48:44.873Z","comment":"New","amount":50,"amountTypeId":49,"userId":"5cb2d5bf295cb507c41e3074","transactionId":"5cd51ed5e28fa22e583b11ca"},{"_id":"5cd51ef9e28fa22e583b11cd","createdTimeStamp":"2019-05-10T06:49:29.548Z","lastUpdatedTimeStamp":"","transactionTypeId":10,"timeStamp":"2019-05-10T06:49:15.878Z","comment":"Gowtham","amount":30,"amountTypeId":49,"userId":"5cb2d5bf295cb507c41e3074","transactionId":"5cd51ef9e28fa22e583b11cc"},{"_id":"5cd66a133f2b023d6cd45b4f","createdTimeStamp":"2019-05-11T06:22:11.234Z","lastUpdatedTimeStamp":"","transactionTypeId":1,"timeStamp":"2019-05-11T03:30:00.000Z","comment":"Mill Shop","amount":25,"amountTypeId":49,"userId":"5cb2d5bf295cb507c41e3074","transactionId":"5cd66a133f2b023d6cd45b4e"},{"_id":"5cd677ce3f2b023d6cd45b51","createdTimeStamp":"2019-05-11T07:20:45.840Z","lastUpdatedTimeStamp":"","transactionTypeId":13,"timeStamp":"2019-05-11T07:20:44.735Z","comment":"New","amount":100000,"amountTypeId":49,"userId":"5cb2d5bf295cb507c41e3074","transactionId":"5cd677ce3f2b023d6cd45b50"},{"_id":"5cd677d53f2b023d6cd45b53","createdTimeStamp":"2019-05-11T07:20:53.255Z","lastUpdatedTimeStamp":"","transactionTypeId":13,"timeStamp":"2019-05-11T07:20:44.735Z","comment":"New","amount":100000,"amountTypeId":49,"userId":"5cb2d5bf295cb507c41e3074","transactionId":"5cd677d53f2b023d6cd45b52"},{"_id":"5cd677dc3f2b023d6cd45b55","createdTimeStamp":"2019-05-11T07:21:00.079Z","lastUpdatedTimeStamp":"","transactionTypeId":13,"timeStamp":"2019-05-11T07:20:44.735Z","comment":"New","amount":100000,"amountTypeId":49,"userId":"5cb2d5bf295cb507c41e3074","transactionId":"5cd677dc3f2b023d6cd45b54"},{"_id":"5cd678953f2b023d6cd45b57","createdTimeStamp":"2019-05-11T07:24:04.840Z","lastUpdatedTimeStamp":"","transactionTypeId":1,"timeStamp":"2019-05-11T07:24:03.473Z","comment":"Po","amount":201,"amountTypeId":49,"userId":"5cb2d5bf295cb507c41e3074","transactionId":"5cd678953f2b023d6cd45b56"},{"_id":"5cd678ef3f2b023d6cd45b59","createdTimeStamp":"2019-05-11T07:25:34.935Z","lastUpdatedTimeStamp":"","transactionTypeId":6,"timeStamp":"2019-05-11T07:25:33.781Z","comment":"Avengers","amount":358,"amountTypeId":49,"userId":"5cb2d5bf295cb507c41e3074","transactionId":"5cd678ef3f2b023d6cd45b58"}];
+            if(res.hasOwnProperty('data')){
+                result=res.data;                
+            }
+            else{                
+                alert(res.message);
+                result=[];
+            }
             this.setState({
                 result
-            })
+            });
         })
         .catch(err=>{
             this.props.handleLoading(false);
@@ -76,7 +81,6 @@ export default class View extends React.Component{
         return {transactionClassification:'',transactionTypeName:''};
     }
     render(){
-        console.log('Result',this.state.result);
         return(
             <div className="view-container">
                 <div className="filter-container">

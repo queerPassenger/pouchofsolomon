@@ -23,18 +23,20 @@ class Content extends React.Component{
         this.props.loading(null,'enableLoading');
         apiCall(data)
         .then(res=>{
-            this.props.loading(null,'disableLoading');
-            let {transactionClassificationSet,transactionTypeSet} =this.state;
-            res.data.map(transaction=>{
-                if(transactionClassificationSet.indexOf(transaction.transactionClassification)===-1){
-                    transactionClassificationSet.push(transaction.transactionClassification);
-                }
-                transactionTypeSet.push(transaction);
-            });          
-            this.setState({
-                transactionClassificationSet,
-                transactionTypeSet
-            });
+            if(res.status){
+                this.props.loading(null,'disableLoading');
+                let {transactionClassificationSet,transactionTypeSet} =this.state;
+                res.data.map(transaction=>{
+                    if(transactionClassificationSet.indexOf(transaction.transactionClassification)===-1){
+                        transactionClassificationSet.push(transaction.transactionClassification);
+                    }
+                    transactionTypeSet.push(transaction);
+                });          
+                this.setState({
+                    transactionClassificationSet,
+                    transactionTypeSet
+                });
+            }
         })
         .catch(err=>{
             this.props.loading(null,'disableLoading');
@@ -50,14 +52,16 @@ class Content extends React.Component{
         this.props.loading(null,'enableLoading');
         apiCall(data)
         .then(res=>{
-            this.props.loading(null,'disableLoading');
-            let {amountTypeSet} =this.state;
-            res.data.map((amount)=>{
-                amountTypeSet.push(amount);
-            })
-            this.setState({
-                amountTypeSet
-            });
+            if(res.status){
+                this.props.loading(null,'disableLoading');
+                let {amountTypeSet} =this.state;
+                res.data.map((amount)=>{
+                    amountTypeSet.push(amount);
+                })
+                this.setState({
+                    amountTypeSet
+                });
+            }
         })
         .catch(err=>{
             this.props.loading(null,'disableLoading');
