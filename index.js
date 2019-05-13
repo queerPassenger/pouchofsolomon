@@ -11,7 +11,8 @@ const express = require('express'),
 auth(passport);
 app.use(passport.initialize());
 
-console.log('SET NODE_ENV=',process.env.NODE_ENV);
+console.log('process.env.NODE_ENV',process.env.NODE_ENV);
+
 app.use(cookieSession({
     name: 'session',
     keys: ['SECRECT KEY'],
@@ -27,7 +28,6 @@ app.use(express.static(__dirname+'/build'));
 require('./controller')(app);
 
 app.get('/error',(req,res)=>{
-    console.log('Route Hit /error');
     res.send('Error Occured');
 });
 
@@ -40,7 +40,6 @@ app.get('/auth/google/callback',
         failureRedirect: '/'
     }),
     (req, res) => {
-        console.log('Route Hit /auth/google/callback');
         let profileObj=req.session.passport.user.profile;
         if(profileObj){            
             request.post({
@@ -74,7 +73,6 @@ app.get('/auth/google/callback',
 
 app.get('/', (req, res) => {  
     if ( req.cookies['userId']) {   
-        console.log('req.cookies["userId"]',req.cookies["userId"]);      
         res.sendFile(__dirname+'/build/'+'ui.html');
     } 
     else
@@ -95,5 +93,5 @@ app.get('/logout', function(req, res){
 });
 
 app.listen(getProperties('port'), () => {
-    console.log('Server is running on port'+ getProperties('port'));
+    console.log('Server started at '+getProperties('port'));
 });
