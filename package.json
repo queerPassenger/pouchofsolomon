@@ -5,12 +5,12 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "webpack": "babel-node ./node_modules/webpack/bin/webpack",
-    "startUI": "babel-node ./node_modules/webpack-dev-server/bin/webpack-dev-server --open && babel-node index.js",
+    "webpack": "babel-node ./node_modules/webpack/bin/webpack",   
     "establish": "babel-node ./node_modules/webpack/bin/webpack && node index.js",
     "start":"node index",
     "devStart":"SET NODE_ENV=development&& node index",
-    "devEstablish":"SET NODE_ENV=development&& babel-node ./node_modules/webpack/bin/webpack && node index.js"
+    "devEstablish":"SET NODE_ENV=development&& babel-node ./node_modules/webpack/bin/webpack && node index.js",
+    "devWatch": "SET NODE_ENV=development&&  babel-node ./node_modules/webpack-dev-server/bin/webpack-dev-server --open && babel-node index.js"
   },
   "keywords": [
     "react",

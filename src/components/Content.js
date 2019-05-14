@@ -20,11 +20,11 @@ class Content extends React.Component{
             type:'GET',
             query:null
         }
-        this.props.loading(null,'enableLoading');
+        this.props.updateLoading(null,'enableLoading');
         apiCall(data)
         .then(res=>{
             if(res.status){
-                this.props.loading(null,'disableLoading');
+                this.props.updateLoading(null,'disableLoading');
                 let {transactionClassificationSet,transactionTypeSet} =this.state;
                 res.data.map(transaction=>{
                     if(transactionClassificationSet.indexOf(transaction.transactionClassification)===-1){
@@ -39,7 +39,7 @@ class Content extends React.Component{
             }
         })
         .catch(err=>{
-            this.props.loading(null,'disableLoading');
+            this.props.updateLoading(null,'disableLoading');
             console.log('err',err)
         });
     }
@@ -49,11 +49,11 @@ class Content extends React.Component{
             type:'GET',
             query:null
         }
-        this.props.loading(null,'enableLoading');
+        this.props.updateLoading(null,'enableLoading');
         apiCall(data)
         .then(res=>{
             if(res.status){
-                this.props.loading(null,'disableLoading');
+                this.props.updateLoading(null,'disableLoading');
                 let {amountTypeSet} =this.state;
                 res.data.map((amount)=>{
                     amountTypeSet.push(amount);
@@ -64,15 +64,15 @@ class Content extends React.Component{
             }
         })
         .catch(err=>{
-            this.props.loading(null,'disableLoading');
+            this.props.updateLoading(null,'disableLoading');
             console.log('err',err)
         });
     }
     handleLoading(flag){
         if(flag)
-            this.props.loading(null,'enableLoading');
+            this.props.updateLoading(null,'enableLoading');
         else    
-            this.props.loading(null,'disableLoading');
+            this.props.updateLoading(null,'disableLoading');
     }
     render(){
         return(
@@ -103,7 +103,7 @@ class Content extends React.Component{
 }
 const mapDispatchToProps = dispatch => {
     return {
-      loading : (val,type) => dispatch({
+      updateLoading : (val,type) => dispatch({
       val,
       type
     }),

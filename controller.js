@@ -8,14 +8,17 @@ module.exports=(app)=>{
        if(reqBody.type==='GET'){
             request(getProperties('apiUrl')+reqBody.apiPath+'?id='+req.cookies['userId'], 
                 function (error, response, body) {
-                    
-                    if(!error){
-                        let responseBody=JSON.parse(body);
-                        if(responseBody.status){
-                            res.send({status:true,data:responseBody.data});                        
+                    if(!error){         
+                        try{               
+                            let responseBody=JSON.parse(body);
+                            if(responseBody.status){
+                                res.send({status:true,data:responseBody.data});                        
+                            }
+                            else{                           
+                                res.send({status:false,msg:'Something went wrong'});
+                            }
                         }
-                        else{   
-                            
+                        catch(err){
                             res.send({status:false,msg:'Something went wrong'});
                         }
                     }

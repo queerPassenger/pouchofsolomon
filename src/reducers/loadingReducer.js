@@ -1,4 +1,6 @@
-export default (state = {}, action) => {
+import {loading} from './initialState';
+
+export default (state = loading, action) => {
     switch (action.type) {
         case 'enableLoading':
             return true;

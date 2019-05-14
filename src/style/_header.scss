@@ -1,8 +1,11 @@
 .header-container{  
     height:80px;
     box-shadow: 1px 1px 5px #b2acac;
+    width:100%;
+    float:left;
     .header-subcontainer{
         padding-left:18%;
+        width:82%;
         .title{
             width: 16%;
             float: left;
@@ -31,6 +34,20 @@
                 color: rgba(133,20,75,1);
                 font-family: Dancing script;
                 font-size:20px;
+            }
+        }
+        .user-profile{
+            width:20%;
+            float:left;
+            font-family: dancing script;
+            font-weight: bold;
+            font-size: 20px;
+            .profile-pic{
+                width: 44px;
+                position: relative;
+                top: 19px;
+                border-radius: 35%;
+                margin-right: 3%;            
             }
         }
     }
