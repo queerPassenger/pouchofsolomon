@@ -1,6 +1,7 @@
 import React from 'react';
 import {apiCall} from '../../utilities/apiCall';
 import {schemaGenerator} from '../../utilities/schema';
+import moment from 'moment'
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
@@ -21,9 +22,6 @@ export default class Record extends React.Component{
             JSON.stringify(prevState.transactionTypeSet)!==JSON.stringify(nextProps.transactionTypeSet) ||
             JSON.stringify(prevState.amountTypeSet)!==JSON.stringify(nextProps.amountTypeSet)
         ){
-            let entryList=prevState.entryList;
-            entryList[0]['amountTypeId']=49;
-            entryList[0]['timeStamp']=new Date();
             return{
                 transactionClassificationSet:nextProps.transactionClassificationSet,
                 transactionTypeSet:nextProps.transactionTypeSet,
@@ -33,7 +31,14 @@ export default class Record extends React.Component{
         // Return null to indicate no change to state.
         return null;      
     }    
-    
+    componentDidMount(){
+        let {entryList}=this.state;
+        if(entryList[0].timeStamp==='')
+            entryList[0].timeStamp=new Date();        
+       this.setState({
+            entryList
+        });
+    }
     handleChange(key,ind,e){
         if(key!=='amount' && key!=='comment'){
             if(e.target.value===''){
@@ -51,11 +56,11 @@ export default class Record extends React.Component{
         });
     }
     handleDateChange(ind,date){
-        let entryList=this.state.entryList;
-        entryList[ind]['timeStamp']=date;
+        let entryList = this.state.entryList;        
+        entryList[0]['timeStamp']=date;
         this.setState({
-            entryList
-        })
+            entryList:entryList,
+        });
     }
     handleSubmit(){
         let entryList=JSON.parse(JSON.stringify(this.state.entryList));
@@ -108,16 +113,17 @@ export default class Record extends React.Component{
 
     }
     render(){
-        console.log('State',this.state.entryList);
         try{
             return(
-                <div className="record-container">
+                <div className="record-container" >
                     {this.state.entryList.map((entry,ind)=>{
                         let filteredTransactionTypeSet=this.state.transactionTypeSet.filter(x=>{if(x.transactionClassification===entry['transactionClassification']){return x}});
                         return(
                             <div className="record" key={"entry"+ind}>
-                                <div className="record-item">
+                                <div className="record-item">                                
                                     <DatePicker
+                                        key={"entry"+ind}
+                                        ref={"entry"+ind}
                                         selected={entry['timeStamp']}
                                         onChange={this.handleDateChange.bind(this,ind)}
                                         showTimeSelect
@@ -125,7 +131,7 @@ export default class Record extends React.Component{
                                         timeIntervals={60}
                                         dateFormat="MMMM d, yyyy h:mm aa"
                                         timeCaption="time"
-                                    />
+                                    />                                    
                                 </div>
                                 <div className="record-item">
                                     <select value={entry['transactionClassification']} onChange={this.handleChange.bind(this,'transactionClassification',ind)}>

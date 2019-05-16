@@ -12,7 +12,7 @@ class HomePage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            tabSelected: tabs[1]
+            tabSelected: tabs[0]
         };
         this.onTabClick = this.onTabClick.bind(this);
     }
@@ -45,7 +45,6 @@ class HomePage extends React.Component {
     }
 
     render() {
-        console.log('this.props.loading',this.props.loading);
         return (
             <>
                 <div className="wrapper">

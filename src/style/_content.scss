@@ -123,8 +123,25 @@
             float:left;   
             font-size:16px;
             .item{
-                width:16%;
+                width:10%;
                 float:left;
+                padding-left:1%;
+                padding-right:1%;
+                .check{
+                    width: 10px;
+                    height: 10px;
+                    padding-top: 1px;
+                    padding-bottom: 1px;
+                    border: 3px solid #666666;
+                    .checked{
+                        width: 7px;
+                        height: 7px;
+                        position: relative;
+                        top: 2px;
+                        left: 17%;
+                        background: gray;                    
+                    }
+                }
             }   
             .amount{
                 text-align: right;
@@ -152,6 +169,7 @@
             font-family: Dancing script;
             font-size: 17px;
             font-weight: bold;
+            box-shadow:1px 1px 4px gray;
         }
         .no-records{
             text-align: center;

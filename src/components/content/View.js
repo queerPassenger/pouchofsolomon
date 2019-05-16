@@ -2,7 +2,7 @@ import React from 'react';
 import DatePicker from 'react-datepicker';
 import {apiCall} from '../../utilities/apiCall';
 
-const resultHeader=['Date','Time','Classification','Type','Amount','Comment']
+const resultHeader=['','Date','Time','Classification','Type','Amount','Comment']
 export default class View extends React.Component{
     constructor(props){
         super(props);
@@ -12,7 +12,8 @@ export default class View extends React.Component{
             toDate:new Date(),
             result:[],
             transactionTypeSet:props.transactionTypeSet,
-            amountTypeSet:props.amountTypeSet
+            amountTypeSet:props.amountTypeSet,
+            checkAll:false,
         };
         this.handleFilter=this.handleFilter.bind(this);
     }
@@ -56,20 +57,49 @@ export default class View extends React.Component{
             this.props.handleLoading(false);
             let {result} =this.state;
             if(res.hasOwnProperty('data')){
-                result=res.data;                
+                result=res.data.map((data)=>{data.flag=false;return data});                
             }
             else{                
                 alert(res.message);
                 result=[];
             }
             this.setState({
-                result
+                result,
+                checkAll:false
             });
         })
         .catch(err=>{
             this.props.handleLoading(false);
             console.log('err',err)}
         );        
+    }
+    handleCheck(flag){
+        let {checkAll,result}=this.state;
+        if(flag==='all'){            
+            checkAll=!checkAll;
+            result.map((data)=>{
+                data.flag=checkAll;
+            })
+        }
+        else{
+            result[flag]['flag']=!result[flag]['flag'];
+            let count=0;
+            result.map((data)=>{
+                if(!data.flag){
+                    checkAll=false;
+                }
+                else{
+                    count++;
+                }
+            });
+            if(count===result.length){
+                checkAll=true;
+            }
+        }
+        this.setState({
+            checkAll,
+            result
+        })
     }
     getTransactionObj(transactionTypeId){
         for(let i=0;i<this.state.transactionTypeSet.length;i++){
@@ -122,10 +152,21 @@ export default class View extends React.Component{
                 <div className="result-container">
                     {this.state.result.length>0?
                         <div className="result-header">
-                            {resultHeader.map((header)=>{
+                            {resultHeader.map((header,ind)=>{
                                 return(
-                                    <div className="item">
-                                    {header}
+                                    <div className={("item ")+(header==='Amount'?"amount":"")} key={"resultHeader"+ind}>
+                                        {ind===0?
+                                            <div className="check" onClick={this.handleCheck.bind(this,'all')}>
+                                                {this.state.checkAll?
+                                                    <div className="checked">
+                                                    </div>
+                                                :
+                                                    null
+                                                }
+                                            </div>
+                                        :
+                                            header
+                                        }
                                     </div>
                                 )
                             })}
@@ -143,6 +184,16 @@ export default class View extends React.Component{
                             let date=new Date(res.timeStamp);
                             return( 
                                 <div className="result" key={"result"+ind}>
+                                    <div className="item">
+                                        <div className="check" onClick={this.handleCheck.bind(this,ind)}>
+                                            {res.flag?
+                                                <div className="checked">
+                                                </div>
+                                            :
+                                                null
+                                            }
+                                        </div>
+                                    </div>
                                     <div className="item">
                                         {date.getDate()+'/'+ (date.getMonth()+1)+'/'+ date.getFullYear()}
                                     </div>

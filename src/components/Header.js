@@ -35,7 +35,7 @@ export default class Header extends React.Component{
                         :
                             <div>
                                 <img className="profile-pic" src={this.props.userProfile.photo} ></img>
-                                {this.props.userProfile.name}
+                                {/*this.props.userProfile.name*/}
                             </div>
                         }
                     </div>
