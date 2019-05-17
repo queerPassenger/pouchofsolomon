@@ -9,12 +9,11 @@ export default class Record extends React.Component{
     constructor(props){
         super(props);
         this.state={
-            entryList:[schemaGenerator('uiSchema','transaction')],
+            entryList:props.toEditSet.length===0?[schemaGenerator('uiSchema','transaction')]:props.toEditSet,
             transactionClassificationSet:props.transactionClassificationSet,
             transactionTypeSet:props.transactionTypeSet,
             amountTypeSet:props.amountTypeSet,
         };  
-        this.handleSubmit=this.handleSubmit.bind(this);
         this.handleRefresh=this.handleRefresh.bind(this);
     }
     static getDerivedStateFromProps(nextProps, prevState) {
@@ -39,6 +38,30 @@ export default class Record extends React.Component{
             entryList
         });
     }
+    componentDidUpdate(){
+        let {entryList}=this.state;
+        let flag=false;
+        entryList.map((entry)=>{
+            if(!(entry.hasOwnProperty('transactionClassification'))){
+                if(entry.transactionTypeId!==''){
+                    if(this.state.transactionTypeSet.length>0){
+                        this.state.transactionTypeSet.map((transaction)=>{
+                            if(entry.transactionTypeId===transaction.transactionTypeId){
+                                entry.transactionClassification=transaction.transactionClassification;
+                                flag=true;
+                            }
+                        })
+                    }
+                }
+            }
+        });
+        if(flag){
+            this.setState({
+                entryList
+            })
+        }
+        
+    }
     handleChange(key,ind,e){
         if(key!=='amount' && key!=='comment'){
             if(e.target.value===''){
@@ -62,7 +85,7 @@ export default class Record extends React.Component{
             entryList:entryList,
         });
     }
-    handleSubmit(){
+    handleSubmit(type){
         let entryList=JSON.parse(JSON.stringify(this.state.entryList));
         let convertedSchema=[];
         let errFlag=false;
@@ -73,7 +96,10 @@ export default class Record extends React.Component{
                 break;
             }
             let convertedSchemaObj=schemaGenerator('apiSchema','transaction');
-            convertedSchemaObj['createdTimeStamp']=new Date();
+            if(type==='submit')
+                convertedSchemaObj['createdTimeStamp']=new Date();
+            else    
+                convertedSchemaObj['lastUpdatedTimeStamp']=new Date();
             convertedSchemaObj['transactionTypeId']=Number(entryList[i]['transactionTypeId']);
             convertedSchemaObj['timeStamp']=entryList[i]['timeStamp'];
             convertedSchemaObj['comment']=entryList[i]['comment'];
@@ -85,7 +111,7 @@ export default class Record extends React.Component{
             console.log('convertedSchema',JSON.stringify(convertedSchema));
             this.props.handleLoading(true);
             let data={
-                apiPath:'/recordTransaction',
+                apiPath:type==='submit'?'/recordTransaction':'updateTransaction',
                 type:'POST',
                 query:null,
                 payload:convertedSchema
@@ -93,8 +119,15 @@ export default class Record extends React.Component{
             apiCall(data)
             .then(res=>{
                 this.props.handleLoading(false);
-                alert('successfully Recorded');
                 this.handleRefresh();
+                if(type==='submit'){
+                    alert('successfully Recorded');                   
+                }                    
+                else{    
+                    alert('successfully Updated');
+                    this.props.onTabClick('Entry');
+                }
+                
             })
             .catch(err=>{
                 this.props.handleLoading(false);
@@ -113,10 +146,12 @@ export default class Record extends React.Component{
 
     }
     render(){
+        console.log('EntryList',this.state.entryList);
         try{
             return(
                 <div className="record-container" >
                     {this.state.entryList.map((entry,ind)=>{
+                        console.log('TimeStamp',entry['timeStamp']);
                         let filteredTransactionTypeSet=this.state.transactionTypeSet.filter(x=>{if(x.transactionClassification===entry['transactionClassification']){return x}});
                         return(
                             <div className="record" key={"entry"+ind}>
@@ -124,7 +159,7 @@ export default class Record extends React.Component{
                                     <DatePicker
                                         key={"entry"+ind}
                                         ref={"entry"+ind}
-                                        selected={entry['timeStamp']}
+                                        selected={entry['timeStamp']===''?'':new Date(entry['timeStamp'])}
                                         onChange={this.handleDateChange.bind(this,ind)}
                                         showTimeSelect
                                         timeFormat="HH:mm"
@@ -175,14 +210,14 @@ export default class Record extends React.Component{
                         )
                     })}  
                     <div className="action-items">
-                        <button type="button" onClick={this.handleSubmit}>Submit</button>
-                        <button type="button" onClick={this.handleRefresh}>Refresh</button>
+                        <button type="button" onClick={this.props.toEditSet.length==0?this.handleSubmit.bind(this,'submit'):this.handleSubmit.bind(this,'update')}>{this.props.toEditSet.length===0?'Submit':'Update'}</button>
+                        <button type="button" onClick={this.props.toEditSet.length==0?this.handleRefresh:()=>{this.handleRefresh();this.props.onTabClick('Entry')}}>Refresh</button>
                     </div>                      
                 </div>
             )
         }
         catch(err){
-            console.log('error');
+            console.log('error',err);
             return null;
         }
     }

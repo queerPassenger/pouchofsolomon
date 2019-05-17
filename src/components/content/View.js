@@ -16,6 +16,8 @@ export default class View extends React.Component{
             checkAll:false,
         };
         this.handleFilter=this.handleFilter.bind(this);
+        this.handleEdit=this.handleEdit.bind(this);
+        this.handleDelete=this.handleDelete.bind(this);
     }
     componentDidMount(){
         this.handleFilter();
@@ -109,6 +111,34 @@ export default class View extends React.Component{
             }
         }
         return {transactionClassification:'',transactionTypeName:''};
+    }
+    handleEdit(){
+        let toEditSet=[];
+        this.state.result.map(data=>{
+            if(data.flag){
+                toEditSet.push(data);
+            }
+        });
+        if(toEditSet.length===0){
+            console.log('Please select the items to edit');
+        }
+        else{
+            this.props.edit(toEditSet);
+        }
+    }
+    handleDelete(){
+        let toDeleteSet=[];
+        this.state.result.map(data=>{
+            if(data.flag){
+                toDeleteSet.push(data);
+            }
+        });
+        if(toDeleteSet.length===0){
+            console.log('Please select the items to delete');
+        }
+        else{
+            //this.props.edit(toEditSet);
+        }
     }
     render(){
         return(
@@ -218,6 +248,10 @@ export default class View extends React.Component{
                         })}
                     </div>
                 </div>
+                <div className="action-items">
+                        <button type="button" onClick={this.handleEdit}>Edit</button>
+                        <button type="button" onClick={this.handleDelete}>Delete</button>
+                </div>       
             </div>
         )
     }

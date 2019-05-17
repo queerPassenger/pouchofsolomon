@@ -74,6 +74,7 @@ class Content extends React.Component{
         else    
             this.props.updateLoading(null,'disableLoading');
     }
+    
     render(){
         return(
             <div className="content-container">
@@ -83,6 +84,8 @@ class Content extends React.Component{
                         transactionTypeSet={this.state.transactionTypeSet}
                         amountTypeSet={this.state.amountTypeSet}
                         handleLoading={this.handleLoading.bind(this)}
+                        toEditSet={this.props.toEditSet}
+                        onTabClick={this.props.onTabClick} 
                     />
                 :
                     null
@@ -93,6 +96,7 @@ class Content extends React.Component{
                         transactionTypeSet={this.state.transactionTypeSet}
                         amountTypeSet={this.state.amountTypeSet}
                         handleLoading={this.handleLoading.bind(this)}
+                        edit={this.props.edit}
                     />
                 :
                     null

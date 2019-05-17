@@ -12,7 +12,8 @@ class HomePage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            tabSelected: tabs[0]
+            tabSelected: tabs[0],
+            toEditSet:[],
         };
         this.onTabClick = this.onTabClick.bind(this);
     }
@@ -40,7 +41,14 @@ class HomePage extends React.Component {
     }
     onTabClick(tab) {
         this.setState({
-            tabSelected: tab
+            tabSelected: tab,
+            toEditSet:[],
+        })
+    }
+    edit(toEditSet){
+        this.setState({
+            tabSelected: 'Entry',
+            toEditSet
         })
     }
 
@@ -49,7 +57,7 @@ class HomePage extends React.Component {
             <>
                 <div className="wrapper">
                     <Header tabSelected={this.state.tabSelected} userProfile={this.props.userProfile} tabs={tabs} onTabClick={this.onTabClick} />
-                    <Content tabSelected={this.state.tabSelected} />
+                    <Content tabSelected={this.state.tabSelected} toEditSet={this.state.toEditSet} edit={this.edit.bind(this)} onTabClick={this.onTabClick} />
                     <Footer />
                 </div>
                 {this.props.loading ?
