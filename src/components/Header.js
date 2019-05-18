@@ -1,5 +1,6 @@
 import React from 'react';
 import walking from '../images/walking.gif';
+import logout from '../images/logout.png';
 
 export default class Header extends React.Component{
     state={
@@ -12,6 +13,9 @@ export default class Header extends React.Component{
                 _:false
             })
         },5000)
+    }
+    logout(){
+        window.location.href="/logout";
     }
     render(){
         return(
@@ -38,6 +42,13 @@ export default class Header extends React.Component{
                                 {/*this.props.userProfile.name*/}
                             </div>
                         }
+                    </div>
+                    <div className="logout">
+                        <div>
+                            <img src={logout} onClick={this.logout}width="20" ></img>
+                          
+                        </div>
+                        
                     </div>
                 </div>
             </div>

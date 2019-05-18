@@ -1,6 +1,7 @@
 import path from "path";
 
 import HtmlWebpackPlugin from "html-webpack-plugin";
+import CopyWebpackPlugin from "copy-webpack-plugin";
 import prop from './properties';
 
 module.exports = {
@@ -23,7 +24,10 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: path.join(__dirname,'src','ui.html'),
       filename:'ui.html'
-    })
+    }),
+    new CopyWebpackPlugin([
+      { from: path.join(__dirname,'src','login.html'), to:path.join(__dirname,'build','login.html') }
+    ])
   ],
   module: {
     rules: [

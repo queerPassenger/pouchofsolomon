@@ -137,7 +137,25 @@ export default class View extends React.Component{
             console.log('Please select the items to delete');
         }
         else{
-            //this.props.edit(toEditSet);
+            let data={
+                apiPath:'/deleteTransaction',
+                type:'DELETE',
+                query:null,
+                payload:toDeleteSet,
+            }
+            this.props.handleLoading(true);
+            apiCall(data)
+            .then(res=>{
+                this.props.handleLoading(false);
+                if(res.status){
+                    alert('Delted Successfully');
+                    this.handleFilter();
+                }
+            })
+            .catch(err=>{
+                this.props.handleLoading(false);
+                console.log('err',err)}
+            );        
         }
     }
     render(){
@@ -248,10 +266,14 @@ export default class View extends React.Component{
                         })}
                     </div>
                 </div>
-                <div className="action-items">
-                        <button type="button" onClick={this.handleEdit}>Edit</button>
-                        <button type="button" onClick={this.handleDelete}>Delete</button>
-                </div>       
+                {this.state.result.length>0?
+                    <div className="action-items">
+                            <button type="button" onClick={this.handleEdit}>Edit</button>
+                            <button type="button" onClick={this.handleDelete}>Delete</button>
+                    </div>      
+                :
+                    null
+                }
             </div>
         )
     }

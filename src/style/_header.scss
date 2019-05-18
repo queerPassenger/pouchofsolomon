@@ -16,7 +16,7 @@
             font-size: 25px;
         }
         .header-tabs{
-            width: 60%;
+            width: 50%;
             float: left;
             padding-top: 43px;
             .header-tab{
@@ -48,6 +48,18 @@
                 top: 19px;
                 border-radius: 35%;
                 margin-right: 3%;            
+            }
+        }
+        .logout{
+            width: 10%;
+            float: left;                
+            img{
+                margin-top: 30px;    
+                cursor:pointer;
+            }
+            img:hover{
+                margin-top: 27.5px; 
+                width:25px;
             }
         }
     }

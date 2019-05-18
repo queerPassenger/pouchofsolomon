@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <title>Pouch of Solomon - Login</title>
+    <link href="https://fonts.googleapis.com/css?family=Mali|Satisfy|Dancing+Script|Gugi|Roboto" rel="stylesheet">
+  </head>
+  <body>
+    <noscript>
+      You need to enable JavaScript to run this app.
+    </noscript>
+    <div id="container">
+        <h2 id="title">Pouch of Solomon</h2>
+        <button id="button" onclick="googleLogin()">Login Using Google</button>
+    </div>
+    <script>
+        function googleLogin(){
+            window.location.href="/auth/google";
+        }
+    </script>
+    <style>
+        #container{
+            margin-left: 40%;
+            margin-top: 150px;
+        }
+        #title{
+            font-family: Dancing Script;
+            color: #85144b;
+            font-size: 50px;
+        }
+        #button{
+            padding-top: 10px;
+            padding-bottom: 10px;
+            padding-left: 1%;
+            padding-right: 1%;
+            background: none;
+            border: 1px solid #a7a7a7;
+            border-radius: 2px;
+            font-family: monospace;
+            width: 250px;
+            text-align: center;
+            display: inline-table;
+            margin-left: 5%;
+            font-weight: bold;
+            box-shadow: 1px 1px 5px grey;
+            cursor: pointer;
+        }
+    </style>
+  </body>
+</html>

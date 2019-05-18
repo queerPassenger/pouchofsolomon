@@ -77,9 +77,18 @@ app.get('/', (req, res) => {
     } 
     else
     {   
-        res.redirect('/auth/google');
+        res.redirect('/login');
     }
 });
+app.get('/login',(req,res)=>{
+    if ( req.cookies['userId']) {   
+        res.sendFile(__dirname+'/build/'+'ui.html');
+    } 
+    else{
+        res.sendFile(__dirname+'/build/'+'login.html');
+    }
+    
+})
 
 app.get('/logout', function(req, res){
     cookie = req.cookies;
