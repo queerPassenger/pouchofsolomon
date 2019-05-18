@@ -14,6 +14,7 @@ export default class Record extends React.Component{
             transactionTypeSet:props.transactionTypeSet,
             amountTypeSet:props.amountTypeSet,
         };  
+        this.addDelpadTop='0px';
         this.handleRefresh=this.handleRefresh.bind(this);
     }
     static getDerivedStateFromProps(nextProps, prevState) {
@@ -29,14 +30,12 @@ export default class Record extends React.Component{
         }      
         // Return null to indicate no change to state.
         return null;      
-    }    
+    }
     componentDidMount(){
-        let {entryList}=this.state;
-        if(entryList[0].timeStamp==='')
-            entryList[0].timeStamp=new Date();        
-       this.setState({
-            entryList
-        });
+        this.addDelpadTop=document.getElementsByClassName('record')[0].clientHeight/2+'px';
+        this.setState({
+            entryList:this.state.entryList
+        })
     }
     componentDidUpdate(){
         let {entryList}=this.state;
@@ -54,13 +53,18 @@ export default class Record extends React.Component{
                     }
                 }
             }
+            if(entry.timeStamp===''){
+                entry.timeStamp=new Date();     
+                flag=true;
+            }
         });
         if(flag){
+            this.addDelpadTop=document.getElementsByClassName('record')[0].clientHeight/2+'px';
             this.setState({
                 entryList
             })
         }
-        
+       
     }
     handleChange(key,ind,e){
         if(key!=='amount' && key!=='comment'){
@@ -80,7 +84,7 @@ export default class Record extends React.Component{
     }
     handleDateChange(ind,date){
         let entryList = this.state.entryList;        
-        entryList[0]['timeStamp']=date;
+        entryList[ind]['timeStamp']=date;
         this.setState({
             entryList:entryList,
         });
@@ -98,8 +102,10 @@ export default class Record extends React.Component{
             let convertedSchemaObj=schemaGenerator('apiSchema','transaction');
             if(type==='submit')
                 convertedSchemaObj['createdTimeStamp']=new Date();
-            else    
+            else {   
                 convertedSchemaObj['lastUpdatedTimeStamp']=new Date();
+                convertedSchemaObj['transactionId']=entryList[i]['transactionId'];
+            }
             convertedSchemaObj['transactionTypeId']=Number(entryList[i]['transactionTypeId']);
             convertedSchemaObj['timeStamp']=entryList[i]['timeStamp'];
             convertedSchemaObj['comment']=entryList[i]['comment'];
@@ -111,7 +117,7 @@ export default class Record extends React.Component{
             console.log('convertedSchema',JSON.stringify(convertedSchema));
             this.props.handleLoading(true);
             let data={
-                apiPath:type==='submit'?'/recordTransaction':'updateTransaction',
+                apiPath:type==='submit'?'/recordTransaction':'/updateTransaction',
                 type:'POST',
                 query:null,
                 payload:convertedSchema
@@ -142,8 +148,18 @@ export default class Record extends React.Component{
         entryList[0]['timeStamp']=new Date();
         this.setState({
             entryList,
-        })
+        });
 
+    }
+    handleAddDel(type,ind){
+        let {entryList}=this.state;
+        if(type==='+')
+            entryList.push(schemaGenerator('uiSchema','transaction'));
+        else
+            entryList.splice(ind,1);
+        this.setState({
+            entryList,
+        });
     }
     render(){
         console.log('EntryList',this.state.entryList);
@@ -154,58 +170,67 @@ export default class Record extends React.Component{
                         console.log('TimeStamp',entry['timeStamp']);
                         let filteredTransactionTypeSet=this.state.transactionTypeSet.filter(x=>{if(x.transactionClassification===entry['transactionClassification']){return x}});
                         return(
-                            <div className="record" key={"entry"+ind}>
-                                <div className="record-item">                                
-                                    <DatePicker
-                                        key={"entry"+ind}
-                                        ref={"entry"+ind}
-                                        selected={entry['timeStamp']===''?'':new Date(entry['timeStamp'])}
-                                        onChange={this.handleDateChange.bind(this,ind)}
-                                        showTimeSelect
-                                        timeFormat="HH:mm"
-                                        timeIntervals={60}
-                                        dateFormat="MMMM d, yyyy h:mm aa"
-                                        timeCaption="time"
-                                    />                                    
-                                </div>
-                                <div className="record-item">
-                                    <select value={entry['transactionClassification']} onChange={this.handleChange.bind(this,'transactionClassification',ind)}>
-                                        <option value="">Transaction Classification</option>
-                                        {this.state.transactionClassificationSet.map((value,ind)=>{
-                                            
-                                            return(
-                                                <option key={"transactionClassification"+ind} value={value}>{value}</option>
-                                            )
-                                        })}
-                                    </select>
-                                </div>
-                                <div className="record-item">
-                                    <select value={entry['transactionTypeId']} onChange={this.handleChange.bind(this,'transactionTypeId',ind)}>
-                                        <option value="">Transaction Type</option>
-                                        {filteredTransactionTypeSet.map((value,ind)=>{                                            
-                                            return(
-                                                <option key={"transactionType"+ind} value={value.transactionTypeId}>{value.transactionTypeName}</option>
-                                            )
-                                        })}
-                                    </select>
-                                </div>
-                                <div className="record-item-half">
-                                        <input type="text" ref={"amount"+ind} value={entry['amount']} placeholder={"Amount"} onChange={this.handleChange.bind(this,'amount',ind)} ></input>
-                                </div>
-                                <div className="record-item-half">
-                                <select value={entry['amountTypeId']} onChange={this.handleChange.bind(this,'amountTypeId',ind)}>
-                                        <option value="">Currency Type</option>
-                                        {this.state.amountTypeSet.map((value,ind)=>{                                            
-                                            return(
-                                                <option key={"amountType"+ind} value={value.amountTypeId}>{value.amountSymbol}</option>
-                                            )
-                                        })}
-                                    </select>
-                                </div>
-                                <div className="record-item">
-                                    <textarea type="text" className="comment" ref={"comment"+ind} value={entry['comment']} placeholder={"Description"} onChange={this.handleChange.bind(this,'comment',ind)} ></textarea>
-                                </div>
-                               
+                            <div className="record-wrapper"  key={"entry"+ind}>
+                                <div className="record" key={"entry"+ind}>
+                                    <div className="record-item">                                
+                                        <DatePicker
+                                            key={"entry"+ind}
+                                            ref={"entry"+ind}
+                                            selected={entry['timeStamp']===''?'':new Date(entry['timeStamp'])}
+                                            onChange={this.handleDateChange.bind(this,ind)}
+                                            showTimeSelect
+                                            timeFormat="HH:mm"
+                                            timeIntervals={60}
+                                            dateFormat="MMMM d, yyyy h:mm aa"
+                                            timeCaption="time"
+                                        />                                    
+                                    </div>
+                                    <div className="record-item">
+                                        <select value={entry['transactionClassification']} onChange={this.handleChange.bind(this,'transactionClassification',ind)}>
+                                            <option value="">Transaction Classification</option>
+                                            {this.state.transactionClassificationSet.map((value,ind)=>{
+                                                
+                                                return(
+                                                    <option key={"transactionClassification"+ind} value={value}>{value}</option>
+                                                )
+                                            })}
+                                        </select>
+                                    </div>
+                                    <div className="record-item">
+                                        <select value={entry['transactionTypeId']} onChange={this.handleChange.bind(this,'transactionTypeId',ind)}>
+                                            <option value="">Transaction Type</option>
+                                            {filteredTransactionTypeSet.map((value,ind)=>{                                            
+                                                return(
+                                                    <option key={"transactionType"+ind} value={value.transactionTypeId}>{value.transactionTypeName}</option>
+                                                )
+                                            })}
+                                        </select>
+                                    </div>
+                                    <div className="record-item-half">
+                                            <input type="text" ref={"amount"+ind} value={entry['amount']} placeholder={"Amount"} onChange={this.handleChange.bind(this,'amount',ind)} ></input>                           
+                                            <select value={entry['amountTypeId']} onChange={this.handleChange.bind(this,'amountTypeId',ind)}>
+                                                <option value="">Currency Type</option>
+                                                {this.state.amountTypeSet.map((value,ind)=>{                                            
+                                                    return(
+                                                        <option key={"amountType"+ind} value={value.amountTypeId}>{value.amountSymbol}</option>
+                                                    )
+                                                })}
+                                            </select>
+                                    </div>
+                                    <div className="record-item">
+                                        <textarea type="text" className="comment" ref={"comment"+ind} value={entry['comment']} placeholder={"Description"} onChange={this.handleChange.bind(this,'comment',ind)} ></textarea>
+                                    </div>                                                               
+                                </div> 
+                                <div className={this.props.toEditSet.length!==0?"hide":""} style={{paddingTop:this.addDelpadTop,paddingLeft:'20px',float:'left'}}>
+                                        {((ind===this.state.entryList.length-1) && ind===0)?
+                                            <span onClick={this.handleAddDel.bind(this,'+')}>+</span>                                        
+                                        :
+                                            (ind===this.state.entryList.length-1)?
+                                                <span onClick={this.handleAddDel.bind(this,'+')}>+</span>
+                                            :
+                                                <span onClick={this.handleAddDel.bind(this,'-',ind)}>-</span>
+                                        }
+                                </div>    
                             </div> 
                         )
                     })}  

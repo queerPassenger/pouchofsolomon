@@ -18,10 +18,10 @@ const dev={
 };
 const prod={
     port:process.env.PORT,
-    apiUrl:'https://pouchofsolomonapi.herokuapp.com',
-    apiPort:null,
-    clientID:'724697680271-hcsr4o7jv6s5vfko5toou1ld6tusnouv.apps.googleusercontent.com',
-    clientSecret:'TCHe-hkidCkOs5gi9UL5_HIO'
+    apiUrl:process.env.API_URL,
+    apiPort:process.env.API_PORT,
+    clientID:process.env.GOOGLE_CLIENT_ID,
+    clientSecret:process.env.GOOGLE_CLIENT_SECRET
 }
 module.exports={
     getProperties

@@ -23,6 +23,7 @@ module.exports=(app)=>{
                         }
                     }
                     else{
+                        console.log('error @ controller',error);
                         res.send({status:false,msg:'Something went wrong'});
                     }
                 }
@@ -36,15 +37,17 @@ module.exports=(app)=>{
             }, 
             (error, response, body)=>{
                 if(!error){
-                    let responseBody=body;                    
+                    let responseBody=body;   
                     if(responseBody.status){
                         res.send(body);                        
                     }
                     else{   
+                        console.log('@controller responseStatusFalse',responseBody);
                         res.send({status:false,msg:'Something went wrong'});
                     }
                 }
                 else{
+                    console.log('@controller error',error);
                     res.send({status:false,msg:'Something went wrong'});
                 }       
             });

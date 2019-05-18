@@ -5,46 +5,59 @@
     .record-container{
         width:100%;
         float:left;
-        .record{
-            width:62%;
-            float:left;
-            padding-left:38%;
-            margin-top:50px;
-            .record-item,.record-item-half{
-                float:left;
-                margin-top:10px;
-                margin-bottom:10px;
-                select{
-                    width: 250px;
-                    padding-top: 5px;
-                    padding-bottom: 5px;
-                    border-radius: 2px;
-                    font-family: Mali;
+        .record-wrapper{
+            font-size: 46px;
+            padding-left: 3%;
+            float: left;
+            .record{
+                width: 50%;
+                float: left;
+                margin-left: 25%;
+                text-align: center;
+                //border: 1px solid gray;
+                box-shadow: 1px 1px 5px grey;
+                margin-top: 20px;
+                .record-item,.record-item-half{
+                    width: 100%;
+                    float:left;
+                    margin-top:10px;
+                    margin-bottom:10px;
+                    select{
+                        width: 250px;
+                        padding-top: 5px;
+                        padding-bottom: 5px;
+                        border-radius: 2px;
+                        font-family: Mali;
+                    }
+                    input{
+                        width: 238px;
+                        padding-top: 5px;
+                        padding-bottom: 5px;
+                        font-family: Mali;
+                        padding-left: 2%;                
+                    }
+                    textarea{
+                        width: 300px;
+                        height: 100px;
+                        padding-top: 10px;
+                        padding-left: 1%;
+                    }
                 }
-                input{
-                    width: 238px;
-                    padding-top: 5px;
-                    padding-bottom: 5px;
-                    font-family: Mali;
-                    padding-left: 2%;                
+                .record-item-half{
+                    input{
+                        width: 184px;
+                        padding-top: 5px;
+                        padding-bottom: 5px;
+                        font-family: Mali;
+                        padding-left: 2%;
+                        margin-right: 1%;
+                    }
+                    select{
+                        width: 50px;
+                    }
                 }
-                textarea{
-                    width: 300px;
-                    height: 100px;
-                    padding-top: 10px;
-                    padding-left: 1%;
-                }
+                
             }
-            .record-item{                
-                width:100%;
-            }
-            .record-item-half{
-                width: 35%;
-                select{
-                    width: 50px;
-                }
-            }
-            
         }
         .action-items{
             width:62%;
@@ -181,6 +194,7 @@
         width: 100%;
         float: left;
         margin-top: 20px;
+        text-align: center;
         button{
             margin-right: 3%;
             width: 100px;
