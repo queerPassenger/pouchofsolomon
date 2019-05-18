@@ -95,7 +95,7 @@ export default class Record extends React.Component{
         let errFlag=false;
         for(let i=0;i<entryList.length;i++){            
             if(!(entryList[i]['transactionTypeId'] && entryList[i]['timeStamp'] && entryList[i]['comment'] && entryList[i]['amount'] && entryList[i]['amountTypeId'])){
-                console.log('Fields cant be empty');
+                alert('Fields cant be empty');
                 errFlag=true;
                 break;
             }
@@ -114,7 +114,6 @@ export default class Record extends React.Component{
             convertedSchema.push(convertedSchemaObj);
         }
         if(!errFlag){
-            console.log('convertedSchema',JSON.stringify(convertedSchema));
             this.props.handleLoading(true);
             let data={
                 apiPath:type==='submit'?'/recordTransaction':'/updateTransaction',
@@ -162,12 +161,10 @@ export default class Record extends React.Component{
         });
     }
     render(){
-        console.log('EntryList',this.state.entryList);
         try{
             return(
                 <div className="record-container" >
                     {this.state.entryList.map((entry,ind)=>{
-                        console.log('TimeStamp',entry['timeStamp']);
                         let filteredTransactionTypeSet=this.state.transactionTypeSet.filter(x=>{if(x.transactionClassification===entry['transactionClassification']){return x}});
                         return(
                             <div className="record-wrapper"  key={"entry"+ind}>

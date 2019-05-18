@@ -120,7 +120,7 @@ export default class View extends React.Component{
             }
         });
         if(toEditSet.length===0){
-            console.log('Please select the items to edit');
+            alert('Please select the items to edit');
         }
         else{
             this.props.edit(toEditSet);
@@ -134,7 +134,7 @@ export default class View extends React.Component{
             }
         });
         if(toDeleteSet.length===0){
-            console.log('Please select the items to delete');
+            alert('Please select the items to delete');
         }
         else{
             let data={
