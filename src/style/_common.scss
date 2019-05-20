@@ -1,9 +1,6 @@
 body{
     margin:0px;
 }
-.wrapper{
-    
-}
 .loader-wrapper{    
     position: fixed;
     z-index: 999;
@@ -33,4 +30,19 @@ body{
 }
 .hide{
     display: none;
+}
+.m-loader-wrapper{
+    position: fixed;
+    z-index: 999;
+    height: 2em;
+    width: 2em;
+    overflow: visible;
+    margin: auto;
+    top: 0;
+    left: 0;
+    bottom: 80px;
+    right: 27%; 
+    img{
+        width:150px;    
+    }             
 }
