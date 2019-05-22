@@ -356,7 +356,8 @@ export default class View extends React.Component{
                 </div>
                 {this.state.result.length>0?
                     <div className="m-action-container">
-                        
+                        <button type="button" onClick={this.handleEdit}>Edit</button>
+                        <button type="button" onClick={this.handleDelete}>Delete</button>
                     </div>
                 :
                     null
