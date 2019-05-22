@@ -159,6 +159,12 @@ export default class View extends React.Component{
             );        
         }
     }
+    handleRefresh(){
+        this.setState({
+            fromDate:new Date(date.getFullYear(), date.getMonth(), 1),
+            toDate:new Date(),
+        });
+    }
     webBuild(){
         return(
             <div className="view-container">
@@ -277,7 +283,7 @@ export default class View extends React.Component{
                 }
             </div>
         )
-    }
+    }    
     mBuild(){
         return(
             <div className="m-view-container">

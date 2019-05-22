@@ -12,7 +12,7 @@ class HomePage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            tabSelected: tabs[1],
+            tabSelected: tabs[0],
             toEditSet:[],
         };
         this.onTabClick = this.onTabClick.bind(this);

@@ -105,12 +105,11 @@
         }
     }
     .m-header-bottom-container{
-        width: 100%;
+        width: 90%;
         float: left;
         padding-top: 5px;
-        padding-bottom: 1px;
         box-shadow: 1px 1px 0 #dddcdc;
-        padding-left: 28px;    
+        padding-left: 10%;    
         .m-header-tab {
             width: 150px;
             float: left;
@@ -121,7 +120,7 @@
             text-align: center;
         }
         .m-header-tab.selected {
-            border-bottom: 2px solid rgba(133,20,75,1);
+            border-bottom: 4px solid rgba(133,20,75,1);
             padding-bottom: 11px;
         }
     }

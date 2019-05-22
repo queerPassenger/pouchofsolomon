@@ -61,10 +61,10 @@ export default class Header extends React.Component {
                     <div className="m-title">
                         Pouch Of Solomon
                     </div>
-                    <div className="m-logout">
+                    <div className="m-logout" title="Logout">
                         <img src={logout} onClick={this.logout}></img>
                     </div>
-                    <div className="m-user-profile">
+                    <div className="m-user-profile" title={this.props.userProfile.name}>
                         <img className="m-profile-pic" src={this.props.userProfile.photo} ></img>
                     </div>
                 </div>
