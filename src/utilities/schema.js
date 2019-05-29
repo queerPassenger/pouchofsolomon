@@ -15,6 +15,7 @@ const apiSchema={
 const uiSchema={
     transaction:{
         transactionTypeId:'',
+        transactionType:'',
         transactionClassification:'',
         timeStamp:'',
         amount:'',

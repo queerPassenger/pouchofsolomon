@@ -72,7 +72,7 @@ export default class Record extends React.Component{
        
     }
     handleChange(key,ind,e){
-        if(key!=='amount' && key!=='comment'){
+        if(key!=='amount' && key!=='comment' && key!=='transactionType'){
             if(e.target.value===''){
                 return;
             }
@@ -82,7 +82,15 @@ export default class Record extends React.Component{
         entryList[ind][key]=e.target.value;
         if(key==='transactionClassification'){
             entryList[ind]['transactionTypeId']='';
+            entryList[ind]['transactionType']='';
         }
+        this.setState({
+            entryList
+        });
+    }
+    handleComboChange(val,ind){
+        let entryList=this.state.entryList;
+        entryList[ind]['transactionType']=val['transactionTypeName'];
         this.setState({
             entryList
         });
@@ -165,6 +173,14 @@ export default class Record extends React.Component{
             entryList,
         });
     }
+    handleOutsideClick(){
+        var elements = document.getElementsByClassName("options");
+        for(var i = 0; i < elements.length; i++)
+        {
+            let element=elements.item(i);
+            element.classList.add("disp-none");
+        }
+    }
     webBuild(){
         try{
             return(
@@ -238,7 +254,7 @@ export default class Record extends React.Component{
                     })}  
                     <div className="action-items">
                         <button type="button" onClick={this.props.toEditSet.length==0?this.handleSubmit.bind(this,'submit'):this.handleSubmit.bind(this,'update')}>{this.props.toEditSet.length===0?'Submit':'Update'}</button>
-                        <button type="button" onClick={this.props.toEditSet.length==0?this.handleRefresh:()=>{this.handleRefresh();this.props.onTabClick('Entry')}}>Refresh</button>
+                        <button type="button" onClick={this.props.toEditSet.length==0?this.handleRefresh:()=>{this.handleRefresh();this.props.onTabClick('Entry')}}>Reset</button>
                     </div>                      
                 </div>
             )
@@ -251,9 +267,19 @@ export default class Record extends React.Component{
     mBuild(){
         try{
             return(
-                <div className="m-record-container" >
+                <div className="m-record-container" onClick={this.handleOutsideClick}>
                     {this.state.entryList.map((entry,ind)=>{
                         let filteredTransactionTypeSet=this.state.transactionTypeSet.filter(x=>{if(x.transactionClassification===entry['transactionClassification']){return x}});
+                        filteredTransactionTypeSet=filteredTransactionTypeSet.filter((x)=>{
+                            if(entry.transactionType!==''){
+                                if(x.transactionTypeName.match(new RegExp('^'+entry.transactionType+'.*$', 'gi'))){
+                                    if(x.transactionTypeName!==entry.transactionType){
+                                        return x;
+                                    }                                    
+                                }
+                            }
+                        });
+                     
                         return(
                             <div className="m-record-wrapper"  key={"entry"+ind}>
                                 <div className="m-record" key={"entry"+ind}>
@@ -281,15 +307,28 @@ export default class Record extends React.Component{
                                             })}
                                         </select>
                                     </div>
-                                    <div className="m-record-item">
-                                        <select value={entry['transactionTypeId']} onChange={this.handleChange.bind(this,'transactionTypeId',ind)}>
+                                    <div className="m-record-item transactionType">
+                                        <input type="text" value={entry['transactionType']} onChange={this.handleChange.bind(this,'transactionType',ind)}></input>
+                                        {/* <select value={entry['transactionTypeId']} onChange={this.handleChange.bind(this,'transactionTypeId',ind)}>
                                             <option value="">Transaction Type</option>
                                             {filteredTransactionTypeSet.map((value,ind)=>{                                            
                                                 return(
                                                     <option key={"transactionType"+ind} value={value.transactionTypeId}>{value.transactionTypeName}</option>
                                                 )
                                             })}
-                                        </select>
+                                        </select> */}
+                                        
+                                        {filteredTransactionTypeSet.length>0 && 
+                                            <div className="options">
+                                                {filteredTransactionTypeSet.map((option,optionInd)=>{
+                                                    return(
+                                                        <div className="option"  key={'ComboOption'+optionInd} onClick={this.handleComboChange.bind(this,option,ind)}>
+                                                            {option.transactionTypeName}
+                                                        </div>
+                                                    )
+                                                })}
+                                            </div>   
+                                        }                                     
                                     </div>
                                     <div className="m-record-item amount">
                                         <input type="text" ref={"amount"+ind} value={entry['amount']} placeholder={"Amount"} onChange={this.handleChange.bind(this,'amount',ind)} ></input>                                                                       
@@ -323,7 +362,7 @@ export default class Record extends React.Component{
                     })}  
                     <div className="m-action-items">
                         <button type="button" onClick={this.props.toEditSet.length==0?this.handleSubmit.bind(this,'submit'):this.handleSubmit.bind(this,'update')}>{this.props.toEditSet.length===0?'Submit':'Update'}</button>
-                        <button type="button" onClick={this.props.toEditSet.length==0?this.handleRefresh:()=>{this.handleRefresh();this.props.onTabClick('Entry')}}>Refresh</button>
+                        <button type="button" onClick={this.props.toEditSet.length==0?this.handleRefresh:()=>{this.handleRefresh();this.props.onTabClick('Entry')}}>Reset</button>
                     </div>                      
                 </div>
             )
@@ -334,6 +373,7 @@ export default class Record extends React.Component{
         }
     }
     render(){
+        
         if(isMobile())
             return this.mBuild();
         else    

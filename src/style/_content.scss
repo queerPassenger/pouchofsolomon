@@ -375,9 +375,27 @@
                     color: #aca3a3;
                 }                
             }
-            .amount{
+            .amount,.transactionType{
                 input{
                     margin-left:16%;
+                }
+                .options{
+                    position: absolute;
+                    margin-left: 14%;
+                    width: 270px;
+                    border: 1px solid #d8d6d6;
+                    border-radius: 6px;
+                    max-height: 208px;
+                    overflow-y: auto;
+                    .option{
+                        padding-left: 12px;
+                        padding-top: 8px;
+                        padding-bottom: 8px;
+                        color: #9c9393;
+                        background: #ebebeb;
+                        border-bottom: 0.5px solid #c3c3c3;
+                        cursor: pointer;
+                    }
                 }
             }           
         }
