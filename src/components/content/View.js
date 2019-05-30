@@ -149,7 +149,7 @@ export default class View extends React.Component{
             .then(res=>{
                 this.props.handleLoading(false);
                 if(res.status){
-                    alert('Delted Successfully');
+                    alert('Deleted Successfully');
                     this.handleFilter();
                 }
             })

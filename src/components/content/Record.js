@@ -77,8 +77,15 @@ export default class Record extends React.Component{
                 return;
             }
         }
-        
         let entryList=this.state.entryList;
+        if(key==='transactionType'){
+            if(entryList[ind]['transactionClassification']===''){
+                alert('Please select transaction classification');
+                return;
+            }
+        }
+
+        
         entryList[ind][key]=e.target.value;
         if(key==='transactionClassification'){
             entryList[ind]['transactionTypeId']='';
@@ -91,9 +98,78 @@ export default class Record extends React.Component{
     handleComboChange(val,ind){
         let entryList=this.state.entryList;
         entryList[ind]['transactionType']=val['transactionTypeName'];
+        entryList[ind]['transactionTypeId']=val['transactionTypeId'];
         this.setState({
             entryList
         });
+    }
+    checkForNewEntry(ind){
+        let entryList=this.state.entryList;
+        if(entryList[ind]['transactionType']!==''){
+            let filteredTransactionTypeSet=this.state.transactionTypeSet.filter(x=>{if(x.transactionClassification===entryList[ind]['transactionClassification']){return x}});
+            let flag=true;
+            filteredTransactionTypeSet.map((val)=>{
+                if(val.transactionTypeName===entryList[ind]['transactionType']){
+                    flag=false;
+                }
+                
+            });
+            if(flag){
+                this.props.handleLoading(true);
+                let payload={
+                    transactionTypeName:entryList[ind]['transactionType'],
+                    transactionClassification:entryList[ind]['transactionClassification']
+                }
+                let data={
+                    apiPath:'/recordTransactionType',
+                    type:'POST',
+                    query:null,
+                    payload:payload
+                }
+                apiCall(data)
+                .then(res=>{
+                    this.props.handleLoading(false);
+                    if(res.status){
+                        entryList[ind]['transactionTypeId']=res.data['transactionTypeId'];
+                        this.setState({
+                            entryList
+                        },()=>{
+                            this.props.getTransactionTypeList();
+                        })
+                    }
+                    else{
+                        alert('Failed to create transaction Type');
+                        entryList[ind]['transactionTypeId']='';
+                        entryList[ind]['transactionType']='';
+                    }
+                })
+                .catch(err=>{
+                    this.props.handleLoading(false);
+                    console.log('err',err)
+                });
+            }
+        }
+    }
+    deleteTransactionType(transactionTypeId){
+        let data={
+            apiPath:'/deleteTransactionType',
+            type:'DELETE',
+            query:null,
+            payload:{transactionTypeId},
+        }
+        this.props.handleLoading(true);
+        apiCall(data)
+        .then(res=>{
+            this.props.handleLoading(false);
+            if(res.status){
+                alert('Deleted Successfully');
+                this.props.getTransactionTypeList();
+            }
+        })
+        .catch(err=>{
+            this.props.handleLoading(false);
+            console.log('err',err)}
+        );
     }
     handleDateChange(ind,date){
         let entryList = this.state.entryList;        
@@ -120,6 +196,7 @@ export default class Record extends React.Component{
                 convertedSchemaObj['transactionId']=entryList[i]['transactionId'];
             }
             convertedSchemaObj['transactionTypeId']=Number(entryList[i]['transactionTypeId']);
+            convertedSchemaObj['transactionType']= entryList[i]['transactionId'];
             convertedSchemaObj['timeStamp']=entryList[i]['timeStamp'];
             convertedSchemaObj['comment']=entryList[i]['comment'];
             convertedSchemaObj['amount']=Number(entryList[i]['amount']);
@@ -273,9 +350,9 @@ export default class Record extends React.Component{
                         filteredTransactionTypeSet=filteredTransactionTypeSet.filter((x)=>{
                             if(entry.transactionType!==''){
                                 if(x.transactionTypeName.match(new RegExp('^'+entry.transactionType+'.*$', 'gi'))){
-                                    if(x.transactionTypeName!==entry.transactionType){
-                                        return x;
-                                    }                                    
+                                    //if(x.transactionTypeName!==entry.transactionType){
+                                         return x;
+                                    //}                                    
                                 }
                             }
                         });
@@ -307,7 +384,7 @@ export default class Record extends React.Component{
                                             })}
                                         </select>
                                     </div>
-                                    <div className="m-record-item transactionType">
+                                    <div className="m-record-item transactionType" >
                                         <input type="text" value={entry['transactionType']} onChange={this.handleChange.bind(this,'transactionType',ind)}></input>
                                         {/* <select value={entry['transactionTypeId']} onChange={this.handleChange.bind(this,'transactionTypeId',ind)}>
                                             <option value="">Transaction Type</option>
@@ -324,6 +401,7 @@ export default class Record extends React.Component{
                                                     return(
                                                         <div className="option"  key={'ComboOption'+optionInd} onClick={this.handleComboChange.bind(this,option,ind)}>
                                                             {option.transactionTypeName}
+                                                            <span onClick={this.deleteTransactionType.bind(this,option.transactionTypeId)}>x</span>
                                                         </div>
                                                     )
                                                 })}

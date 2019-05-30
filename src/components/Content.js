@@ -6,15 +6,15 @@ import {apiCall} from '../utilities/apiCall';
 
 class Content extends React.Component{
     state={
-        transactionClassificationSet:[],
+        transactionClassificationSet:['expense','saving'],
         transactionTypeSet:[],
         amountTypeSet:[],
     }
     componentDidMount(){
-        this.getTransactionList();
+        this.getTransactionTypeList();
         this.getamountTypeSet();
     }
-    getTransactionList(){
+    getTransactionTypeList(){
         let data={
             apiPath:'/getTransactionTypeList',
             type:'GET',
@@ -25,15 +25,11 @@ class Content extends React.Component{
         .then(res=>{
             if(res.status){
                 this.props.updateLoading(null,'disableLoading');
-                let {transactionClassificationSet,transactionTypeSet} =this.state;
+                let transactionTypeSet =[];
                 res.data.map(transaction=>{
-                    if(transactionClassificationSet.indexOf(transaction.transactionClassification)===-1){
-                        transactionClassificationSet.push(transaction.transactionClassification);
-                    }
-                    transactionTypeSet.push(transaction);
+                   transactionTypeSet.push(transaction);
                 });          
                 this.setState({
-                    transactionClassificationSet,
                     transactionTypeSet
                 });
             }
@@ -82,6 +78,7 @@ class Content extends React.Component{
                     <Record 
                         transactionClassificationSet={this.state.transactionClassificationSet}
                         transactionTypeSet={this.state.transactionTypeSet}
+                        getTransactionTypeList={this.getTransactionTypeList.bind(this)}                        
                         amountTypeSet={this.state.amountTypeSet}
                         handleLoading={this.handleLoading.bind(this)}
                         toEditSet={this.props.toEditSet}
