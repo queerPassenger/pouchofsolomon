@@ -347,15 +347,15 @@ export default class Record extends React.Component{
                 <div className="m-record-container" onClick={this.handleOutsideClick}>
                     {this.state.entryList.map((entry,ind)=>{
                         let filteredTransactionTypeSet=this.state.transactionTypeSet.filter(x=>{if(x.transactionClassification===entry['transactionClassification']){return x}});
-                        filteredTransactionTypeSet=filteredTransactionTypeSet.filter((x)=>{
-                            if(entry.transactionType!==''){
-                                if(x.transactionTypeName.match(new RegExp('^'+entry.transactionType+'.*$', 'gi'))){
-                                    //if(x.transactionTypeName!==entry.transactionType){
-                                         return x;
-                                    //}                                    
-                                }
-                            }
-                        });
+                        // filteredTransactionTypeSet=filteredTransactionTypeSet.filter((x)=>{
+                        //     if(entry.transactionType!==''){
+                        //         if(x.transactionTypeName.match(new RegExp('^'+entry.transactionType+'.*$', 'gi'))){
+                        //             if(x.transactionTypeName!==entry.transactionType){
+                        //                  return x;
+                        //             }                                    
+                        //         }
+                        //     }
+                        // });
                      
                         return(
                             <div className="m-record-wrapper"  key={"entry"+ind}>
@@ -385,17 +385,17 @@ export default class Record extends React.Component{
                                         </select>
                                     </div>
                                     <div className="m-record-item transactionType" >
-                                        <input type="text" value={entry['transactionType']} onChange={this.handleChange.bind(this,'transactionType',ind)}></input>
-                                        {/* <select value={entry['transactionTypeId']} onChange={this.handleChange.bind(this,'transactionTypeId',ind)}>
+                                        {/*<input type="text" value={entry['transactionType']} onChange={this.handleChange.bind(this,'transactionType',ind)}></input>*/}
+                                        <select value={entry['transactionTypeId']} onChange={this.handleChange.bind(this,'transactionTypeId',ind)}>
                                             <option value="">Transaction Type</option>
                                             {filteredTransactionTypeSet.map((value,ind)=>{                                            
                                                 return(
                                                     <option key={"transactionType"+ind} value={value.transactionTypeId}>{value.transactionTypeName}</option>
                                                 )
                                             })}
-                                        </select> */}
+                                        </select>
                                         
-                                        {filteredTransactionTypeSet.length>0 && 
+                                        {/*filteredTransactionTypeSet.length>0 && 
                                             <div className="options">
                                                 {filteredTransactionTypeSet.map((option,optionInd)=>{
                                                     return(
@@ -406,7 +406,7 @@ export default class Record extends React.Component{
                                                     )
                                                 })}
                                             </div>   
-                                        }                                     
+                                        */}                                     
                                     </div>
                                     <div className="m-record-item amount">
                                         <input type="text" ref={"amount"+ind} value={entry['amount']} placeholder={"Amount"} onChange={this.handleChange.bind(this,'amount',ind)} ></input>                                                                       
