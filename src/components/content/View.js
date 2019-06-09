@@ -167,7 +167,64 @@ export default class View extends React.Component{
             toDate:new Date(),
         });
     }   
+    getSummation(){
+        let summation={
+            expense:[],
+            saving:[],
+        }
+        this.state.result.map(res=>{    
+            let typeClassification=this.getTransactionObj(res.transactionTypeId).transactionClassification;
+            let amountType=this.state.amountTypeSet.filter((x)=>{if(x.amountTypeId===res.amountTypeId){return x}})[0];
+            if(amountType){
+                if(typeClassification==='expense'){                
+                    let count=0;
+                    for(let i=0;i<summation.expense.length;i++){
+                        if(summation.expense[i][0]===amountType['amountSymbol']){
+                            summation.expense[i][1]+=Number(res.amount);
+                            count++;
+                            break;
+                        }
+                    }
+                    if(count===0){
+                        summation.expense.push([amountType['amountSymbol'],Number(res.amount)])
+                    }
+                }                
+                else if(typeClassification==='saving'){
+                    let count=0;
+                    for(let i=0;i<summation.saving.length;i++){
+                        if(summation.saving[i][0]===amountType['amountSymbol']){
+                            summation.saving[i][1]+=Number(res.amount);
+                            count++;
+                            break;
+                        }
+                    }
+                    if(count===0){
+                        summation.saving.push([amountType['amountSymbol'],Number(res.amount)])
+                    }
+                }
+            }                
+        });
+        let expenseStatement='';
+        let savingStatement='';
+        summation.expense.map((obj,ind)=>{
+            expenseStatement+=obj[1]+' '+obj[0];
+            if(summation.expense.length-1!==ind){
+                expenseStatement+=' , ';
+            }
+        });
+        summation.saving.map((obj,ind)=>{
+            savingStatement+=obj[1]+' '+obj[0];
+            if(summation.saving.length-1!==ind){
+                savingStatement+=' , ';
+            }
+        });
+        return {
+            expenseStatement:expenseStatement===''?'0':expenseStatement,
+            savingStatement:savingStatement===''?'0':savingStatement,
+        };
+    }
     uiBuild(){
+        let summation=this.getSummation();
         return(
             <div className="view-container">
                 <div className="filter-contianer">
@@ -208,7 +265,7 @@ export default class View extends React.Component{
                     {this.state.result.map((res,ind)=>{    
                             let transaction=this.getTransactionObj(res.transactionTypeId);                                            
                             let amountType=this.state.amountTypeSet.filter((x)=>{if(x.amountTypeId===res.amountTypeId){return x}})[0];
-                            amountType=amountType?amountType:{amountSymbol:'-'};
+                            amountType=amountType?amountType:{'amountSymbol':'-'};
                             let date=new Date(res.timeStamp);
                             return( 
                                 <div className="result" key={"result"+ind}>            
@@ -247,6 +304,20 @@ export default class View extends React.Component{
                             )
                         })}
                 </div>
+                {this.state.result.length>0?
+                    <div className="summation-container">
+                        <div>
+                            <span>Total Expense : </span>
+                            <span title={summation.expenseStatement}>{summation.expenseStatement}</span>
+                        </div>
+                        <div>
+                            <span>Total Saving : </span>
+                            <span title={summation.savingStatement}>{summation.savingStatement}</span>
+                        </div>
+                    </div>
+                :
+                    null
+                }
                 {this.state.result.length>0?
                     <div className="action-items">
                         <div className="action-item">

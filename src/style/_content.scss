@@ -102,6 +102,23 @@
             background: #f3ecec;
         }
     }
+    .summation-container{
+        width: 90%;
+        float: left;
+        font-size: 18px;
+        padding-left: 5%;
+        padding-right: 5%;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        font-family: monospace;
+        span:last-child{
+            width: 150px;
+            float:right;
+            white-space: nowrap; 
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+    }
     .action-items{
         width:100%;
         float:left;
