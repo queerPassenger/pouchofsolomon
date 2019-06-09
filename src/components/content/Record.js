@@ -1,7 +1,6 @@
 import React from 'react';
 import {apiCall} from '../../utilities/apiCall';
 import {schemaGenerator} from '../../utilities/schema';
-import moment from 'moment'
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { isMobile } from '../../utilities/responsive';
@@ -33,7 +32,7 @@ export default class Record extends React.Component{
         return null;      
     }
     componentDidMount(){
-        this.addDelpadTop=document.getElementsByClassName(isMobile()?'m-record':'record')[0].clientHeight/2+'px';
+        this.addDelpadTop=document.getElementsByClassName('record')[0].clientHeight/2+'px';
         this.setState({
             entryList:this.state.entryList
         })
@@ -64,7 +63,7 @@ export default class Record extends React.Component{
             }
         });
         if(flag){
-            this.addDelpadTop=document.getElementsByClassName(isMobile()?'m-record':'record')[0].clientHeight/2+'px';
+            this.addDelpadTop=document.getElementsByClassName('record')[0].clientHeight/2+'px';
             this.setState({
                 entryList
             })
@@ -258,10 +257,10 @@ export default class Record extends React.Component{
             element.classList.add("disp-none");
         }
     }
-    webBuild(){
+    uiBuild(){
         try{
             return(
-                <div className="record-container" >
+                <div className="record-container" onClick={this.handleOutsideClick}>
                     {this.state.entryList.map((entry,ind)=>{
                         let filteredTransactionTypeSet=this.state.transactionTypeSet.filter(x=>{if(x.transactionClassification===entry['transactionClassification']){return x}});
                         return(
@@ -291,7 +290,7 @@ export default class Record extends React.Component{
                                             })}
                                         </select>
                                     </div>
-                                    <div className="record-item">
+                                    <div className="record-item transactionType" >
                                         <select value={entry['transactionTypeId']} onChange={this.handleChange.bind(this,'transactionTypeId',ind)}>
                                             <option value="">Transaction Type</option>
                                             {filteredTransactionTypeSet.map((value,ind)=>{                                            
@@ -301,117 +300,10 @@ export default class Record extends React.Component{
                                             })}
                                         </select>
                                     </div>
-                                    <div className="record-item-half">
-                                            <input type="text" ref={"amount"+ind} value={entry['amount']} placeholder={"Amount"} onChange={this.handleChange.bind(this,'amount',ind)} ></input>                           
-                                            <select value={entry['amountTypeId']} onChange={this.handleChange.bind(this,'amountTypeId',ind)}>
-                                                <option value="">Currency Type</option>
-                                                {this.state.amountTypeSet.map((value,ind)=>{                                            
-                                                    return(
-                                                        <option key={"amountType"+ind} value={value.amountTypeId}>{value.amountSymbol}</option>
-                                                    )
-                                                })}
-                                            </select>
-                                    </div>
-                                    <div className="record-item">
-                                        <textarea type="text" className="comment" ref={"comment"+ind} value={entry['comment']} placeholder={"Description"} onChange={this.handleChange.bind(this,'comment',ind)} ></textarea>
-                                    </div>                                                               
-                                </div> 
-                                <div className={this.props.toEditSet.length!==0?"hide":""} style={{paddingTop:this.addDelpadTop,paddingLeft:'20px',float:'left',fontSize:'30px',fontFamily:'monospace',color:'#aca3a3'}}>
-                                        {((ind===this.state.entryList.length-1) && ind===0)?
-                                            <span onClick={this.handleAddDel.bind(this,'+')}>+</span>                                        
-                                        :
-                                            (ind===this.state.entryList.length-1)?
-                                                <span onClick={this.handleAddDel.bind(this,'+')}>+</span>
-                                            :
-                                                <span onClick={this.handleAddDel.bind(this,'-',ind)}>-</span>
-                                        }
-                                </div>    
-                            </div> 
-                        )
-                    })}  
-                    <div className="action-items">
-                        <button type="button" onClick={this.props.toEditSet.length==0?this.handleSubmit.bind(this,'submit'):this.handleSubmit.bind(this,'update')}>{this.props.toEditSet.length===0?'Submit':'Update'}</button>
-                        <button type="button" onClick={this.props.toEditSet.length==0?this.handleRefresh:()=>{this.handleRefresh();this.props.onTabClick('Entry')}}>Reset</button>
-                    </div>                      
-                </div>
-            )
-        }
-        catch(err){
-            console.log('error',err);
-            return null;
-        }
-    }
-    mBuild(){
-        try{
-            return(
-                <div className="m-record-container" onClick={this.handleOutsideClick}>
-                    {this.state.entryList.map((entry,ind)=>{
-                        let filteredTransactionTypeSet=this.state.transactionTypeSet.filter(x=>{if(x.transactionClassification===entry['transactionClassification']){return x}});
-                        // filteredTransactionTypeSet=filteredTransactionTypeSet.filter((x)=>{
-                        //     if(entry.transactionType!==''){
-                        //         if(x.transactionTypeName.match(new RegExp('^'+entry.transactionType+'.*$', 'gi'))){
-                        //             if(x.transactionTypeName!==entry.transactionType){
-                        //                  return x;
-                        //             }                                    
-                        //         }
-                        //     }
-                        // });
-                     
-                        return(
-                            <div className="m-record-wrapper"  key={"entry"+ind}>
-                                <div className="m-record" key={"entry"+ind}>
-                                    <div className="m-record-item">                                
-                                        <DatePicker
-                                            key={"entry"+ind}
-                                            ref={"entry"+ind}
-                                            selected={entry['timeStamp']===''?'':new Date(entry['timeStamp'])}
-                                            onChange={this.handleDateChange.bind(this,ind)}
-                                            showTimeSelect
-                                            timeFormat="HH:mm"
-                                            timeIntervals={60}
-                                            dateFormat="MMMM d, yyyy h:mm aa"
-                                            timeCaption="time"
-                                        />                                    
-                                    </div>
-                                    <div className="m-record-item">
-                                        <select value={entry['transactionClassification']} onChange={this.handleChange.bind(this,'transactionClassification',ind)}>
-                                            <option value="">Transaction Classification</option>
-                                            {this.state.transactionClassificationSet.map((value,ind)=>{
-                                                
-                                                return(
-                                                    <option key={"transactionClassification"+ind} value={value}>{value}</option>
-                                                )
-                                            })}
-                                        </select>
-                                    </div>
-                                    <div className="m-record-item transactionType" >
-                                        {/*<input type="text" value={entry['transactionType']} onChange={this.handleChange.bind(this,'transactionType',ind)}></input>*/}
-                                        <select value={entry['transactionTypeId']} onChange={this.handleChange.bind(this,'transactionTypeId',ind)}>
-                                            <option value="">Transaction Type</option>
-                                            {filteredTransactionTypeSet.map((value,ind)=>{                                            
-                                                return(
-                                                    <option key={"transactionType"+ind} value={value.transactionTypeId}>{value.transactionTypeName}</option>
-                                                )
-                                            })}
-                                        </select>
-                                        
-                                        {/*filteredTransactionTypeSet.length>0 && 
-                                            <div className="options">
-                                                {filteredTransactionTypeSet.map((option,optionInd)=>{
-                                                    return(
-                                                        <div className="option"  key={'ComboOption'+optionInd} onClick={this.handleComboChange.bind(this,option,ind)}>
-                                                            {option.transactionTypeName}
-                                                            <span onClick={this.deleteTransactionType.bind(this,option.transactionTypeId)}>x</span>
-                                                        </div>
-                                                    )
-                                                })}
-                                            </div>   
-                                        */}                                     
-                                    </div>
-                                    <div className="m-record-item amount">
+                                    <div className="record-item amount">
                                         <input type="text" ref={"amount"+ind} value={entry['amount']} placeholder={"Amount"} onChange={this.handleChange.bind(this,'amount',ind)} ></input>                                                                       
                                     </div>
-                                    <div className="m-record-item amount">
+                                    <div className="record-item amount">
                                         <select value={entry['amountTypeId']} onChange={this.handleChange.bind(this,'amountTypeId',ind)}>
                                             <option value="">Currency Type</option>
                                             {this.state.amountTypeSet.map((value,ind)=>{                                            
@@ -421,7 +313,7 @@ export default class Record extends React.Component{
                                             })}
                                         </select>
                                     </div>
-                                    <div className="m-record-item">
+                                    <div className="record-item">
                                         <textarea type="text" className="comment" ref={"comment"+ind} value={entry['comment']} placeholder={"Description"} onChange={this.handleChange.bind(this,'comment',ind)} ></textarea>
                                     </div>                                                               
                                 </div> 
@@ -438,9 +330,13 @@ export default class Record extends React.Component{
                             </div> 
                         )
                     })}  
-                    <div className="m-action-items">
-                        <button type="button" onClick={this.props.toEditSet.length==0?this.handleSubmit.bind(this,'submit'):this.handleSubmit.bind(this,'update')}>{this.props.toEditSet.length===0?'Submit':'Update'}</button>
-                        <button type="button" onClick={this.props.toEditSet.length==0?this.handleRefresh:()=>{this.handleRefresh();this.props.onTabClick('Entry')}}>Reset</button>
+                    <div className="action-items">
+                        <div className="action-item">
+                            <button type="button" onClick={this.props.toEditSet.length==0?this.handleSubmit.bind(this,'submit'):this.handleSubmit.bind(this,'update')}>{this.props.toEditSet.length===0?'Submit':'Update'}</button>
+                        </div>
+                        <div className="action-item">
+                            <button type="button" onClick={this.props.toEditSet.length==0?this.handleRefresh:()=>{this.handleRefresh();this.props.onTabClick('Entry')}}>Reset</button>
+                        </div>                        
                     </div>                      
                 </div>
             )
@@ -450,12 +346,7 @@ export default class Record extends React.Component{
             return null;
         }
     }
-    render(){
-        
-        if(isMobile())
-            return this.mBuild();
-        else    
-            return this.webBuild();
-        
+    render(){        
+        return this.uiBuild();        
     }
 }

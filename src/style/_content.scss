@@ -1,222 +1,15 @@
-.content-container{
-    width: 100%;
-    float: left;
-    .record-container{
-        width:100%;
-        float:left;
-        .record-wrapper{
-            .record{
-                width: 50%;
-                float: left;
-                margin-left: 25%;
-                text-align: center;
-                //border: 1px solid gray;
-                box-shadow: 1px 1px 5px grey;
-                margin-top: 20px;
-                .record-item,.record-item-half{
-                    width: 100%;
-                    float:left;
-                    margin-top:10px;
-                    margin-bottom:10px;
-                    select{
-                        width: 250px;
-                        padding-top: 5px;
-                        padding-bottom: 5px;
-                        border-radius: 2px;
-                        font-family: Mali;
-                    }
-                    input{
-                        width: 238px;
-                        padding-top: 5px;
-                        padding-bottom: 5px;
-                        font-family: Mali;
-                        padding-left: 2%;                
-                    }
-                    textarea{
-                        width: 300px;
-                        height: 100px;
-                        padding-top: 10px;
-                        padding-left: 1%;
-                    }
-                }
-                .record-item-half{
-                    input{
-                        width: 184px;
-                        padding-top: 5px;
-                        padding-bottom: 5px;
-                        font-family: Mali;
-                        padding-left: 2%;
-                        margin-right: 1%;
-                    }
-                    select{
-                        width: 50px;
-                    }
-                }
-                
-            }
-        }
-        .action-items{
-            width:62%;
-            float:left;
-            padding-left:38%;
-            margin-top:30px;
-            button{
-                margin-right: 3%;
-                width: 150px;
-                padding-top: 5px;
-                padding-bottom: 5px;
-                background: white;
-                border: 1px solid #d9d9d9;
-                border-radius: 3px;
-                font-family: Mali;
-                font-weight: bold;
-                box-shadow: 1px 1px 1px grey;
-            }
-        }
-    }
-}
 .view-container{
-    width: 80%;
-    float: left;
-    margin: 0 10% 0 10%;
-    padding-top:20px;
-    .filter-container{
-        width:100%;
-        float:left;
-        margin-top:20px;
-        .filter-item{
-            width:30%;
-            float:left;
-            margin-right:1%;
-            .filter-item-title{
-                font-family: Mali;
-            }
-            input{
-                width: 238px;
-                padding-top: 5px;
-                padding-bottom: 5px;
-                font-family: Mali;
-                padding-left: 2%;                
-            }
-        }
-        .action-items{            
-            width: 100%;
-            float: left;
-            margin-top: 20px;
-            button{
-                margin-right: 3%;
-                width: 100px;
-                padding-top: 5px;
-                padding-bottom: 5px;
-                background: white;
-                border: 1px solid #d9d9d9;
-                border-radius: 3px;
-                font-family: Mali;
-                font-weight: bold;
-                box-shadow: 1px 1px 1px grey;
-            }
-        }
-    }
-    .result-container{
-        width:100%;
-        float:left;
-        margin-top:50px;
-        .result-wrapper{
-            width:100%;
-            float:left;
-            height:400px;
-            overflow-y:auto;
-        }
-        .result,.result-header{
-            width:100%;
-            float:left;   
-            font-size:16px;
-            .item{
-                width:10%;
-                float:left;
-                padding-left:1%;
-                padding-right:1%;
-                .check{
-                    width: 10px;
-                    height: 10px;
-                    padding-top: 1px;
-                    padding-bottom: 1px;
-                    border: 3px solid #666666;
-                    .checked{
-                        width: 7px;
-                        height: 7px;
-                        position: relative;
-                        top: 2px;
-                        left: 17%;
-                        background: gray;                    
-                    }
-                }
-            }   
-            .amount{
-                text-align: right;
-                padding-right: 8%;
-                float: left;
-                width: 10%;            
-                span:first-child{
-                    margin-right: 5%;
-                }
-            }
-        }
-        .result{
-            width: 100%;
-            float: left;
-            padding-top: 10px;
-            padding-bottom: 10px;
-            font-family: monospace;
-        }
-        .result:nth-child(even) {
-            background: #f3ecec;
-        }
-        .result-header{
-            padding-top: 10px;
-            padding-bottom: 10px;
-            font-family: Dancing script;
-            font-size: 17px;
-            font-weight: bold;
-            box-shadow:1px 1px 4px gray;
-        }
-        .no-records{
-            text-align: center;
-            font-family: Dancing script;
-            font-size: 17px;
-        }
-    }
-    .action-items{            
-        width: 100%;
-        float: left;
-        margin-top: 20px;
-        text-align: center;
-        button{
-            margin-right: 3%;
-            width: 100px;
-            padding-top: 5px;
-            padding-bottom: 5px;
-            background: white;
-            border: 1px solid #d9d9d9;
-            border-radius: 3px;
-            font-family: Mali;
-            font-weight: bold;
-            box-shadow: 1px 1px 1px grey;
-        }
-    }
-}
-
-.m-view-container{
     width:100%;
-    float:left;
-    padding-top:20px;
+    float:left;    
+    margin-top: 35px;
+    margin-bottom: 35px;
     padding-bottom:20px;
     padding-left:1%;
-    padidng-right:1%;
-    .m-filter-contianer{
+    padding-right:1%;
+    .filter-contianer{
         width:100%;
         float:left;
-        .m-filter-item{
+        .filter-item{
             width:100%;
             float:left;
             margin-bottom:10px;
@@ -232,27 +25,31 @@
                 font-weight: bold;
                 font-family: monospace;
             }
-            .m-action-items{
+            .action-items{
                 width:100%;
                 float:left;
-                button{
-                    width: 260px;
-                    padding-top: 10px;
-                    padding-bottom: 10px;
-                    margin-left: 17%;
-                    box-shadow: 1px 0px 2px #9e9e9e;
-                    background: #f5f5f5;
-                    border: 0px;
-                    font-weight: bold;
-                    font-size: 14px;
-                    font-family: monospace;
-                    float: left;
-                    margin-bottom: 10px;
+                .action-item{
+                    width:100%;
+                    float:left;
+                    button{
+                        width: 260px;
+                        padding-top: 10px;
+                        padding-bottom: 10px;
+                        margin-left: 17%;
+                        box-shadow: 1px 0px 2px #9e9e9e;
+                        background: #f5f5f5;
+                        border: 0px;
+                        font-weight: bold;
+                        font-size: 14px;
+                        font-family: monospace;
+                        float: left;
+                        margin-bottom: 10px;
+                    }
                 }
             }
         }
     }
-    .m-result-container{
+    .result-container{
         width:100%;
         float:left;
         padding-top:20px;
@@ -260,15 +57,15 @@
         border-top: 1px solid #d6d6d6;
         height: 200px;
         overflow-y: auto;
-        .m-result{
+        .result{
             width:100%;
             float:left;
-            .m-item{
+            .item{
                 width:70%;
                 float:left;
                 font-size: 14px;
                 font-family: monospace;            
-                .m-check{
+                .check{
                     width: 10px;
                     height: 10px;
                     padding-top: 1px;
@@ -276,7 +73,7 @@
                     border: 3px solid #666666;
                     margin-top: 40px;
                     margin-left: 6px;
-                    .m-checked{
+                    .checked{
                         width: 7px;
                         height: 7px;
                         position: relative;
@@ -285,56 +82,63 @@
                         background: gray;                    
                     }
                 }
-                .m-sub-item{
+                .sub-item{
                     white-space: nowrap; 
                     overflow: hidden;
                     text-overflow: ellipsis;
                 }
             }
-            .m-item:first-child{
+            .item:first-child{
                 width:10%;
                 float:left;
             }
-            .m-item:last-child{
+            .item:last-child{
                 width:20%;
                 float:left;
                 margin-top: 40px;
             }
         }
-        .m-result:nth-child(even) {
+        .result:nth-child(even) {
             background: #f3ecec;
         }
     }
-    .m-action-container{
-        button{
-            width: 250px;
-            padding-top: 10px;
-            padding-bottom: 10px;
-            margin-left: 20%;
-            box-shadow: 1px 0px 2px #9e9e9e;
-            background: #f5f5f5;
-            border: 0px;
-            font-weight: bold;
-            font-size: 14px;
-            font-family:monospace;
-            float: left;
-            margin-top: 13px;
+    .action-items{
+        width:100%;
+        float:left;
+        .action-item{
+            width:100%;
+            float:left;
+            button{
+                width: 250px;
+                padding-top: 10px;
+                padding-bottom: 10px;
+                margin-left: 20%;
+                box-shadow: 1px 0px 2px #9e9e9e;
+                background: #f5f5f5;
+                border: 0px;
+                font-weight: bold;
+                font-size: 14px;
+                font-family:monospace;
+                float: left;
+                margin-top: 13px;
+            }
         }
     }
 }
 
-.m-record-container{
+.record-container{
     width:100%;
     float:left;
-    margin-top: 20px;
-    .m-record-wrapper{
+    margin-top: 35px;
+    margin-bottom: 35px;
+    .record-wrapper{
         width:100%;
         float:left;
         border-bottom: 1px solid #efefef;
-        .m-record{
+        .record{
             width:90%;
             float:left;        
-            .m-record-item{
+            .record-item{
                 width: 100%;
                 float:left;
                 margin-top:10px;
@@ -406,24 +210,28 @@
             }           
         }
     }
-    .m-action-items{
+    .action-items{
        width:100%;
        float:left;
        margin-top:20px;
        margin-bottom:20px;
-        button{
-            width: 250px;
-            padding-top: 10px;
-            padding-bottom: 10px;
-            margin-left: 20%;
-            box-shadow: 1px 0px 2px #9e9e9e;
-            background: #f5f5f5;
-            border: 0px;
-            font-weight: bold;
-            font-size: 14px;
-            font-family: monospace;
-            float: left;
-            margin-top: 13px;
+        .action-item{
+            width:100%;
+            float:left;
+            button{
+                width: 250px;
+                padding-top: 10px;
+                padding-bottom: 10px;
+                margin-left: 20%;
+                box-shadow: 1px 0px 2px #9e9e9e;
+                background: #f5f5f5;
+                border: 0px;
+                font-weight: bold;
+                font-size: 14px;
+                font-family: monospace;
+                float: left;
+                margin-top: 13px;
+            }
         }
     }
 }

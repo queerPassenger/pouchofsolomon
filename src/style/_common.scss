@@ -1,20 +1,22 @@
 body{
-    margin:0px;
+    margin:0px;    
+    background: #e6e6e6;
+
 }
-.loader-wrapper{    
-    position: fixed;
-    z-index: 999;
-    height: 2em;
-    width: 2em;
-    overflow: visible;
-    margin: auto;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 20%;    
-    img{
-        width:300px;    
-    }             
+#root{
+    width:30%;
+    float:left;
+    margin-left:35%;
+    margin-right:35%;
+    background: white;
+}
+@media only screen and (max-width: 600px){
+    #root{
+        width:100%;
+        float:left;
+        margin:0px;
+        background: white;
+    }
 }
 .overlay{
     position: fixed;
@@ -31,7 +33,7 @@ body{
 .hide{
     display: none;
 }
-.m-loader-wrapper{
+.loader-wrapper{
     position: fixed;
     z-index: 999;
     height: 2em;

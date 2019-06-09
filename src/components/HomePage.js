@@ -5,7 +5,6 @@ import Content from './Content.js';
 import Footer from './Footer.js';
 import loadingImgPath from '../images/loading1.gif';
 import { apiCall } from '../utilities/apiCall';
-import {isMobile} from '../utilities/responsive';
 const tabs = ['Entry', 'View'];
 
 class HomePage extends React.Component {
@@ -50,40 +49,8 @@ class HomePage extends React.Component {
             tabSelected: 'Entry',
             toEditSet
         })
-    }
-    webBuild(){
-        console.log('webBuild');
-        return(
-            <>
-                <div className="wrapper">
-                    <Header 
-                        tabSelected={this.state.tabSelected} 
-                        userProfile={this.props.userProfile} 
-                        tabs={tabs} onTabClick={this.onTabClick}
-                    />
-                    <Content 
-                        tabSelected={this.state.tabSelected} 
-                        toEditSet={this.state.toEditSet} 
-                        edit={this.edit.bind(this)} 
-                        onTabClick={this.onTabClick} 
-                    />
-                    <Footer />
-                </div>
-                {this.props.loading ?
-                    <>
-                        <div className="loader-wrapper">
-                            <img src={loadingImgPath}></img>
-                        </div>
-                        <div className="overlay"></div>
-                    </>
-                    :
-                    null
-                }
-            </>
-        )
-    }
-    mBuild(){
-        console.log('Mobile Build');
+    }    
+    uiBuild(){
         return(
             <>
                <div className="wrapper">
@@ -102,7 +69,7 @@ class HomePage extends React.Component {
                 </div>
                 {this.props.loading?
                     <>
-                        <div className="m-loader-wrapper">
+                        <div className="loader-wrapper">
                             <img src={loadingImgPath}></img>
                         </div>
                         <div className="overlay"></div>
@@ -114,10 +81,7 @@ class HomePage extends React.Component {
         )
     }
     render() {
-        if(isMobile())
-            return this.mBuild();        
-        else
-            return this.webBuild();
+       return this.uiBuild();
     }
 }
 const mapStateToProps = function (store) {

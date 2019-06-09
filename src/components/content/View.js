@@ -69,6 +69,8 @@ export default class View extends React.Component{
             this.setState({
                 result,
                 checkAll:false
+            },()=>{
+                document.getElementsByClassName('result-container')[0].scrollTop=document.getElementsByClassName('result-container')[0].clientHeight
             });
         })
         .catch(err=>{
@@ -164,15 +166,12 @@ export default class View extends React.Component{
             fromDate:new Date(date.getFullYear(), date.getMonth(), 1),
             toDate:new Date(),
         });
-    }
-    webBuild(){
+    }   
+    uiBuild(){
         return(
             <div className="view-container">
-                <div className="filter-container">
+                <div className="filter-contianer">
                     <div className="filter-item">
-                        <div className="filter-item-title">
-                            From 
-                        </div>
                         <DatePicker
                             selected={this.state.fromDate}
                             onChange={this.handleDateChange.bind(this,'fromDate')}
@@ -184,9 +183,6 @@ export default class View extends React.Component{
                         />
                     </div>
                     <div className="filter-item">
-                        <div className="filter-item-title">
-                            To 
-                        </div>
                         <DatePicker
                             selected={this.state.toDate}
                             onChange={this.handleDateChange.bind(this,'toDate')}
@@ -199,47 +195,24 @@ export default class View extends React.Component{
                     </div>
                     <div className="filter-item">
                         <div className="action-items">
-                            <button type="button" onClick={this.handleFilter}>Filter</button>
-                            <button type="button" onClick={this.handleRefresh}>Clear</button>
+                            <div className="action-item">
+                                <button type="button" onClick={this.handleFilter}>Filter</button>
+                            </div>
+                            <div className="action-item">
+                                <button type="button" onClick={this.handleRefresh}>Clear</button>
+                            </div>                            
                         </div>
                     </div>
                 </div>
                 <div className="result-container">
-                    {this.state.result.length>0?
-                        <div className="result-header">
-                            {resultHeader.map((header,ind)=>{
-                                return(
-                                    <div className={("item ")+(header==='Amount'?"amount":"")} key={"resultHeader"+ind}>
-                                        {ind===0?
-                                            <div className="check" onClick={this.handleCheck.bind(this,'all')}>
-                                                {this.state.checkAll?
-                                                    <div className="checked">
-                                                    </div>
-                                                :
-                                                    null
-                                                }
-                                            </div>
-                                        :
-                                            header
-                                        }
-                                    </div>
-                                )
-                            })}
-                        </div>
-                    :
-                        <div className="no-records">
-                            No Records Found
-                        </div>
-                    }
-                    <div className="result-wrapper">
-                        {this.state.result.map((res,ind)=>{    
+                    {this.state.result.map((res,ind)=>{    
                             let transaction=this.getTransactionObj(res.transactionTypeId);                                            
                             let amountType=this.state.amountTypeSet.filter((x)=>{if(x.amountTypeId===res.amountTypeId){return x}})[0];
                             amountType=amountType?amountType:{amountSymbol:'-'};
                             let date=new Date(res.timeStamp);
                             return( 
-                                <div className="result" key={"result"+ind}>
-                                    <div className="item">
+                                <div className="result" key={"result"+ind}>            
+                                    <div className="item">                      
                                         <div className="check" onClick={this.handleCheck.bind(this,ind)}>
                                             {res.flag?
                                                 <div className="checked">
@@ -250,109 +223,23 @@ export default class View extends React.Component{
                                         </div>
                                     </div>
                                     <div className="item">
-                                        {date.getDate()+'/'+ (date.getMonth()+1)+'/'+ date.getFullYear()}
-                                    </div>
-                                    <div className="item">
-                                        {(date.getHours()>=10?date.getHours():'0'+date.getHours())+':'+(date.getMinutes()>=10?date.getMinutes():'0'+date.getMinutes())+':'+ (date.getSeconds()>=10?date.getSeconds():'0'+date.getSeconds())}
-                                    </div>
-                                    <div className="item">
-                                        {transaction.transactionClassification}
-                                    </div>
-                                    <div className="item">
-                                        {transaction.transactionTypeName}
-                                    </div>
-                                    <div className="item amount">
-                                        <span>{res.amount}</span>
-                                        <span>{amountType['amountSymbol']}</span>                                    
-                                    </div>
-                                    <div className="item">
-                                        {res.comment}
-                                    </div>
-                                </div>
-                            )
-                        })}
-                    </div>
-                </div>
-                {this.state.result.length>0?
-                    <div className="action-items">
-                            <button type="button" onClick={this.handleEdit}>Edit</button>
-                            <button type="button" onClick={this.handleDelete}>Delete</button>
-                    </div>      
-                :
-                    null
-                }
-            </div>
-        )
-    }    
-    mBuild(){
-        return(
-            <div className="m-view-container">
-                <div className="m-filter-contianer">
-                    <div className="m-filter-item">
-                        <DatePicker
-                            selected={this.state.fromDate}
-                            onChange={this.handleDateChange.bind(this,'fromDate')}
-                            showTimeSelect
-                            timeFormat="HH:mm"
-                            timeIntervals={60}
-                            dateFormat="MMMM d, yyyy h:mm aa"
-                            timeCaption="time"
-                        />
-                    </div>
-                    <div className="m-filter-item">
-                        <DatePicker
-                            selected={this.state.toDate}
-                            onChange={this.handleDateChange.bind(this,'toDate')}
-                            showTimeSelect
-                            timeFormat="HH:mm"
-                            timeIntervals={60}
-                            dateFormat="MMMM d, yyyy h:mm aa"
-                            timeCaption="time"
-                        />
-                    </div>
-                    <div className="m-filter-item">
-                        <div className="m-action-items">
-                            <button type="button" onClick={this.handleFilter}>Filter</button>
-                            <button type="button" onClick={this.handleRefresh}>Clear</button>
-                        </div>
-                    </div>
-                </div>
-                <div className="m-result-container">
-                    {this.state.result.map((res,ind)=>{    
-                            let transaction=this.getTransactionObj(res.transactionTypeId);                                            
-                            let amountType=this.state.amountTypeSet.filter((x)=>{if(x.amountTypeId===res.amountTypeId){return x}})[0];
-                            amountType=amountType?amountType:{amountSymbol:'-'};
-                            let date=new Date(res.timeStamp);
-                            return( 
-                                <div className="m-result" key={"result"+ind}>            
-                                    <div className="m-item">                      
-                                        <div className="m-check" onClick={this.handleCheck.bind(this,ind)}>
-                                            {res.flag?
-                                                <div className="m-checked">
-                                                </div>
-                                            :
-                                                null
-                                            }
-                                        </div>
-                                    </div>
-                                    <div className="m-item">
-                                        <div className="m-sub-item">
+                                        <div className="sub-item">
                                             {res.comment}
                                         </div>
-                                        <div className="m-sub-item">
+                                        <div className="sub-item">
                                             {transaction.transactionTypeName}
                                         </div>
-                                        <div className="m-sub-item">
+                                        <div className="sub-item">
                                             {transaction.transactionClassification}
                                         </div>
-                                        <div className="m-sub-item">
+                                        <div className="sub-item">
                                             {date.getDate()+'/'+ (date.getMonth()+1)+'/'+ date.getFullYear()}
                                         </div>
-                                        <div className="m-sub-item">
+                                        <div className="sub-item">
                                             {(date.getHours()>=10?date.getHours():'0'+date.getHours())+':'+(date.getMinutes()>=10?date.getMinutes():'0'+date.getMinutes())+':'+ (date.getSeconds()>=10?date.getSeconds():'0'+date.getSeconds())}
                                         </div>
                                     </div>
-                                    <div className="m-item">
+                                    <div className="item">
                                         <span>{res.amount}</span>
                                         <span>{amountType['amountSymbol']}</span>                                    
                                     </div>
@@ -361,9 +248,13 @@ export default class View extends React.Component{
                         })}
                 </div>
                 {this.state.result.length>0?
-                    <div className="m-action-container">
-                        <button type="button" onClick={this.handleEdit}>Edit</button>
-                        <button type="button" onClick={this.handleDelete}>Delete</button>
+                    <div className="action-items">
+                        <div className="action-item">
+                            <button type="button" onClick={this.handleEdit}>Edit</button>
+                        </div>
+                        <div className="action-item">
+                            <button type="button" onClick={this.handleDelete}>Delete</button>
+                        </div>
                     </div>
                 :
                     null
@@ -372,10 +263,6 @@ export default class View extends React.Component{
         )
     }
     render(){
-        if(isMobile())
-            return this.mBuild();
-        else    
-            return this.webBuild();
-        
+       return this.uiBuild();        
     }
 }
