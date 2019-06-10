@@ -6,7 +6,7 @@
   "scripts": {
     "build":"webpack",
     "start": "node index",
-    "devStart": "SET NODE_ENV=development&& node index"
+    "devStart": "SET NODE_ENV=development&& node indexDev"
   },
   "keywords": [
     "react",
