@@ -306,11 +306,11 @@ export default class View extends React.Component{
                 {this.state.result.length>0?
                     <div className="summation-container">
                         <div>
-                            <span>Total Expense : </span>
+                            <span>Total Expense :</span>
                             <span title={summation.expenseStatement}>{summation.expenseStatement}</span>
                         </div>
                         <div>
-                            <span>Total Saving : </span>
+                            <span>Total Savings</span>
                             <span title={summation.savingStatement}>{summation.savingStatement}</span>
                         </div>
                     </div>

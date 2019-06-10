@@ -7,7 +7,6 @@ import configureStore from './store';
 import HomePage from './components/HomePage';
 
 require('./style/index.scss');
-require('./images/loading.gif');
 
 const hist = createHashHistory();
 

@@ -36,13 +36,6 @@ module.exports = {
     ]
   },
   plugins: [
-    new HtmlWebpackPlugin({
-      template: path.join(__dirname,'src','ui.html'),
-      filename:'ui.html'
-    }),
-    new CopyWebpackPlugin([
-      { from: path.join(__dirname,'src','login.html'), to:path.join(__dirname,'build','login.html') }
-    ]),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoEmitOnErrorsPlugin(),
   ],

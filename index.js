@@ -19,7 +19,7 @@ app.use(require('webpack-dev-middleware')(compiler, {
     hot: true,
     publicPath: webpackConfig.output.publicPath,
   }));
-  app.use(require('webpack-hot-middleware')(compiler));
+app.use(require('webpack-hot-middleware')(compiler));
   
 console.log('process.env.NODE_ENV ',process.env.NODE_ENV);
 
@@ -83,7 +83,7 @@ app.get('/auth/google/callback',
 
 app.get('/', (req, res) => {  
     if ( req.cookies['userId']) {   
-        res.sendFile(__dirname+'/build/'+'ui.html');
+        res.sendFile(__dirname+'/ui.html');
     } 
     else
     {   
@@ -92,10 +92,10 @@ app.get('/', (req, res) => {
 });
 app.get('/login',(req,res)=>{
     if ( req.cookies['userId']) {   
-        res.sendFile(__dirname+'/build/'+'ui.html');
+        res.sendFile(__dirname+'/ui.html');
     } 
     else{
-        res.sendFile(__dirname+'/build/'+'login.html');
+        res.sendFile(__dirname+'/login.html');
     }
     
 })
