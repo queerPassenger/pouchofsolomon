@@ -8,9 +8,6 @@ const express = require('express'),
     request = require('request');
     getProperties=require('./properties').getProperties;
     bodyParser = require('body-parser');
-    webpack = require('webpack');
-    webpackConfig = require('./webpack.config');
-    compiler = webpack(webpackConfig);
     
     
 auth(passport);
