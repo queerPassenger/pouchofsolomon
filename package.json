@@ -4,9 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build":"webpack",
     "start": "node index",
-    "devStart": "SET NODE_ENV=development&& node indexDev"
+    "devStart": "SET NODE_ENV=development&& node indexDev",
+    "devProd":"SET NODE_ENV=production&& node indexProd",
+    "preBuild":"webpack"
   },
   "keywords": [
     "react",
