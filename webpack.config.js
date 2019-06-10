@@ -1,34 +1,19 @@
-import path from "path";
-
-import HtmlWebpackPlugin from "html-webpack-plugin";
-import CopyWebpackPlugin from "copy-webpack-plugin";
-import prop from './properties';
+const path = require("path");
+const webpack = require('webpack');
+const HtmlWebpackPlugin=require("html-webpack-plugin");
+const CopyWebpackPlugin = require("copy-webpack-plugin");
 
 module.exports = {
-  mode: process.env.NODE_ENV || 'development',
-  devServer: {
-    contentBase: path.resolve(__dirname, "/src"),
-    compress: true,
-    port:prop.uiDevPort
-  },
-  entry: path.join(__dirname,'src','index.js'),
+  mode: process.env.NODE_ENV,
+  entry: [
+    'webpack-hot-middleware/client?reload=true',
+      path.join(__dirname,'src','index.js')
+  ],
   output: {
-    path: path.join(__dirname,'build'),
+    path:path.join(__dirname,'build'),
+    publicPath: '/',
     filename: 'ui.bundle.js'
   },
-  resolve: {
-    modules: [path.resolve(__dirname,'src'),'node_modules']
-  },
-  
-  plugins: [
-    new HtmlWebpackPlugin({
-      template: path.join(__dirname,'src','ui.html'),
-      filename:'ui.html'
-    }),
-    new CopyWebpackPlugin([
-      { from: path.join(__dirname,'src','login.html'), to:path.join(__dirname,'build','login.html') }
-    ])
-  ],
   module: {
     rules: [
       {
@@ -49,5 +34,16 @@ module.exports = {
         loaders: ["file-loader"]
       }
     ]
-  }
-};
+  },
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: path.join(__dirname,'src','ui.html'),
+      filename:'ui.html'
+    }),
+    new CopyWebpackPlugin([
+      { from: path.join(__dirname,'src','login.html'), to:path.join(__dirname,'build','login.html') }
+    ]),
+    new webpack.HotModuleReplacementPlugin(),
+    new webpack.NoEmitOnErrorsPlugin(),
+  ],
+}

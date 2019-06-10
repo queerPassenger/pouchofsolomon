@@ -10,9 +10,53 @@ body{
     margin-right:37.5%;
     background: white;
 }
-@media only screen and (max-width: 600px){
+@media only screen and (max-width: 1500px) and (min-width: 1201px){
+    #root{
+        width:30%;
+        float:left;
+        margin-left:35%;
+        margin-right:35%;
+        background: white;
+    }
+}
+@media only screen and (max-width: 1200px) and (min-width: 1001px){
+    #root{
+        width:40%;
+        float:left;
+        margin-left:30%;
+        margin-right:30%;
+        background: white;
+    }
+}
+@media only screen and (max-width: 1000px) and (min-width: 801px){
+    #root{
+        width:60%;
+        float:left;
+        margin-left:20%;
+        margin-right:20%;
+        background: white;
+    }
+}
+@media only screen and (max-width: 800px) and (min-width: 501px){
+    #root{
+        width:80%;
+        float:left;
+        margin-left:10%;
+        margin-right:10%;
+        background: white;
+    }
+}
+@media only screen and (max-width: 500px) and (min-width: 351px){
     #root{
         width:100%;
+        float:left;
+        margin:0px;
+        background: white;
+    }
+}
+@media only screen and (max-width: 351px) and (min-width: 1px){
+    #root{
+        width:400px;
         float:left;
         margin:0px;
         background: white;

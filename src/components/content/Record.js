@@ -3,7 +3,6 @@ import {apiCall} from '../../utilities/apiCall';
 import {schemaGenerator} from '../../utilities/schema';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import { isMobile } from '../../utilities/responsive';
 
 export default class Record extends React.Component{
     constructor(props){
@@ -346,7 +345,7 @@ export default class Record extends React.Component{
             return null;
         }
     }
-    render(){        
+    render(){     
         return this.uiBuild();        
     }
 }

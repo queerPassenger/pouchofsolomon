@@ -1,7 +1,6 @@
 import React from 'react';
 import DatePicker from 'react-datepicker';
 import {apiCall} from '../../utilities/apiCall';
-import { isMobile } from '../../utilities/responsive';
 
 const resultHeader=['','Date','Time','Classification','Type','Amount','Comment']
 export default class View extends React.Component{

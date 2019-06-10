@@ -5,7 +5,7 @@ import Content from './Content.js';
 import Footer from './Footer.js';
 import loadingImgPath from '../images/loading1.gif';
 import { apiCall } from '../utilities/apiCall';
-const tabs = ['Entry', 'View'];
+const tabs = ['Entry', 'View', 'Analyse'];
 
 class HomePage extends React.Component {
     constructor(props) {

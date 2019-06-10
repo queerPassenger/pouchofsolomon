@@ -2,6 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import Record from './content/Record';
 import View from './content/View';
+import Analyse from './content/Analyse';
 import {apiCall} from '../utilities/apiCall';   
 
 class Content extends React.Component{
@@ -89,6 +90,17 @@ class Content extends React.Component{
                 }
                 {this.props.tabSelected==='View'?
                     <View 
+                        transactionClassificationSet={this.state.transactionClassificationSet}
+                        transactionTypeSet={this.state.transactionTypeSet}
+                        amountTypeSet={this.state.amountTypeSet}
+                        handleLoading={this.handleLoading.bind(this)}
+                        edit={this.props.edit}
+                    />
+                :
+                    null
+                }
+                {this.props.tabSelected==='Analyse'?
+                    <Analyse 
                         transactionClassificationSet={this.state.transactionClassificationSet}
                         transactionTypeSet={this.state.transactionTypeSet}
                         amountTypeSet={this.state.amountTypeSet}

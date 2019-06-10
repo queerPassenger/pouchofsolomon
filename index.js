@@ -7,11 +7,21 @@ const express = require('express'),
     request = require('request');
     getProperties=require('./properties').getProperties;
     bodyParser = require('body-parser');
+    webpack = require('webpack');
+    webpackConfig = require('./webpack.config');
+    compiler = webpack(webpackConfig);
+    
     
 auth(passport);
 app.use(passport.initialize());
 
-console.log('process.env.NODE_ENV',process.env.NODE_ENV);
+app.use(require('webpack-dev-middleware')(compiler, {
+    hot: true,
+    publicPath: webpackConfig.output.publicPath,
+  }));
+  app.use(require('webpack-hot-middleware')(compiler));
+  
+console.log('process.env.NODE_ENV ',process.env.NODE_ENV);
 
 app.use(cookieSession({
     name: 'session',
@@ -100,6 +110,7 @@ app.get('/logout', function(req, res){
     }
     res.redirect('/');
 });
+
 
 app.listen(getProperties('port'), () => {
     console.log('Server started at '+ getProperties('port'));
