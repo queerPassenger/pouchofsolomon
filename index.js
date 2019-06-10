@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express'),
     app = express(),
     passport = require('passport'),
@@ -14,12 +15,13 @@ const express = require('express'),
     
 auth(passport);
 app.use(passport.initialize());
-
-app.use(require('webpack-dev-middleware')(compiler, {
-    hot: true,
-    publicPath: webpackConfig.output.publicPath,
-  }));
-app.use(require('webpack-hot-middleware')(compiler));
+if(process.env.NODE_ENV==='development'){
+    app.use(require('webpack-dev-middleware')(compiler, {
+        hot: true,
+        publicPath: webpackConfig.output.publicPath,
+      }));
+    app.use(require('webpack-hot-middleware')(compiler));
+}
   
 console.log('process.env.NODE_ENV ',process.env.NODE_ENV);
 
