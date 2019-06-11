@@ -7,20 +7,22 @@ const express = require('express'),
     request = require('request');
     getProperties=require('./properties').getProperties;
     bodyParser = require('body-parser');
+
+    /* Webpack Dev Config */
     webpack = require('webpack');
     webpackConfig = require('./webpack.config');
     compiler = webpack(webpackConfig);
-    
-    
+    if(process.env.NODE_ENV==='development'){
+        app.use(require('webpack-dev-middleware')(compiler, {
+            hot: true,
+            publicPath: webpackConfig.output.publicPath,
+          }));
+        app.use(require('webpack-hot-middleware')(compiler));
+    }
+    /* */
 auth(passport);
 app.use(passport.initialize());
-if(process.env.NODE_ENV==='development'){
-    app.use(require('webpack-dev-middleware')(compiler, {
-        hot: true,
-        publicPath: webpackConfig.output.publicPath,
-      }));
-    app.use(require('webpack-hot-middleware')(compiler));
-}
+
   
 app.use(cookieSession({
     name: 'session',

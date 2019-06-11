@@ -4,6 +4,7 @@ const webpack = require('webpack');
 module.exports = {
   mode: process.env.NODE_ENV,
   entry: [
+    'react-hot-loader/patch',
     'webpack-hot-middleware/client?reload=true',
       path.join(__dirname,'src','index.js')
   ],
@@ -34,6 +35,7 @@ module.exports = {
     ]
   },
   plugins: [
+    new webpack.NamedModulesPlugin(),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoEmitOnErrorsPlugin(),
   ],

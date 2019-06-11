@@ -2,7 +2,6 @@ import React from 'react';
 import DatePicker from 'react-datepicker';
 import {apiCall} from '../../utilities/apiCall';
 
-const resultHeader=['','Date','Time','Classification','Type','Amount','Comment']
 export default class View extends React.Component{
     constructor(props){
         super(props);
@@ -310,7 +309,7 @@ export default class View extends React.Component{
                             <span title={summation.expenseStatement}>{summation.expenseStatement}</span>
                         </div>
                         <div>
-                            <span>Total Savings</span>
+                            <span>Total Savings :</span>
                             <span title={summation.savingStatement}>{summation.savingStatement}</span>
                         </div>
                     </div>

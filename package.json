@@ -6,8 +6,8 @@
   "scripts": {
     "start": "node index",
     "devStart": "SET NODE_ENV=development&& node indexDev",
-    "devProd":"SET NODE_ENV=production&& node indexProd",
-    "preBuild":"webpack"
+    "devProd": "node -r dotenv/config index",
+    "build": "webpack"
   },
   "keywords": [
     "react",
@@ -47,6 +47,7 @@
     "react": "16.5.2",
     "react-datepicker": "^2.5.0",
     "react-dom": "16.5.2",
+    "react-hot-loader": "^4.11.0",
     "react-redux": "^5.0.7",
     "react-router-dom": "4.3.1",
     "redux": "^4.0.1",

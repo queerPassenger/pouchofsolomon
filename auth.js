@@ -1,7 +1,6 @@
 const GoogleStrategy = require('passport-google-oauth')
     .OAuth2Strategy;
 const getProperties=require('./properties').getProperties;
-console.log('GEtProperties',getProperties('clientID'),process.env.NODE_ENV);
 module.exports = function (passport) {
     passport.serializeUser((user, done) => {
         done(null, user);
