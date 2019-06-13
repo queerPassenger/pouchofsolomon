@@ -68,101 +68,7 @@
                 cursor: pointer;
             }
         }
-    }
-    .multiFilter-container{
-        width:100%;
-        float:left;
-        padding-top:10px;
-        padding-bottom:10px;
-        font-family: monospace;
-        .multiFilter-item{
-            width:95%;
-            float:left;
-            padding-left:2.5%;
-            padding-right:2.5%;
-            margin-top:10px;
-            margin-bottom:10px;
-            .type{
-                width:40%;
-                float:left;
-                margin-right:1%;
-                select{
-                    width:100%;
-                    float:left;
-                    padding-top:5px;
-                    padding-bottom:5px;
-                }
-            }
-            .multiSelect{
-                width:40%;
-                float:left;
-                position:relative;
-                .multiSelect-selected{
-                    width:98%;
-                    float:left;
-                    padding-top:5px;
-                    padding-bottom:5px;
-                    padding-left:1%;
-                    padding-right:1%;
-                    border-radius: 3px;
-                    background: gray;   
-                    color: white;      
-                    font-weight: bold;       
-                    cursor: pointer;
-                    text-align: center;            
-                    >div:first-child{
-                        width:90%;
-                        float:left;                         
-                    }
-                }
-                .multiSelect-options{
-                    position: absolute;
-                    z-index:1;
-                    background:#e8e8e8;
-                    top:25px;
-                    cursor:pointer;
-                    >div{
-                        width:100%;
-                        float:left;
-                        padding-top:5px;
-                        padding-bottom: 5px;
-                        font-weight: bold;
-                        >div:first-child{
-                            width:18%;
-                            float:left;
-                            padding-top:10px;
-                            padding-left:2%;
-                            .check{
-                                width:15px;
-                                height:15px;
-                                float:left;
-                                background:white;
-                                border-radius:8px;
-                                margin-right:4px;
-                                cursor:pointer;                                    
-                            }
-                            .selected{
-                                border:none;
-                                background:#f3ecec;
-                            }
-                        }
-                        >div:last-child{
-                            width:80%;
-                            float:left
-                        }
-                    }
-                    >div:last-child{
-                        border-bottom:none;
-                    }
-                    >div:hover,div:focus {
-                        background-color: #f3ecec;
-                    }
-                }
-            }
-            
-        }        
-    }
-    
+    }   
     .result-container{
         width:100%;
         float:left;
@@ -365,4 +271,89 @@
             }
         }
     }
+}
+
+.multiFilter-container{
+    width:100%;
+    float:left;
+    padding-top:10px;
+    padding-bottom:10px;
+    font-family: monospace;   
+    .multiSelect{
+        width:70%;
+        float:left;
+        padding:20px 15% 20px 15%; 
+        position:relative;
+        .multiSelect-label {
+            text-align: center;
+            font-weight: bold;
+            font-size: 13px;
+            color: gray;
+            margin-bottom: 5px;
+        }
+        .multiSelect-selected{
+            width:98%;
+            float:left;
+            padding-top:5px;
+            padding-bottom:5px;
+            padding-left:1%;
+            padding-right:1%;
+            border-radius: 3px;
+            background: gray;   
+            color: white;      
+            font-weight: bold;       
+            cursor: pointer;
+            text-align: center;            
+            >div:first-child{
+                width:90%;
+                float:left;                         
+            }
+        }
+        .multiSelect-options{
+            width: 265px;
+            position: absolute;
+            z-index: 1;
+            background: #e8e8e8;
+            top: 60px;
+            cursor: pointer;
+            max-height: 200px;
+            overflow-y: auto;            
+            >div{
+                width: 100%;
+                float: left;
+                padding-top: 10px;
+                padding-bottom: 10px;
+                font-weight: bold;
+                >div:first-child{
+                    width:18%;
+                    float:left;
+                    padding-top:2px;
+                    padding-left:2%;
+                    .check{
+                        width:15px;
+                        height:15px;
+                        float:left;
+                        background:white;
+                        border-radius:8px;
+                        margin-right:4px;
+                        cursor:pointer;                                    
+                    }
+                    .selected{
+                        border:none;
+                        background:#f3ecec;
+                    }
+                }
+                >div:last-child{
+                    width:80%;
+                    float:left
+                }
+            }
+            >div:last-child{
+                border-bottom:none;
+            }
+            >div:hover,div:focus {
+                background-color: #f3ecec;
+            }
+        }
+    }        
 }

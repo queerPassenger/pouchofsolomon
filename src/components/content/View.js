@@ -1,6 +1,8 @@
 import React from 'react';
 import DatePicker from 'react-datepicker';
 import {apiCall} from '../../utilities/apiCall';
+import AdvancedFilter,{toggleOptions} from './AdvancedFilter';
+
 
 export default class View extends React.Component{
     constructor(props){
@@ -14,17 +16,8 @@ export default class View extends React.Component{
             transactionTypeSet:props.transactionTypeSet,
             amountTypeSet:props.amountTypeSet,
             checkAll:false,
-            advancedFilter:false,
-            advancedFilterOptions:['Transaction Classification','Transaction Type', 'Amount'],
-            advancedFilterOptionsSet:[],
-            advancedFilterObj:[{
-                type:-1,
-                val:[]
-            },
-            {
-                type:-1,
-                val:[]
-            }],
+            advancedFilter:false,   
+           
         };
         this.handleFilter=this.handleFilter.bind(this);
         this.handleEdit=this.handleEdit.bind(this);
@@ -40,8 +33,7 @@ export default class View extends React.Component{
         ){
             return{
                 transactionTypeSet:nextProps.transactionTypeSet,
-                amountTypeSet:nextProps.amountTypeSet,
-                advancedFilterOptionsSet:[prevState.transactionClassificationSet,nextProps.transactionTypeSet,nextProps.amountTypeSet]
+                amountTypeSet:nextProps.amountTypeSet
             }
         }      
         // Return null to indicate no change to state.
@@ -184,19 +176,7 @@ export default class View extends React.Component{
             toDate:new Date(),
         });
     }   
-    toggleOptions(ind,e){
-        e.stopPropagation();
-        let elements=document.getElementsByClassName('multiSelect-options');
-        for(let i=0;i<elements.length;i++){
-            if(i===ind){
-                elements[i].classList.toggle('disp-none'); 
-            }
-            else{
-                elements[i].className='multiSelect-options disp-none';
-            }
-           
-        }        
-    }
+    
     getSummation(){
         let summation={
             expense:[],
@@ -253,21 +233,16 @@ export default class View extends React.Component{
             savingStatement:savingStatement===''?'0':savingStatement,
         };
     }
-    handleAdvancedFilterChange(ind,e){
-        let advancedFilterObj=this.state.advancedFilterObj;
-        advancedFilterObj[ind]['type']=e.target.value;
-        this.setState({
-            advancedFilterObj
-        })
-    }
+   
     uiBuild(){
         let summation=this.getSummation();
+        let {state}=this;
         return(
-            <div className="view-container" onClick={this.toggleOptions.bind(this,null)}>
+            <div className="view-container" onClick={(e)=>{toggleOptions(null,e)}}>
                 <div className="filter-contianer">
                     <div className="filter-item">
                         <DatePicker
-                            selected={this.state.fromDate}
+                            selected={state.fromDate}
                             onChange={this.handleDateChange.bind(this,'fromDate')}
                             showTimeSelect
                             timeFormat="HH:mm"
@@ -278,7 +253,7 @@ export default class View extends React.Component{
                     </div>
                     <div className="filter-item">
                         <DatePicker
-                            selected={this.state.toDate}
+                            selected={state.toDate}
                             onChange={this.handleDateChange.bind(this,'toDate')}
                             showTimeSelect
                             timeFormat="HH:mm"
@@ -299,60 +274,23 @@ export default class View extends React.Component{
                     </div>
                     <div className="filter-item">
                         <div className="advancedFilterEnabler">
-                            <span onClick={this.toggleAdvancedFilter}>{this.state.advancedFilter?'Hide Advanced Filter':'Show Advanced Filter'}</span>                            
+                            <span onClick={this.toggleAdvancedFilter}>{state.advancedFilter?'Hide Advanced Filter':'Show Advanced Filter'}</span>                            
                         </div>                        
                     </div>
                 </div>
-                {this.state.advancedFilter?
-                    <div className="multiFilter-container ">
-                        {this.state.advancedFilterObj.map((obj,ind)=>{
-                            return(
-                                <div className="multiFilter-item">
-                                    <div className="type">                                        
-                                        <select value={obj.type} onChange={this.handleAdvancedFilterChange.bind(this,ind)}>
-                                            {this.state.advancedFilterOptions.map((options,optionsInd)=>{
-                                                return(
-                                                    <option key={"multiFilter"+ind+"typSelect"+optionsInd} val={optionsInd}>{options}</option>
-                                                )
-                                            })}
-                                        </select>
-                                    </div>
-                                    <div className="multiSelect">
-                                        <div className="multiSelect-selected"  onClick={this.toggleOptions.bind(this,ind)}>
-                                            <div>
-                                                {obj.val.length===0?
-                                                    obj.val
-                                                :
-                                                    'Select the type'
-                                                }
-                                            </div>
-                                        </div>
-                                        <div className="multiSelect-options disp-none" id={"multiSelect-options"+ind}>
-                                            {this.state.advancedFilterOptionsSet[obj.type] && this.state.advancedFilterOptionsSet[obj.type].map((option)=>{
-                                                return(
-                                                    <div>
-                                                        <div>
-                                                            <span className="check">
-
-                                                            </span>
-                                                        </div>
-                                                        <div>{option}</div>
-                                                    </div>
-                                                )
-                                            })}
-                                        </div>
-                                    </div>
-                                </div>
-                            )
-                        })}
-                    </div>
+                {state.advancedFilter?
+                    <AdvancedFilter 
+                        transactionClassificationSet={state.transactionClassificationSet}
+                        transactionTypeSet={state.transactionTypeSet}
+                        amountTypeSet={state.amountTypeSet}
+                    />
                 :
                     null
                 }
                 <div className="result-container">
-                    {this.state.result.map((res,ind)=>{    
+                    {state.result.map((res,ind)=>{    
                             let transaction=this.getTransactionObj(res.transactionTypeId);                                            
-                            let amountType=this.state.amountTypeSet.filter((x)=>{if(x.amountTypeId===res.amountTypeId){return x}})[0];
+                            let amountType=state.amountTypeSet.filter((x)=>{if(x.amountTypeId===res.amountTypeId){return x}})[0];
                             amountType=amountType?amountType:{'amountSymbol':'-'};
                             let date=new Date(res.timeStamp);
                             return( 
@@ -392,7 +330,7 @@ export default class View extends React.Component{
                             )
                         })}
                 </div>
-                {this.state.result.length>0?
+                {state.result.length>0?
                     <div className="summation-container">
                         <div>
                             <span>Total Expense :</span>
@@ -406,7 +344,7 @@ export default class View extends React.Component{
                 :
                     null
                 }
-                {this.state.result.length>0?
+                {state.result.length>0?
                     <div className="action-items">
                         <div className="action-item">
                             <button type="button" onClick={this.handleEdit}>Edit</button>
