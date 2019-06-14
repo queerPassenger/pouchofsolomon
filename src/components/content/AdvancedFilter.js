@@ -8,20 +8,18 @@ export default class AdvancedFilter extends Component {
             transactionClassificationSet: props.transactionClassificationSet,
             transactionTypeSet: props.transactionTypeSet,
             amountTypeSet: props.amountTypeSet,
-            filter: {
-                'transactionClassificationSet': [],
-                'transactionTypeSet': [],
-                // 'amountTypeSet': []
-            }
+            filter:props.filter
         };
     }
     static getDerivedStateFromProps(nextProps, prevState) {
         if (JSON.stringify(prevState.transactionTypeSet) !== JSON.stringify(nextProps.transactionTypeSet) ||
-            JSON.stringify(prevState.amountTypeSet) !== JSON.stringify(nextProps.amountTypeSet)
+            JSON.stringify(prevState.amountTypeSet) !== JSON.stringify(nextProps.amountTypeSet) || 
+            JSON.stringify(prevState.filter) !== JSON.stringify(nextProps.filter)
         ) {
             return {
                 transactionTypeSet: nextProps.transactionTypeSet,
-                amountTypeSet: nextProps.amountTypeSet
+                amountTypeSet: nextProps.amountTypeSet,
+                filter:nextProps.filter
             }
         }
         // Return null to indicate no change to state.
@@ -54,9 +52,6 @@ export default class AdvancedFilter extends Component {
             filter[Object.keys(filter)[ind]].splice(locInd, 1)
         }
         this.props.handleAdvancedFilter(filter);
-        this.setState({
-            filter
-        });
         
     }
     render() {

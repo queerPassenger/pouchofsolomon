@@ -17,7 +17,12 @@ export default class View extends React.Component{
             amountTypeSet:props.amountTypeSet,
             checkAll:false,
             advancedFilterFlag:false,  
-            advancedFilter:{},
+            filter:{},
+            filter: {
+                'transactionClassificationSet': [],
+                'transactionTypeSet': [],
+                // 'amountTypeSet': []
+            }
                
         };
         this.handleFilter=this.handleFilter.bind(this);
@@ -25,6 +30,7 @@ export default class View extends React.Component{
         this.handleDelete=this.handleDelete.bind(this);
         this.toggleAdvancedFilter=this.toggleAdvancedFilter.bind(this);
         this.handleAdvancedFilter=this.handleAdvancedFilter.bind(this);
+        this.resetFilter=this.resetFilter.bind(this);
     }
     componentDidMount(){
         this.handleFilter();
@@ -178,9 +184,9 @@ export default class View extends React.Component{
             toDate:new Date(),
         });
     }   
-    handleAdvancedFilter(advancedFilter){
+    handleAdvancedFilter(filter){
         this.setState({
-            advancedFilter
+            filter
         })
     }
     getSummation(resultFiltered){
@@ -252,15 +258,15 @@ export default class View extends React.Component{
 
     }
     filterResult(){
-        let {result,advancedFilter}=this.state;
+        let {result,filter}=this.state;
         return result.filter(x=>{
             let transactionCombo=this.getTransactionCombo(x.transactionTypeId);
 
-            if(advancedFilter.hasOwnProperty('transactionClassificationSet')){
-                if(advancedFilter.transactionClassificationSet.length>0){
+            if(filter.hasOwnProperty('transactionClassificationSet')){
+                if(filter.transactionClassificationSet.length>0){
                     let count=0;
-                    for(let i=0;i<advancedFilter.transactionClassificationSet.length;i++){                    
-                        if(advancedFilter.transactionClassificationSet[i]===transactionCombo.transactionClassification){
+                    for(let i=0;i<filter.transactionClassificationSet.length;i++){                    
+                        if(filter.transactionClassificationSet[i]===transactionCombo.transactionClassification){
                             count++;
                         }
                     }
@@ -269,11 +275,11 @@ export default class View extends React.Component{
                     }
                 }
             }            
-            if(advancedFilter.hasOwnProperty('transactionTypeSet')){
-                if(advancedFilter.transactionTypeSet.length>0){
+            if(filter.hasOwnProperty('transactionTypeSet')){
+                if(filter.transactionTypeSet.length>0){
                    let count=0;
-                    for(let i=0;i<advancedFilter.transactionTypeSet.length;i++){
-                        if(advancedFilter.transactionTypeSet[i]===transactionCombo.transactionTypeName){
+                    for(let i=0;i<filter.transactionTypeSet.length;i++){
+                        if(filter.transactionTypeSet[i]===transactionCombo.transactionTypeName){
                             count++;
                         }
                     }
@@ -284,6 +290,15 @@ export default class View extends React.Component{
             }
             return x;
         });
+    }
+    resetFilter(){
+        this.setState({
+            filter:{
+                'transactionClassificationSet': [],
+                'transactionTypeSet': [],
+                // 'amountTypeSet': []
+            }
+        })
     }
     uiBuild(){
         let resultFiltered=this.filterResult();
@@ -331,12 +346,16 @@ export default class View extends React.Component{
                     </div>
                 </div>
                 {state.advancedFilterFlag?
-                    <AdvancedFilter 
-                        transactionClassificationSet={state.transactionClassificationSet}
-                        transactionTypeSet={state.transactionTypeSet}
-                        amountTypeSet={state.amountTypeSet}
-                        handleAdvancedFilter={this.handleAdvancedFilter}
-                    />
+                    <>
+                        <span className="resetFilter" title="Reset advanced filter" onClick={this.resetFilter}>Reset</span>                            
+                        <AdvancedFilter 
+                            filter={state.filter}
+                            transactionClassificationSet={state.transactionClassificationSet}
+                            transactionTypeSet={state.transactionTypeSet}
+                            amountTypeSet={state.amountTypeSet}
+                            handleAdvancedFilter={this.handleAdvancedFilter}
+                        />
+                    </>
                 :
                     null
                 }
