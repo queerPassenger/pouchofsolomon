@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { stringLimiter } from '../../utilities/uiUtilities';
 
 export default class AdvancedFilter extends Component {
     constructor(props) {
@@ -10,7 +11,7 @@ export default class AdvancedFilter extends Component {
             filter: {
                 'transactionClassificationSet': [],
                 'transactionTypeSet': [],
-                'amountTypeSet': []
+                // 'amountTypeSet': []
             }
         };
     }
@@ -34,27 +35,42 @@ export default class AdvancedFilter extends Component {
             advancedFilterObj
         })
     }
-    getOption(option){
-        if(option.amountSymbol)
+    getOption(option) {
+        if (option.amountSymbol)
             return option.amountSymbol;
-        else if(option.transactionTypeName)
+        else if (option.transactionTypeName)
             return option.transactionTypeName;
-        else 
+        else
             return option;
     }
+    selectedValues(ind, selectedVal, e) {
+        e.stopPropagation();
+        let { filter } = this.state;
+        let locInd = filter[Object.keys(filter)[ind]].indexOf(selectedVal);
+        if (locInd === -1) {
+            filter[Object.keys(filter)[ind]].push(selectedVal);
+        }
+        else {
+            filter[Object.keys(filter)[ind]].splice(locInd, 1)
+        }
+        this.props.handleAdvancedFilter(filter);
+        this.setState({
+            filter
+        });
+        
+    }
     render() {
-        let {state}=this;
+        let { state } = this;
         return (
             <div className="multiFilter-container">
                 {Object.keys(state.filter).map((filterKey, ind) => {
-                    console.log(state[filterKey],filterKey);
                     return (
-                        <div className="multiSelect">
-                            <div className="multiSelect-label">{(filterKey.charAt(0).toUpperCase() + filterKey.slice(1)).replace('Set','')}</div>
+                        <div className="multiSelect" key={"multiSelect"+ind}>
+                            <div className="multiSelect-label">{(filterKey.charAt(0).toUpperCase() + filterKey.slice(1)).replace('Set', '')}</div>
                             <div className="multiSelect-selected" onClick={(e) => { toggleOptions(ind, e) }}>
                                 <div>
                                     {state.filter[filterKey].length !== 0 ?
-                                        state.filter[filterKey].join(',')
+                                        <span title={state.filter[filterKey].join(' ,')}>{stringLimiter(state.filter[filterKey].join(','), 15, '...')}</span>
                                         :
                                         'Choose your options'
                                     }
@@ -62,35 +78,36 @@ export default class AdvancedFilter extends Component {
                             </div>
                             <div className="multiSelect-options disp-none" id={"multiSelect-options" + ind}>
                                 {state[filterKey].map((option, optionInd) => {
+                                    let optionVal = this.getOption(option);
                                     return (
-                                        <div key={"multiFilter" + ind + "multiSelect-options" + optionInd} >
+                                        <div key={"multiFilter" + ind + "multiSelect-options" + optionInd} onClick={this.selectedValues.bind(this, ind, optionVal)}>
                                             <div>
-                                                <span className="check"></span>
+                                                <span className={("check " + (state.filter[filterKey].indexOf(optionVal) === -1 ? "" : "selected"))}></span>
                                             </div>
-                                            <div>{this.getOption(option)}</div>
+                                            <div>{optionVal}</div>
                                         </div>
                                     )
                                 })}
                             </div>
                         </div>
                     )
-                })}               
+                })}
             </div>
-    
+
         )
     }
 }
-    
+
 export function toggleOptions(ind, e) {
-                    e.stopPropagation();
-                let elements = document.getElementsByClassName('multiSelect-options');
+    e.stopPropagation();
+    let elements = document.getElementsByClassName('multiSelect-options');
     for (let i = 0; i < elements.length; i++) {
         if (i === ind) {
-                    elements[i].classList.toggle('disp-none');
-                }
+            elements[i].classList.toggle('disp-none');
+        }
         else {
-                    elements[i].className = 'multiSelect-options disp-none';
-                }
-        
-            }
+            elements[i].className = 'multiSelect-options disp-none';
+        }
+
+    }
 }

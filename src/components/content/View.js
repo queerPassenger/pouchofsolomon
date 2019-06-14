@@ -16,13 +16,15 @@ export default class View extends React.Component{
             transactionTypeSet:props.transactionTypeSet,
             amountTypeSet:props.amountTypeSet,
             checkAll:false,
-            advancedFilter:false,   
-           
+            advancedFilterFlag:false,  
+            advancedFilter:{},
+               
         };
         this.handleFilter=this.handleFilter.bind(this);
         this.handleEdit=this.handleEdit.bind(this);
         this.handleDelete=this.handleDelete.bind(this);
         this.toggleAdvancedFilter=this.toggleAdvancedFilter.bind(this);
+        this.handleAdvancedFilter=this.handleAdvancedFilter.bind(this);
     }
     componentDidMount(){
         this.handleFilter();
@@ -135,7 +137,7 @@ export default class View extends React.Component{
     }
     toggleAdvancedFilter(){
         this.setState({
-            advancedFilter:!this.state.advancedFilter
+            advancedFilterFlag:!this.state.advancedFilterFlag
         })
     }
     handleDelete(){
@@ -176,13 +178,17 @@ export default class View extends React.Component{
             toDate:new Date(),
         });
     }   
-    
-    getSummation(){
+    handleAdvancedFilter(advancedFilter){
+        this.setState({
+            advancedFilter
+        })
+    }
+    getSummation(resultFiltered){
         let summation={
             expense:[],
             saving:[],
         }
-        this.state.result.map(res=>{    
+        resultFiltered.map(res=>{    
             let typeClassification=this.getTransactionObj(res.transactionTypeId).transactionClassification;
             let amountType=this.state.amountTypeSet.filter((x)=>{if(x.amountTypeId===res.amountTypeId){return x}})[0];
             if(amountType){
@@ -233,9 +239,55 @@ export default class View extends React.Component{
             savingStatement:savingStatement===''?'0':savingStatement,
         };
     }
-   
+    getTransactionCombo(transactionTypeId){
+        let {transactionTypeSet}=this.state;
+        for(let i=0;i<transactionTypeSet.length;i++){
+            if(transactionTypeSet[i].transactionTypeId===transactionTypeId){
+                return {
+                    transactionClassification:transactionTypeSet[i].transactionClassification,
+                    transactionTypeName:transactionTypeSet[i].transactionTypeName
+                };
+            }
+        }
+
+    }
+    filterResult(){
+        let {result,advancedFilter}=this.state;
+        return result.filter(x=>{
+            let transactionCombo=this.getTransactionCombo(x.transactionTypeId);
+
+            if(advancedFilter.hasOwnProperty('transactionClassificationSet')){
+                if(advancedFilter.transactionClassificationSet.length>0){
+                    let count=0;
+                    for(let i=0;i<advancedFilter.transactionClassificationSet.length;i++){                    
+                        if(advancedFilter.transactionClassificationSet[i]===transactionCombo.transactionClassification){
+                            count++;
+                        }
+                    }
+                    if(count===0){
+                        return null;
+                    }
+                }
+            }            
+            if(advancedFilter.hasOwnProperty('transactionTypeSet')){
+                if(advancedFilter.transactionTypeSet.length>0){
+                   let count=0;
+                    for(let i=0;i<advancedFilter.transactionTypeSet.length;i++){
+                        if(advancedFilter.transactionTypeSet[i]===transactionCombo.transactionTypeName){
+                            count++;
+                        }
+                    }
+                    if(count===0){
+                        return null;
+                    }
+                }
+            }
+            return x;
+        });
+    }
     uiBuild(){
-        let summation=this.getSummation();
+        let resultFiltered=this.filterResult();
+        let summation=this.getSummation(resultFiltered);
         let {state}=this;
         return(
             <div className="view-container" onClick={(e)=>{toggleOptions(null,e)}}>
@@ -274,21 +326,22 @@ export default class View extends React.Component{
                     </div>
                     <div className="filter-item">
                         <div className="advancedFilterEnabler">
-                            <span onClick={this.toggleAdvancedFilter}>{state.advancedFilter?'Hide Advanced Filter':'Show Advanced Filter'}</span>                            
+                            <span onClick={this.toggleAdvancedFilter}>{state.advancedFilterFlag?'Hide Advanced Filter':'Show Advanced Filter'}</span>                            
                         </div>                        
                     </div>
                 </div>
-                {state.advancedFilter?
+                {state.advancedFilterFlag?
                     <AdvancedFilter 
                         transactionClassificationSet={state.transactionClassificationSet}
                         transactionTypeSet={state.transactionTypeSet}
                         amountTypeSet={state.amountTypeSet}
+                        handleAdvancedFilter={this.handleAdvancedFilter}
                     />
                 :
                     null
                 }
                 <div className="result-container">
-                    {state.result.map((res,ind)=>{    
+                    {resultFiltered.map((res,ind)=>{    
                             let transaction=this.getTransactionObj(res.transactionTypeId);                                            
                             let amountType=state.amountTypeSet.filter((x)=>{if(x.amountTypeId===res.amountTypeId){return x}})[0];
                             amountType=amountType?amountType:{'amountSymbol':'-'};
@@ -330,7 +383,7 @@ export default class View extends React.Component{
                             )
                         })}
                 </div>
-                {state.result.length>0?
+                {resultFiltered.length>0?
                     <div className="summation-container">
                         <div>
                             <span>Total Expense :</span>
@@ -344,7 +397,7 @@ export default class View extends React.Component{
                 :
                     null
                 }
-                {state.result.length>0?
+                {resultFiltered.length>0?
                     <div className="action-items">
                         <div className="action-item">
                             <button type="button" onClick={this.handleEdit}>Edit</button>

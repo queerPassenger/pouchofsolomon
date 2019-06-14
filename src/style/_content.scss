@@ -314,7 +314,7 @@
             position: absolute;
             z-index: 1;
             background: #e8e8e8;
-            top: 60px;
+            top: 65px;
             cursor: pointer;
             max-height: 200px;
             overflow-y: auto;            
@@ -339,8 +339,8 @@
                         cursor:pointer;                                    
                     }
                     .selected{
-                        border:none;
-                        background:#f3ecec;
+                        border: none;
+                        background: #78c2e5;
                     }
                 }
                 >div:last-child{
