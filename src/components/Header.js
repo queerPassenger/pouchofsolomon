@@ -1,9 +1,11 @@
 import React from 'react';
 import logout from '../images/logout.png';
 export default class Header extends React.Component {
-    state = {
-        _: true
-
+    constructor(props){
+        super(props);
+        this.state== {
+            _: true,    
+        }
     }
     componentDidMount() {
         setTimeout(() => {
@@ -15,6 +17,9 @@ export default class Header extends React.Component {
     logout() {
         window.location.href = "/logout";
     }
+    navigateToAccount(){
+        this.props.history.push('account');
+    }
     uiBuild() {
         return (
             <div className="header-container">
@@ -25,19 +30,23 @@ export default class Header extends React.Component {
                     <div className="logout" title="Logout">
                         <img src={logout} onClick={this.logout}></img>
                     </div>
-                    <div className="user-profile" title={this.props.userProfile.name}>
+                    <div className="user-profile" title={this.props.userProfile.name} onClick={()=>{this.navigateToAccount()}} >
                         <img className="profile-pic" src={this.props.userProfile.photo} ></img>
                     </div>
                 </div>
-                <div className="header-bottom-container">
-                    {this.props.tabs.map((tab, ind) => {
-                        return (
-                            <div className={("header-tab ") + (this.props.tabSelected === tab ? "selected" : "")} key={'HeaderTab' + ind} onClick={() => { this.props.onTabClick(tab) }}>
-                                {tab}
-                            </div>
-                        )
-                    })}
-                </div>
+                {this.props.tabsFlag?
+                    <div className="header-bottom-container">
+                        {this.props.tabs.map((tab, ind) => {
+                            return (
+                                <div className={("header-tab ") + (this.props.tabSelected === tab ? "selected" : "")} key={'HeaderTab' + ind} onClick={() => { this.props.onTabClick(tab) }}>
+                                    {tab}
+                                </div>
+                            )
+                        })}
+                    </div>
+                :
+                    null
+                }
             </div>
         )
     }

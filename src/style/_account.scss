@@ -1,0 +1,28 @@
+.accountPage-container{
+    width:100%;
+    float:left;
+    font-family:monospace;
+    min-height:600px;
+    padding:20px 0 20px 0;
+    .label{
+        width:100%;
+        float:left;
+        font-weight: bold;
+        font-size:20px;
+        text-align: center;
+        font-family:Dancing Script
+    }
+    .profile-pic{
+        width:100%;
+        float:left;
+        img{
+            width: 50%;
+            border-radius: 100px;
+            margin-left: 25%;
+            margin-top: 15px;
+            margin-bottom: 15px;
+            min-width: 100px;
+            max-width: 300px;
+        }
+    }
+}
