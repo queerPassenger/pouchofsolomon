@@ -10,7 +10,8 @@
         font-weight: bold;
         font-size:20px;
         text-align: center;
-        font-family:Dancing Script
+        font-family:Dancing Script;
+        color:#88184c;
     }
     .profile-pic{
         width:100%;
@@ -23,6 +24,55 @@
             margin-bottom: 15px;
             min-width: 100px;
             max-width: 300px;
+            min-height:150px;
+        }
+    }
+    .field-container{
+        width:100%;
+        float:left;
+        height:300px;
+        overflow-y: auto;
+        .field-item{
+            width:80%;
+            float:left;
+            padding:20px 10% 20px 10%;
+            .field-label{
+                width:100%;
+                float:left;
+                font-weight: bold;
+                color:#88184c;
+            }
+            input,select{
+                width: 100%;
+                float: left;
+                border: 0px;
+                border-bottom: 2px solid #88184c;
+                padding: 10px 1% 10px 1%;
+                outline: none;
+                font-family: monospace;
+            }
+        }
+    }
+    .action-container{
+        width:100%;
+        float:left;
+        margin-top:20px;
+        margin-bottom:20px;
+        .action-item{
+            width:70%;
+            float:left;
+            padding:10px 15% 10px 15%;
+            button{
+                width: 100%;
+                float: left;
+                background: #88184c;
+                font-weight: bold;
+                border: none;
+                padding: 7px 0px 7px 0px;
+                color: white;
+                font-family: monospace;
+                cursor:pointer;
+            }
         }
     }
 }

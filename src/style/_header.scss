@@ -7,6 +7,7 @@
         box-shadow: 1px 1px 5px #b2acac;
         width:100%;
         float:left;
+        position: relative;
         .title{
             width: 180px;
             float: left;
@@ -18,26 +19,45 @@
             padding-left: 100px;
             font-weight: bold;
         }
-        .logout{
-            width: 35px;
+        .settings{
+            width: 32px;
+            height: 32px;
             float: right;
-            margin-right: 5px;
-            padding-top: 10px;
-            padding-bottom: 10px;
+            margin-top: 9px;
+            margin-right: 3px;     
             img{
-                width: 30px;
-                cursor:pointer;
+                width: 28px;
+                cursor: pointer;
+                padding-left: 3px;
+                float: right;
             }
         }
-        .user-profile{
-            width: 36px;
+        .user-profile{            
+            width: 30px;
+            height: 30px;
             float: right;
-            padding-top: 10px;
-            padding-bottom: 10px;
-            margin-right: 5px;
+            margin-top: 9px;
             .profile-pic{
                 width: 30px;
-                cursor:pointer;
+            }
+        }
+        .settings-container{
+            width: 200px;
+            box-shadow: 1px 1px 7px grey;
+            position: absolute;
+            top: 52px;
+            left: 47%;
+            background: white;
+            .setting-item{
+                padding-top: 7px;
+                padding-bottom: 7px;
+                padding-left:2%;
+                font-weight: bold;
+                font-family: monospace;
+                cursor: pointer;
+            }
+            .setting-item:hover,.setting-item:focus{
+               background:gray;
             }
         }
     }
