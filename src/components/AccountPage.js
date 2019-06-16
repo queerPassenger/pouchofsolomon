@@ -13,6 +13,7 @@ class AccountPage extends Component {
     }
     componentDidMount() {
         this.props.onTabShow(false);
+        this.getAccountInfo();
     }
     handleChange(ind, e) {
         let { accountInfo } = this.state;
@@ -20,6 +21,35 @@ class AccountPage extends Component {
         this.setState({
             accountInfo
         })
+    }
+    getAccountInfo(){
+        let data={
+            apiPath:'/getAccountInfo',
+            type:'GET',
+            query:null,
+        }
+        this.props.updateLoading(null,'enableLoading');
+        apiCall(data)
+        .then(res=>{
+            this.props.updateLoading(null,'disableLoading');
+           if(res.status){
+               let {accountInfo}=this.state;
+               accountInfo.map(info=>{
+                   res.data[0].info.map(infoData=>{
+                       if(info.key===infoData.key){
+                           info.value=infoData.value;
+                       }
+                   })
+               });
+               this.setState({
+                   accountInfo
+               })
+           }
+        })
+        .catch(err=>{
+            this.props.updateLoading(null,'disableLoading');
+            console.log('err',err)}
+        ); 
     }
     updateAccountInfo() {
         let { accountInfo } = this.state;
@@ -44,7 +74,7 @@ class AccountPage extends Component {
                 apiPath:'/saveAccountInfo',
                 type:'POST',
                 query:null,
-                payload:payload
+                payload
             }
             apiCall(data)
             .then(res=>{
