@@ -82,7 +82,7 @@ export default class View extends React.Component{
                 result,
                 checkAll:false
             },()=>{
-                document.getElementsByClassName('result-container')[0].scrollTop=document.getElementsByClassName('result-container')[0].clientHeight
+                document.getElementsByClassName('result-container')[0].scrollTop=document.getElementsByClassName('result-container')[0].scrollHeight;
             });
         })
         .catch(err=>{
