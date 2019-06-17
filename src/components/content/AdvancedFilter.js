@@ -61,7 +61,7 @@ export default class AdvancedFilter extends Component {
                 {Object.keys(state.filter).map((filterKey, ind) => {
                     return (
                         <div className="multiSelect" key={"multiSelect"+ind}>
-                            <div className="multiSelect-label">{(filterKey.charAt(0).toUpperCase() + filterKey.slice(1)).replace('Set', '')}</div>
+                            <div className="multiSelect-label">{(filterKey.charAt(0).toUpperCase() + filterKey.slice(1)).replace('Set', '').split('action').join('action ')}</div>
                             <div className="multiSelect-selected" onClick={(e) => { toggleOptions(ind, e) }}>
                                 <div>
                                     {state.filter[filterKey].length !== 0 ?
