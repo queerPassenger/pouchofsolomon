@@ -316,7 +316,7 @@ export default class Record extends React.Component{
                                         <textarea type="text" className="comment" ref={"comment"+ind} value={entry['comment']} placeholder={"Description"} onChange={this.handleChange.bind(this,'comment',ind)} ></textarea>
                                     </div>                                                               
                                 </div> 
-                                <div className={this.props.toEditSet.length!==0?"hide":""} style={{paddingTop:this.addDelpadTop,paddingLeft:'10px',float:'left',fontSize:'30px',fontFamily:'monospace',color:'#aca3a3'}}>
+                                <div className={("addDel "+(this.props.toEditSet.length!==0?"hide":""))} style={{paddingTop:this.addDelpadTop}}>
                                         {((ind===this.state.entryList.length-1) && ind===0)?
                                             <span onClick={this.handleAddDel.bind(this,'+')}>+</span>                                        
                                         :

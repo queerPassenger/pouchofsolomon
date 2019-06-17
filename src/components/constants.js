@@ -25,7 +25,7 @@ export const accountInfo=[
     {
         key:'age',
         placeholder:'Secret is safe with us',
-        label:'age',
+        label:'Age',
         value:'',
         type:'input'
     },
