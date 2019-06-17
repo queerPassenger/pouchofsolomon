@@ -19,6 +19,7 @@ class Main extends Component{
         };
         this.onTabClick = this.onTabClick.bind(this);
         this.onTabShow = this.onTabShow.bind(this);
+        this.edit=this.edit.bind(this);
     }
     componentDidMount() {
         this.getUserInfo();
@@ -45,7 +46,7 @@ class Main extends Component{
     onTabClick(tab) {
         this.setState({
             tabSelected: tab,
-            toEditSet:[],
+            toEditSet:[]
         })
     }    
     onTabShow(flag){
@@ -78,6 +79,7 @@ class Main extends Component{
                         toEditSet={this.state.toEditSet}
                         userProfile={this.props.userProfile} 
                         tabs={tabs} 
+                        edit={this.edit}
                         onTabClick={this.onTabClick}
                         onTabShow={this.onTabShow}
                         history={hist}

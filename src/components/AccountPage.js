@@ -35,7 +35,7 @@ class AccountPage extends Component {
            if(res.status){
                let {accountInfo}=this.state;
                accountInfo.map(info=>{
-                   res.data[0].info.map(infoData=>{
+                   res.data.map(infoData=>{
                        if(info.key===infoData.key){
                            info.value=infoData.value;
                        }
@@ -68,7 +68,6 @@ class AccountPage extends Component {
             return;
         }
         else{
-            console.log('payload',payload);
             this.props.updateLoading(null,'enableLoading');
             let data={
                 apiPath:'/saveAccountInfo',
@@ -112,7 +111,7 @@ class AccountPage extends Component {
                                 {field.type === 'input' ?
                                     <input type="text" placeholder={field.placeholder} value={field.value} onChange={this.handleChange.bind(this, fieldInd)}></input>
                                     :
-                                    <select onChange={this.handleChange.bind(this, fieldInd)}>
+                                    <select value={field.value} onChange={this.handleChange.bind(this, fieldInd)}>
                                         <option value='' disabled selected>{field.placeholder}</option>
                                         {field.options.map((option, optionInd) => {
                                             return (

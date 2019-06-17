@@ -6,14 +6,13 @@ class HomePage extends React.Component {
         this.props.onTabShow(true);
     } 
     uiBuild(){
-        console.log(this.props);
         return(
             <>
                <Content 
                     tabSelected={this.props.tabSelected} 
                     toEditSet={this.props.toEditSet} 
-                    edit={()=>{this.props.edit()}} 
-                    onTabClick={()=>{this.props.onTabClick()}} 
+                    edit={this.props.edit} 
+                    onTabClick={this.props.onTabClick} 
                 />
             </>
         )

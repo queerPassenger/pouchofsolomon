@@ -1,15 +1,16 @@
 const path = require("path");
 const webpack = require('webpack');
+const copyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   mode: process.env.NODE_ENV,
   entry: [
     'react-hot-loader/patch',
     'webpack-hot-middleware/client?reload=true',
-      path.join(__dirname,'src','index.js')
+    path.join(__dirname, 'src', 'index.js')
   ],
   output: {
-    path:path.join(__dirname,'build'),
+    path: path.join(__dirname, 'build'),
     publicPath: '/',
     filename: 'ui.bundle.js'
   },
@@ -38,5 +39,8 @@ module.exports = {
     new webpack.NamedModulesPlugin(),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoEmitOnErrorsPlugin(),
+    new copyWebpackPlugin([
+      { from: path.join(__dirname, 'src', 'images/logo.png'), to: path.join(__dirname, 'build') }
+    ]),
   ],
 }

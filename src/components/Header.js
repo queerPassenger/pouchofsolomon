@@ -29,7 +29,6 @@ export default class Header extends React.Component {
         })
     }
     uiBuild() {
-        console.log('this.state',this.state);
         return (
             <div className="header-container">
                 <div className="header-top-container">
