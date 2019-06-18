@@ -91,7 +91,7 @@ app.get('/login',(req,res)=>{
 })
 
 app.get('/logout', function(req, res){
-    cookie = req.cookies;
+    let cookie = req.cookies;
     for (var prop in cookie) {
         if (!cookie.hasOwnProperty(prop)) {
             continue;
