@@ -80,14 +80,7 @@ body{
 .loader-wrapper{
     position: fixed;
     z-index: 999;
-    height: 2em;
-    width: 2em;
-    overflow: visible;
-    margin: auto;
-    top: 0;
-    left: 0;
-    bottom: 80px;
-    right: 8%; 
+    overflow: visible;    
     img{
         width:150px;    
     }             

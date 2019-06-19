@@ -18,20 +18,12 @@ class Main extends Component {
             tabSelected: tabs[0],
             toEditSet: [],
         };
-        this.screenParameters={
-            width:0,
-            height:0
-        }
         this.onTabClick = this.onTabClick.bind(this);
         this.onTabShow = this.onTabShow.bind(this);
         this.edit = this.edit.bind(this);
     }
     componentDidMount() {
         this.getUserInfo();
-        this.screenParameters={
-            width:window.screen.width,
-            height:window.screen.height
-        };
     }
     getUserInfo() {
         let data = {
@@ -74,8 +66,13 @@ class Main extends Component {
     render() {
         let popUpStyle={
             width:'300px',
-            left:(this.screenParameters.width-300)/2,
-            top:'300px'
+            left:(window.innerWidth-300)/2,
+            top:(window.innerHeight-150)/2
+        }
+        let loadingStyle={
+            width:'150px',
+            left:(window.innerWidth-150)/2,
+            top:(window.innerHeight-150)/2
         }
         return (
             <>
@@ -102,7 +99,7 @@ class Main extends Component {
                 </div>
                 {this.props.loading ?
                     <>
-                        <div className="loader-wrapper">
+                        <div className="loader-wrapper" style={loadingStyle}>
                             <img src={loadingImgPath}></img>
                         </div>
                         <div className="overlay"></div>
