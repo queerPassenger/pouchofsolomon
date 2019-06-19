@@ -2,7 +2,7 @@ import React from 'react';
 import DatePicker from 'react-datepicker';
 import {apiCall} from '../../utilities/apiCall';
 import AdvancedFilter,{toggleOptions} from './AdvancedFilter';
-
+import {getPopUpObj} from '../constants';
 
 export default class View extends React.Component{
     constructor(props){
@@ -75,7 +75,8 @@ export default class View extends React.Component{
                 result=res.data.map((data)=>{data.flag=false;return data});                
             }
             else{                
-                alert(res.message);
+                let popUpObj=getPopUpObj('warning/error',{text:[res.message],onClickHandler:()=>this.props.updatePopUp(null,'disablePopUp')});
+                this.props.updatePopUp(popUpObj,'enablePopUp'); 
                 result=[];
             }
             this.setState({
@@ -135,7 +136,8 @@ export default class View extends React.Component{
             }
         });
         if(toEditSet.length===0){
-            alert('Please select the items to edit');
+            let popUpObj=getPopUpObj('warning/error',{text:['Please select the items to edit'],onClickHandler:()=>this.props.updatePopUp(null,'disablePopUp')});
+            this.props.updatePopUp(popUpObj,'enablePopUp'); 
         }
         else{
             this.props.edit(toEditSet);
@@ -154,7 +156,8 @@ export default class View extends React.Component{
             }
         });
         if(toDeleteSet.length===0){
-            alert('Please select the items to delete');
+            let popUpObj=getPopUpObj('warning/error',{text:['Please select the items to delete'],onClickHandler:()=>this.props.updatePopUp(null,'disablePopUp')});
+            this.props.updatePopUp(popUpObj,'enablePopUp'); 
         }
         else{
             let data={
@@ -168,7 +171,8 @@ export default class View extends React.Component{
             .then(res=>{
                 this.props.handleLoading(false);
                 if(res.status){
-                    alert('Deleted Successfully');
+                    let popUpObj=getPopUpObj('success',{text:['Sucessfully Deleted'],onClickHandler:()=>this.props.updatePopUp(null,'disablePopUp')});               
+                    this.props.updatePopUp(popUpObj,'enablePopUp'); 
                     this.handleFilter();
                 }
             })

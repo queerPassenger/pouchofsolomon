@@ -84,6 +84,7 @@ class Content extends React.Component{
                         handleLoading={this.handleLoading.bind(this)}
                         toEditSet={this.props.toEditSet}
                         onTabClick={this.props.onTabClick} 
+                        updatePopUp={this.props.updatePopUp}
                     />
                 :
                     null
@@ -95,6 +96,7 @@ class Content extends React.Component{
                         amountTypeSet={this.state.amountTypeSet}
                         handleLoading={this.handleLoading.bind(this)}
                         edit={this.props.edit}
+                        updatePopUp={this.props.updatePopUp}
                     />
                 :
                     null
@@ -120,6 +122,10 @@ const mapDispatchToProps = dispatch => {
       val,
       type
     }),
+    updatePopUp : (val,type) => dispatch({
+        val,
+        type
+      }),
     }
   }
   export default connect(null,mapDispatchToProps)(Content);

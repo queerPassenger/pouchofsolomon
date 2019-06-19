@@ -1,3 +1,5 @@
+import {popUp} from '../reducers/initialState';
+
 export const tabs=['Entry', 'View', 'Analyse'];
 export const accountInfo=[
     {
@@ -55,4 +57,48 @@ export const accountInfo=[
 export const settingOptions=[
     {label:'My Account',onClickHandler:'navigateToAccount'},
     {label:'Log out',onClickHandler:'logout'}
-]
+];
+export const getPopUpObj=(type,params)=>{
+    switch(type){
+        case 'warning/error':
+            return {
+                show:true,
+                header:{
+                    text:['Attention!']
+                },
+                body:{
+                    text:params.text
+                },
+                footer:{
+                    text:[],
+                    button:{
+                        name:['Ok'],
+                        onClickHandlers:[params.onClickHandler],
+                    }
+                }
+            }
+            break;
+        case 'success':
+                return {
+                    show:true,
+                    header:{
+                        text:['Success!']
+                    },
+                    body:{
+                        text:params.text
+                    },
+                    footer:{
+                        text:[],
+                        button:{
+                            name:['Ok'],
+                            onClickHandlers:[params.onClickHandler],
+                        }
+                    }
+                }
+                break;
+        default :
+            return popUp;
+            break;
+    }
+}
+

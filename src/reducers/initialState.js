@@ -3,5 +3,21 @@ module.exports={
     userProfile:{
         name:'',
         photo:'',
+    },
+    popUp:{
+        show:false,
+        header:{
+            text:[]
+        },
+        body:{
+            text:[]
+        },
+        footer:{
+            text:[],
+            button:{
+                name:[],
+                onClickHandlers:[],
+            }
+        }
     }
 }

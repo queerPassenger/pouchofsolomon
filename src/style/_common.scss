@@ -92,6 +92,72 @@ body{
         width:150px;    
     }             
 }
+.popUp-wrapper{
+    position: fixed;
+    z-index: 999;
+    overflow: visible;
+    box-shadow: 1px 2px 11px grey;
+    background: white;
+    font-family: monospace;
+    .popUp-header-wrapper{
+        width:100%;
+        float:left;
+        padding-top: 10px;
+        padding-bottom:10px;
+        background: #88184c;
+        .popUp-header-text-wrapper{
+            width:88%;
+            float:left;
+            padding-left:2%;
+            color:white;
+            font-weight: bold;
+        }
+        .popUp-close{
+            width:10%;
+            float:left;
+            color:white;
+            font-weight: bold;
+            font-size:16px;
+            cursor: pointer;
+        }
+    }
+    .popUp-body-wrapper{
+        width:95%;
+        float:left;
+        padding:10px 2.5% 10px 2.5%;
+        .popUp-body-text-wrapper{
+            width:100%;
+            float:left;
+            font-weight: bold;
+        }
+    }
+    .popUp-footer-wrapper{
+        width:95%;
+        float:left;
+        padding:5px 2.5% 5px 2.5%;
+        border-top :1px solid #e3e3e3;
+        .popUp-footer-text-wrapper{
+            width:100%;
+            float:left;
+        }
+        .popUp-footer-button-wrapper{
+            width:100%;
+            float:right;
+            button{
+                float:right;
+                margin-right:10px;
+                width: 50px;
+                background: #88184c;
+                font-weight: bold;
+                border: none;
+                padding: 5px 0px 5px 0px;
+                color: white;
+                font-family: monospace;
+                cursor: pointer;            
+            }
+        }
+    }
+}
 .disp-none{
     display:none;
 }

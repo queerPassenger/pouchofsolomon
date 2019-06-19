@@ -3,6 +3,7 @@ import {apiCall} from '../../utilities/apiCall';
 import {schemaGenerator} from '../../utilities/schema';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import {getPopUpObj} from '../constants';
 
 export default class Record extends React.Component{
     constructor(props){
@@ -78,7 +79,8 @@ export default class Record extends React.Component{
         let entryList=this.state.entryList;
         if(key==='transactionType'){
             if(entryList[ind]['transactionClassification']===''){
-                alert('Please select transaction classification');
+                let popUpObj=getPopUpObj('warning/error',{text:['Please select transaction classification'],onClickHandler:()=>this.props.updatePopUp(null,'disablePopUp')});
+                this.props.updatePopUp(popUpObj,'enablePopUp'); 
                 return;
             }
         }
@@ -101,53 +103,6 @@ export default class Record extends React.Component{
             entryList
         });
     }
-    checkForNewEntry(ind){
-        let entryList=this.state.entryList;
-        if(entryList[ind]['transactionType']!==''){
-            let filteredTransactionTypeSet=this.state.transactionTypeSet.filter(x=>{if(x.transactionClassification===entryList[ind]['transactionClassification']){return x}});
-            let flag=true;
-            filteredTransactionTypeSet.map((val)=>{
-                if(val.transactionTypeName===entryList[ind]['transactionType']){
-                    flag=false;
-                }
-                
-            });
-            if(flag){
-                this.props.handleLoading(true);
-                let payload={
-                    transactionTypeName:entryList[ind]['transactionType'],
-                    transactionClassification:entryList[ind]['transactionClassification']
-                }
-                let data={
-                    apiPath:'/recordTransactionType',
-                    type:'POST',
-                    query:null,
-                    payload:payload
-                }
-                apiCall(data)
-                .then(res=>{
-                    this.props.handleLoading(false);
-                    if(res.status){
-                        entryList[ind]['transactionTypeId']=res.data['transactionTypeId'];
-                        this.setState({
-                            entryList
-                        },()=>{
-                            this.props.getTransactionTypeList();
-                        })
-                    }
-                    else{
-                        alert('Failed to create transaction Type');
-                        entryList[ind]['transactionTypeId']='';
-                        entryList[ind]['transactionType']='';
-                    }
-                })
-                .catch(err=>{
-                    this.props.handleLoading(false);
-                    console.log('err',err)
-                });
-            }
-        }
-    }
     deleteTransactionType(transactionTypeId){
         let data={
             apiPath:'/deleteTransactionType',
@@ -160,7 +115,8 @@ export default class Record extends React.Component{
         .then(res=>{
             this.props.handleLoading(false);
             if(res.status){
-                alert('Deleted Successfully');
+                let popUpObj=getPopUpObj('success',{text:['Sucessfully Deleted'],onClickHandler:()=>this.props.updatePopUp(null,'disablePopUp')});
+                this.props.updatePopUp(popUpObj,'enablePopUp'); 
                 this.props.getTransactionTypeList();
             }
         })
@@ -182,7 +138,8 @@ export default class Record extends React.Component{
         let errFlag=false;
         for(let i=0;i<entryList.length;i++){            
             if(!(entryList[i]['transactionTypeId'] && entryList[i]['timeStamp'] && entryList[i]['comment'] && entryList[i]['amount'] && entryList[i]['amountTypeId'])){
-                alert('Fields cant be empty');
+                let popUpObj=getPopUpObj('warning/error',{text:["Fields can't be empty"],onClickHandler:()=>this.props.updatePopUp(null,'disablePopUp')});
+                this.props.updatePopUp(popUpObj,'enablePopUp'); 
                 errFlag=true;
                 break;
             }
@@ -213,14 +170,15 @@ export default class Record extends React.Component{
             .then(res=>{
                 this.props.handleLoading(false);
                 this.handleRefresh();
+                let popUpObj
                 if(type==='submit'){
-                    alert('successfully Recorded');                   
+                    popUpObj=getPopUpObj('success',{text:['Sucessfully Recorded'],onClickHandler:()=>this.props.updatePopUp(null,'disablePopUp')});               
                 }                    
                 else{    
-                    alert('successfully Updated');
+                    popUpObj=getPopUpObj('success',{text:['Sucessfully Updated'],onClickHandler:()=>this.props.updatePopUp(null,'disablePopUp')});
                     this.props.onTabClick('Entry');
                 }
-                
+                this.props.updatePopUp(popUpObj,'enablePopUp'); 
             })
             .catch(err=>{
                 this.props.handleLoading(false);

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {connect} from 'react-redux';
 import { accountInfo } from './constants';
 import {apiCall} from '../utilities/apiCall';
+import {getPopUpObj} from './constants';
 
 class AccountPage extends Component {
     constructor(props) {
@@ -63,8 +64,9 @@ class AccountPage extends Component {
                 'value':info.value
             });
         })
-        if(count===accountInfo.length){
-            alert('There is nothing to update');
+        if(count===accountInfo.length){            
+            let popUpObj=getPopUpObj('warning/error',{text:['There is nothing to update','Please do some changes.'],onClickHandler:()=>this.props.updatePopUp(null,'disablePopUp')});
+            this.props.updatePopUp(popUpObj,'enablePopUp');
             return;
         }
         else{
@@ -78,15 +80,18 @@ class AccountPage extends Component {
             apiCall(data)
             .then(res=>{
                 this.props.updateLoading(null,'disableLoading');
+                let popUpObj
                 if(res.status){                    
-                    alert('Successfully Saved'); 
+                    popUpObj=getPopUpObj('success',{text:['Sucessfully Saved'],onClickHandler:()=>this.props.updatePopUp(null,'disablePopUp')});
                 }
                 else{
-                    alert('Something went wrong. Please try after some time');
-                }                                 
+                    popUpObj=getPopUpObj('warning/error',{text:['Something went wrong','Please try after some time'],onClickHandler:()=>this.props.updatePopUp(null,'disablePopUp')});
+                }   
+                this.props.updatePopUp(popUpObj,'enablePopUp');                              
             })
             .catch(err=>{
-                this.props.updateLoading(null,'disableLoading');
+                let popUpObj=getPopUpObj('warning/error',{text:['Something went wrong','Please try after some time'],onClickHandler:()=>this.props.updatePopUp(null,'disablePopUp')});    
+                this.props.updatePopUp(popUpObj,'enablePopUp'); 
                 console.log('err',err)
             });
         }
@@ -142,6 +147,9 @@ const mapDispatchToProps = dispatch => {
       val,
       type
     }),
+     updatePopUp :(val,type) => dispatch({
+         val,type
+     })
     }
   }
   export default connect(null,mapDispatchToProps)(AccountPage);
