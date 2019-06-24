@@ -100,19 +100,22 @@ export default class View extends React.Component{
             })
         }
         else{
-            result[flag]['flag']=!result[flag]['flag'];
-            let count=0;
-            result.map((data)=>{
-                if(!data.flag){
+            let transactionId=flag;        
+            let count=0;    
+            for(let i=0;i<result.length;i++){
+                if(result[i].transactionId===transactionId){
+                    result[i].flag=!result[i].flag;
+                }
+                if(!result[i].flag){
                     checkAll=false;
                 }
                 else{
                     count++;
                 }
-            });
+            }
             if(count===result.length){
                 checkAll=true;
-            }
+            }           
         }
         this.setState({
             checkAll,
@@ -372,7 +375,7 @@ export default class View extends React.Component{
                             return( 
                                 <div className="result" key={"result"+ind}>            
                                     <div className="item">                      
-                                        <div className="check" onClick={this.handleCheck.bind(this,ind)}>
+                                        <div className="check" onClick={this.handleCheck.bind(this,res.transactionId)}>
                                             {res.flag?
                                                 <div className="checked">
                                                 </div>
