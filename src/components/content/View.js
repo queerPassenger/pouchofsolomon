@@ -310,7 +310,7 @@ export default class View extends React.Component{
     }
     generateExcel = () => {
         let {state} = this;
-        let excelData = [['Data','Time','Transaction Classification','Transaction Type','Comment','Amount','Amount Type']];
+        let excelData = [['DATA','TIME','TRANSACTION CLASSIFICATION','TRANSACTION TYPE','COMMENT','AMOUNT','AMOUNT TYPE']];
         state.result.map((res)=>{
             let transaction=this.getTransactionObj(res.transactionTypeId);                                            
             let amountType=state.amountTypeSet.filter((x)=>{if(x.amountTypeId===res.amountTypeId){return x}})[0];
@@ -321,7 +321,7 @@ export default class View extends React.Component{
                 (date.getHours()>=10?date.getHours():'0'+date.getHours())+':'+(date.getMinutes()>=10?date.getMinutes():'0'+date.getMinutes())+':'+ (date.getSeconds()>=10?date.getSeconds():'0'+date.getSeconds()),
                 transaction.transactionClassification,
                 transaction.transactionTypeName,
-                res.comment,
+                res.comment.replace(/\n/g,''),
                 res.amount,
                 amountType.amountSymbol
             ]);            
