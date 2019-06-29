@@ -3,6 +3,7 @@ import DatePicker from 'react-datepicker';
 import {apiCall} from '../../utilities/apiCall';
 import AdvancedFilter,{toggleOptions} from './AdvancedFilter';
 import {getPopUpObj} from '../constants';
+import downloadExcel from '../../utilities/downloadExcel';
 
 export default class View extends React.Component{
     constructor(props){
@@ -307,6 +308,26 @@ export default class View extends React.Component{
             }
         })
     }
+    generateExcel = () => {
+        let {state} = this;
+        let excelData = [['Data','Time','Transaction Classification','Transaction Type','Comment','Amount','Amount Type']];
+        state.result.map((res)=>{
+            let transaction=this.getTransactionObj(res.transactionTypeId);                                            
+            let amountType=state.amountTypeSet.filter((x)=>{if(x.amountTypeId===res.amountTypeId){return x}})[0];
+            amountType=amountType?amountType:{'amountSymbol':'-'};
+            let date=new Date(res.timeStamp);
+            excelData.push([
+                res.timeStamp,
+                (date.getHours()>=10?date.getHours():'0'+date.getHours())+':'+(date.getMinutes()>=10?date.getMinutes():'0'+date.getMinutes())+':'+ (date.getSeconds()>=10?date.getSeconds():'0'+date.getSeconds()),
+                transaction.transactionClassification,
+                transaction.transactionTypeName,
+                res.comment,
+                res.amount,
+                amountType.amountSymbol
+            ]);            
+        });
+        downloadExcel(excelData,'statement.csv');
+    }
     uiBuild(){
         let resultFiltered=this.filterResult();
         let summation=this.getSummation(resultFiltered);
@@ -430,6 +451,9 @@ export default class View extends React.Component{
                         </div>
                         <div className="action-item">
                             <button type="button" onClick={this.handleDelete}>Delete</button>
+                        </div>
+                        <div className="action-item">
+                            <button type="button" onClick={this.generateExcel}>Generate Excel</button>
                         </div>
                     </div>
                 :
