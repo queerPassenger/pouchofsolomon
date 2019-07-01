@@ -10,7 +10,7 @@ export default class View extends React.Component{
         super(props);
         let date = new Date();
         this.state={
-            fromDate:new Date(date.getFullYear(), date.getMonth(), 1),
+            fromDate:new Date(new Date().getFullYear(), 0, 1),
             toDate:new Date(),
             result:[],
             transactionClassificationSet:['expense','saving'],
@@ -188,7 +188,7 @@ export default class View extends React.Component{
     }
     handleRefresh(){
         this.setState({
-            fromDate:new Date(date.getFullYear(), date.getMonth(), 1),
+            fromDate:new Date(new Date().getFullYear(), 0, 1),
             toDate:new Date(),
         });
     }   
@@ -308,7 +308,7 @@ export default class View extends React.Component{
             }
         })
     }
-    generateExcel = () => {
+    downloadExcel = () => {
         let {state} = this;
         let excelData = [['DATA','TIME','TRANSACTION CLASSIFICATION','TRANSACTION TYPE','COMMENT','AMOUNT','AMOUNT TYPE']];
         state.result.map((res)=>{
@@ -321,7 +321,8 @@ export default class View extends React.Component{
                 (date.getHours()>=10?date.getHours():'0'+date.getHours())+':'+(date.getMinutes()>=10?date.getMinutes():'0'+date.getMinutes())+':'+ (date.getSeconds()>=10?date.getSeconds():'0'+date.getSeconds()),
                 transaction.transactionClassification,
                 transaction.transactionTypeName,
-                res.comment.replace(/\n/g,''),
+                // Comma causing content to overflow out of the cell
+                res.comment.replace(/\n/g,'').replace(/\s+/g, ' ').replace(/,+/g,'/'),
                 res.amount,
                 amountType.amountSymbol
             ]);            
@@ -453,7 +454,7 @@ export default class View extends React.Component{
                             <button type="button" onClick={this.handleDelete}>Delete</button>
                         </div>
                         <div className="action-item">
-                            <button type="button" onClick={this.generateExcel}>Generate Excel</button>
+                            <button type="button" onClick={this.downloadExcel}>Download</button>
                         </div>
                     </div>
                 :
