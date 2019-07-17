@@ -15,7 +15,7 @@ class Main extends Component {
         super(props);
         this.state = {
             tabsFlag: true,
-            tabSelected: tabs[0],
+            tabSelected: tabs[2],
             toEditSet: [],
         };
         this.onTabClick = this.onTabClick.bind(this);
