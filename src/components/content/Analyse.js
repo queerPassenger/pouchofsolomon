@@ -1,17 +1,28 @@
 import React,{Component} from 'react';
+import {componentSchema} from '../../utilities/schema';
+import ChartComponent from './chartComponent';
 import UnderConstruction from '../../images/underConstruction.png';
+
 var HighCharts=require('highcharts');
 
 export default class Analyse extends Component{
-    state={
-        chartsStatus:[0,0,0],
-        periodType:'Daily',
+    constructor(props){
+        super(props);
+        this.componentName = 'Analyse';        
+        this.state={
+            charts: componentSchema(this.componentName,'charts'),
+            periodType:componentSchema(this.componentName,'periodType')
+        };
+    };
+    componentDidMount(){
+        this.calculatePeriod();
+        this.buildChart();
     }
     buildChart(){
-        HighCharts.chart('earnings',{
+        HighCharts.chart('expense',{
             chart:{
                 type:'line',
-                width:600,
+                width:400,
             },
             title:{
                 text:'E'
@@ -23,39 +34,68 @@ export default class Analyse extends Component{
                 enabled:true,
             },
             xAxis:{
-                categories:chartData.xAxis,
+                categories:[],
                 title:{
-                    text:'Pay Period'
+                    text:''
                 }
             },
-            series:chartData.earnings.slice(0,chartData.earnings.length-1)
+            series:[]
         });
     }
     handlePeriodSelection = (e)=> {        
-        this.setState({chartsStatus:[0,0,0],periodType:e.target.value},()=>{
-            console.log(this.calculatePeriod());
+        let charts = componentSchema(this.componentName,'charts');
+        let periodType = this.state.periodType;
+        periodType.selected = e.target.value;
+        this.setState({charts,periodType},()=>{
+            this.calculatePeriod();
         });        
     }
     calculatePeriod(){
-        let periodObj = {status:true,msg:'',type:this.state.periodType,period:[]}
-        switch(this.state.periodType){
-            case 'daily':                
-                for(let i=0;i<this.state.chartsStatus.length;i++){
-                    if(this.state.chartsStatus[i]>0){
-                        periodObj.status=false;
-                        periodObj.msg = 'Analyse cannot be done for future dates'
-                        break;
-                    }
-                    else{
-                        let fromDate = new Date(new Date().setDate(new Date().getDate()+this.state.chartsStatus[i]));
-                        let toDate = new Date(new Date().setDate(fromDate.getDate()+(this.state.chartsStatus[i]+1)));
-                        fromDate.setHours(0,0,0);
-                        toDate.setHours(0,0,0);
-                        periodObj.period.push({fromDate,toDate});
-                    }
+        let periodObj = {status:true,msg:'',type:this.state.periodType.selected,period:[]};              
+        for(let i=0;i<this.state.charts.length;i++){
+            let status = this.state.charts[i].status;
+            if(status>0){
+                periodObj.status=false;
+                periodObj.msg = 'Analyse cannot be done for future dates'
+                break;
+            }
+            else{
+                let fromDate,toDate;
+                if(periodObj.type === 'daily'){
+                    fromDate = new Date(new Date().setDate(new Date().getDate()+status));
+                    toDate = fromDate;
                 }
+                else if(periodObj.type === 'weekly'){
+                    let temp = new Date();
+                    fromDate = new Date(temp.setDate(temp.getDate() - temp.getDay() + 7*(status)));
+                    toDate = new Date(temp.setDate(temp.getDate() - temp.getDay()+6))
+                }
+                else if(periodObj.type === 'monthly'){
+                    let temp = new Date();
+                    fromDate =  new Date(temp.getFullYear(), temp.getMonth() + status, 1);
+                    toDate = new Date(fromDate.getFullYear(), fromDate.getMonth() + 1, 0);
+                }
+                else if(periodObj.type === 'yearly'){
+                    let  temp = new Date();
+                    fromDate = new Date(temp.getFullYear()+status,0,1);
+                    toDate = new Date(fromDate.getFullYear(),12,0);
+                }
+                fromDate.setHours(0,0,0);
+                toDate.setHours(23,59,59);
+                periodObj.period.push({fromDate,toDate});
+            }
         }
+        console.log(periodObj);
         return periodObj;
+    }
+    handleStatus = (_type,_ind) => {
+        let charts = this.state.charts;
+        charts[_ind].status = _type==='left'? charts[_ind].status-1:charts[_ind].status+1;
+        this.setState({
+            charts
+        },()=>{
+            this.calculatePeriod();
+        })
     }
     render(){
         if(false)
@@ -68,17 +108,21 @@ export default class Analyse extends Component{
             return(
                 <div className="analyse-container">
                     <div className='drop-down'>
-                        <select ref='periodSelection' onChange={this.handlePeriodSelection}>
+                        <select ref='periodSelection' value={this.state.periodType.selected} onChange={this.handlePeriodSelection}>
                             <option value='' disabled>Select period</option>
-                            <option value='daily'>Daily</option>
-                            <option value='weekly'>Weekly</option>
-                            <option  value='monthly'>Monthly</option>
-                            <option  value='yearly'>Yearly</option>
+                            {this.state.periodType.options.map((period,ind)=>{
+                                return(
+                                    <option key={'periodOptions'+ind} value={period.value}>{period.label}</option>
+                                )
+                            })}                            
                         </select>
                     </div>
                     <div className="chart-super-wrapper">
-                        <div className="chart-wrapper" id="earnings"> 
-                        </div>
+                        {this.state.charts.map((chart,ind)=>{
+                            return(
+                                <ChartComponent ind={ind} {...chart} handleStatus={this.handleStatus}/>
+                            )
+                        })}
                     </div>
                 </div>
             )

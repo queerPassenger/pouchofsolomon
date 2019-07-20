@@ -154,3 +154,49 @@ body{
 .disp-none{
     display:none;
 }
+.analyse-container{
+    .drop-down{
+        width:60%;
+        float:left;
+        padding-left:20%;
+        padding-right:20%;
+        margin-top:20px;
+        margin-bottom:20px;
+        
+        select{
+            width:100%;
+            float:left;
+            padding-top:5px;
+            padding-bottom:5px;
+            border-radius:5px;
+            font-family: monospace;
+        }
+    }
+    .chart-wrapper{
+        width:100%;
+        float:left;
+        height:200px;
+        margin-top:10px;
+        margin-bottom:10px;
+        box-shadow:1px 2px 2px gray;
+        .chart-left-icon,.chart-right-icon{
+            width:9%;
+            float:left;
+            position: relative;
+            top:90px;
+            padding:0.5%;
+            box-shadow:1px 4px 4px gray;
+            background: #88184c;
+            span{
+                color: white;
+                font-weight: bold;
+                font-size: 30px;
+            }
+        }
+        .chart{
+            width:80%;
+            float:left;
+            height:200px;
+        }
+    }
+}

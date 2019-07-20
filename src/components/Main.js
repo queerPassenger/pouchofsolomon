@@ -15,7 +15,7 @@ class Main extends Component {
         super(props);
         this.state = {
             tabsFlag: true,
-            tabSelected: tabs[2],
+            tabSelected: tabs[0],
             toEditSet: [],
         };
         this.onTabClick = this.onTabClick.bind(this);
@@ -53,7 +53,7 @@ class Main extends Component {
     onTabShow(flag) {
         this.setState({
             tabsFlag: flag,
-            tabSelected: tabs[0],
+            tabSelected: tabs[2],
             toEditSet: [],
         })
     }
