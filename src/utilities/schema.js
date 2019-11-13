@@ -1,80 +1,77 @@
-export function schemaGenerator(_schema,_type){
+export function schemaGenerator(_schema, _type) {
     return JSON.parse(JSON.stringify(schema[_schema][_type]));
 }
-const apiSchema={
-    transaction:{
+const apiSchema = {
+    transaction: {
         createdTimeStamp: '',
         lastUpdatedTimeStamp: '',
-        transactionTypeId:'',
-        timeStamp:'',
+        transactionTypeId: '',
+        timeStamp: '',
         comment: '',
         amount: '',
-        amountTypeId:'',
+        amountTypeId: '',
     }
 }
-const uiSchema={
-    transaction:{
-        transactionTypeId:'',
-        transactionType:'',
-        transactionClassification:'',
-        timeStamp:'',
-        amount:'',
-        amountTypeId:'',
-        comment:''
+const uiSchema = {
+    transaction: {
+        transactionTypeId: '',
+        transactionType: '',
+        transactionClassification: '',
+        timeStamp: '',
+        amount: '',
+        amountTypeId: '',
+        comment: ''
     }
 }
 
-const schema={
-    uiSchema,apiSchema
+const schema = {
+    uiSchema, apiSchema
 }
-export const componentSchema = (_component,_obj) => {
-    switch(_component){
-        case 'Analyse':{
-            switch(_obj){
-                case 'charts':{
+export const componentSchema = (_component, _obj) => {
+    switch (_component) {
+        case 'Analyse': {
+            switch (_obj) {
+                case 'charts': {
                     return [
                         {
-                            id : 'expense_vs_savings',
-                            status : 0
-                        },
-                        {
-                            id : 'expense',
-                            status : 0
-                        },
-                        {
-                            id : 'savings',
-                            status : 0
-                        }
+                            id: 'expense_vs_savings',
+                            period: '',
+                            periodStatus: 0,
+                            errorMsg: '',
+                            query: {
+                                fromDate: new Date(),
+                                toDate: new Date()
+                            },
+                            result: []
+                        },                        
                     ];
                 }
-                case 'periodType':{
-                    return {
-                        selected: 'daily',
-                        options: [
-                            {
-                                value : 'daily',
-                                label : 'Daily'
-                            },
-                            {
-                                value : 'weekly',
-                                label : 'Weekly'
-                            },
-                            {
-                                value : 'monthly',
-                                label : 'Monthly'
-                            },
-                            {
-                                value : 'yearly',
-                                label : 'Yearly'
-                            }
-                        ]
-                    }
+                case 'periodSet': {
+                    return [
+                        {
+                            value: 'daily',
+                            label: 'Daily'
+                        },
+                        // {
+                        //     value: 'weekly',
+                        //     label: 'Weekly'
+                        // },
+                        // {
+                        //     value: 'monthly',
+                        //     label: 'Monthly'
+                        // },
+                        // {
+                        //     value: 'yearly',
+                        //     label: 'Yearly'
+                        // }
+                    ]
+
                 }
-                default :
+                default:
                     return {}
             }
         }
-        default :
+        default:
             return {}
     }
 }

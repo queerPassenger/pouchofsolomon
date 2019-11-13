@@ -1,6 +1,6 @@
 import React from 'react';
 
-const ChartComponent = (props) => {
+const ChartComponent = (props) => {    
     return(
         <div className='chart-wrapper'>
             <div className='chart-left-icon' onClick={()=>{props.handleStatus('left',props.ind)}}>
