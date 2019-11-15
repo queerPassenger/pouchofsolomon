@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {apiCall} from '../../utilities/apiCall';
+import { apiCall } from '../../utilities/apiCall';
 import { componentSchema } from '../../utilities/schema';
 import ChartComponent from './chartComponent';
 import UnderConstruction from '../../images/underConstruction.png';
@@ -18,6 +18,11 @@ export default class Analyse extends Component {
     };
     componentDidMount() {
         this.handlePeriodSelection({ target: this.periodSet[0] });
+        Date.prototype.addDays = function (days) {
+            var dat = new Date(this.valueOf())
+            dat.setDate(dat.getDate() + days);
+            return dat;
+        }
     }
     handlePeriodSelection = (e) => {
         let charts = componentSchema(this.componentName, 'charts');
@@ -79,41 +84,42 @@ export default class Analyse extends Component {
     getPeriodicData(charts) {
         let count = 0;
         for (let i = 0; i < charts.length; i++) {
-            let payload={
+            let payload = {
                 ...charts[i].query,
                 period: charts[i].period,
                 id: charts[i].id,
             };
-            let data={
-                apiPath:'/getTransaction',
-                type:'POST',
-                query:null,
+            let data = {
+                apiPath: '/getTransaction',
+                type: 'POST',
+                query: null,
                 payload
             }
             this.props.handleLoading(true);
             apiCall(data)
-            .then(res=>{
-                count++;
-                this.props.handleLoading(false);
-                if(res.hasOwnProperty('data')){
-                    charts[i].result = res.data; 
-                    charts[i].cognitiveResult= this.cognitiveResult(res.data,charts[i]);             
+                .then(res => {
+                    count++;
+                    this.props.handleLoading(false);
+                    if (res.hasOwnProperty('data')) {
+                        charts[i].result = res.data;
+                        charts[i].cognitiveResult = this.cognitiveResult(res.data, charts[i]);
+                    }
+                    else {
+                        let popUpObj = getPopUpObj('warning/error', { text: [res.message], onClickHandler: () => this.props.updatePopUp(null, 'disablePopUp') });
+                        this.props.updatePopUp(popUpObj, 'enablePopUp');
+                        charts[i].result = [];
+                    }
+                    this.setState({
+                        charts
+                    });
+                    this.buildChart();
+
+                })
+                .catch(err => {
+                    this.props.handleLoading(false);
+                    console.log('err', err)
                 }
-                else{                
-                    let popUpObj=getPopUpObj('warning/error',{text:[res.message],onClickHandler:()=>this.props.updatePopUp(null,'disablePopUp')});
-                    this.props.updatePopUp(popUpObj,'enablePopUp'); 
-                    charts[i].result = [];
-                }
-                this.setState({
-                    charts
-                });
-                this.buildChart();
-                
-            })
-            .catch(err=>{
-                this.props.handleLoading(false);
-                console.log('err',err)}
-            );      
+                );
         }
     }
     buildChart() {
@@ -125,7 +131,7 @@ export default class Analyse extends Component {
                 text: 'Expense vs Saving'
             },
             xAxis: {
-                categories:  this.state.charts[0].cognitiveResult.dates,
+                categories: this.state.charts[0].cognitiveResult.dates,
                 crosshair: true
             },
             yAxis: {
@@ -140,42 +146,65 @@ export default class Analyse extends Component {
             series: [{
                 name: 'Expense',
                 data: this.state.charts[0].cognitiveResult.expense
-        
+
             }, {
                 name: 'Saving',
                 data: this.state.charts[0].cognitiveResult.saving
-        
+
             }]
         });
     }
-    cognitiveResult(result,chart){
+    getDates(startDate, stopDate) {
+        var dateArray = new Array();
+        var currentDate = startDate;
+        while (currentDate <= stopDate) {
+            dateArray.push(currentDate)
+            currentDate = currentDate.addDays(1);
+        }
+        return dateArray;
+    }
+    cognitiveResult(result, chart) {
         let cognitiveResult = {
             expense: [],
             saving: [],
-            dates:[],
+            dates: [],
         };
-        if(chart.period === 'daily'){
-            let dateValue = new Date(chart.query.fromDate).getDate()+'-'+ (new Date(chart.query.fromDate).getMonth()+1) + '-' + new Date(chart.query.fromDate).getFullYear();
+        if (chart.period === 'daily') {
+            let dateValue = new Date(chart.query.fromDate).getDate() + '-' + (new Date(chart.query.fromDate).getMonth() + 1) + '-' + new Date(chart.query.fromDate).getFullYear();
             cognitiveResult.dates.push(dateValue);
             cognitiveResult.expense.push(0);
             cognitiveResult.saving.push(0);
-            result.map((obj)=>{
+            result.map((obj) => {
                 cognitiveResult[this.identifyExpenseOrSaving(obj)][0] += obj.amount;
-            });           
+            });
         }
-        return cognitiveResult;       
+        else if (chart.period === 'weekly') {
+            let dateSet = this.getDates(new Date(chart.query.fromDate), new Date(chart.query.toDate));
+            dateSet.map(date => {
+                cognitiveResult.dates.push(date.getDate() + '-' + (date.getMonth() + 1) + '-' + date.getFullYear());
+                cognitiveResult.expense.push(0);
+                cognitiveResult.saving.push(0);
+            });
+            result.map((obj) => {
+                let dateValue = new Date(obj.timeStamp).getDate() + '-' + (new Date(obj.timeStamp).getMonth() + 1) + '-' + new Date(obj.timeStamp).getFullYear();
+                let ind = cognitiveResult.dates.indexOf(dateValue);
+                if (ind !== -1) {
+                    cognitiveResult[this.identifyExpenseOrSaving(obj)][ind] += obj.amount;
+                }
+            });
+        }
+        return cognitiveResult;
     }
-    identifyExpenseOrSaving(transaction){
-        let {transactionTypeId} = transaction;
-        for(let i=0; i< this.props.transactionTypeSet.length; i++){
-            if(transactionTypeId === this.props.transactionTypeSet[i].transactionTypeId){
+    identifyExpenseOrSaving(transaction) {
+        let { transactionTypeId } = transaction;
+        for (let i = 0; i < this.props.transactionTypeSet.length; i++) {
+            if (transactionTypeId === this.props.transactionTypeSet[i].transactionTypeId) {
                 return this.props.transactionTypeSet[i].transactionClassification;
             }
         }
         return '';
     }
     render() {
-        console.log('Analyse', this.state);
         let period = (this.state.charts[0] && this.state.charts[0].period) ? this.state.charts[0].period : '';
         if (false)
             return (

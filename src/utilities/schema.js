@@ -52,10 +52,10 @@ export const componentSchema = (_component, _obj) => {
                             value: 'daily',
                             label: 'Daily'
                         },
-                        // {
-                        //     value: 'weekly',
-                        //     label: 'Weekly'
-                        // },
+                        {
+                            value: 'weekly',
+                            label: 'Weekly'
+                        },
                         // {
                         //     value: 'monthly',
                         //     label: 'Monthly'

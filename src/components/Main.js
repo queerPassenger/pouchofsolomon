@@ -53,7 +53,7 @@ class Main extends Component {
     onTabShow(flag) {
         this.setState({
             tabsFlag: flag,
-            tabSelected: tabs[2],
+            tabSelected: tabs[0],
             toEditSet: [],
         })
     }
