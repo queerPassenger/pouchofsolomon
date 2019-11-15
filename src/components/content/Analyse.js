@@ -23,6 +23,9 @@ export default class Analyse extends Component {
             dat.setDate(dat.getDate() + days);
             return dat;
         }
+        Date.prototype.getDayString = function (){    
+            return ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][new Date(this.valueOf()).getDay()]
+        }
     }
     handlePeriodSelection = (e) => {
         let charts = componentSchema(this.componentName, 'charts');
@@ -180,14 +183,17 @@ export default class Analyse extends Component {
         }
         else if (chart.period === 'weekly') {
             let dateSet = this.getDates(new Date(chart.query.fromDate), new Date(chart.query.toDate));
+            let dateHyphenSet = [];
             dateSet.map(date => {
-                cognitiveResult.dates.push(date.getDate() + '-' + (date.getMonth() + 1) + '-' + date.getFullYear());
+                let dateHyphenString = date.getDate() + '-' + (date.getMonth() + 1) + '-' + date.getFullYear();
+                dateHyphenSet.push(dateHyphenString)
+                cognitiveResult.dates.push(dateHyphenString+'~'+date.getDayString());
                 cognitiveResult.expense.push(0);
                 cognitiveResult.saving.push(0);
             });
             result.map((obj) => {
                 let dateValue = new Date(obj.timeStamp).getDate() + '-' + (new Date(obj.timeStamp).getMonth() + 1) + '-' + new Date(obj.timeStamp).getFullYear();
-                let ind = cognitiveResult.dates.indexOf(dateValue);
+                let ind = dateHyphenSet.indexOf(dateValue);
                 if (ind !== -1) {
                     cognitiveResult[this.identifyExpenseOrSaving(obj)][ind] += obj.amount;
                 }
