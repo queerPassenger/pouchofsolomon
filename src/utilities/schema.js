@@ -35,6 +35,7 @@ export const componentSchema = (_component, _obj) => {
                     return [
                         {
                             id: 'expense_vs_savings',
+                            text: 'Expense vs Saving',
                             period: '',
                             periodStatus: 0,
                             errorMsg: '',
@@ -42,8 +43,50 @@ export const componentSchema = (_component, _obj) => {
                                 fromDate: new Date(),
                                 toDate: new Date()
                             },
-                            result: []
-                        },                        
+                            result: [],
+                            cognitiveResult: {
+                                expense: [],
+                                saving: [],
+                                expenseOnly : [],
+                                savingOnly : []
+                            }
+                        },
+                        {
+                            id: 'expense',
+                            text: 'Expense',
+                            period: '',
+                            periodStatus: 0,
+                            errorMsg: '',
+                            query: {
+                                fromDate: new Date(),
+                                toDate: new Date()
+                            },
+                            result: [],
+                            cognitiveResult: {
+                                expense: [],
+                                saving: [],
+                                expenseOnly : [],
+                                savingOnly : []
+                            }
+                        }, 
+                        {
+                            id: 'saving',
+                            text: 'Saving',
+                            period: '',
+                            periodStatus: 0,
+                            errorMsg: '',
+                            query: {
+                                fromDate: new Date(),
+                                toDate: new Date()
+                            },
+                            result: [],
+                            cognitiveResult: {
+                                expense: [],
+                                saving: [],
+                                expenseOnly : [],
+                                savingOnly : []
+                            }
+                        },                       
                     ];
                 }
                 case 'periodSet': {
