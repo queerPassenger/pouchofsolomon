@@ -31,10 +31,10 @@ export default class Analyse extends Component {
         this.handlePeriodSelection({ target: this.periodSet[0] });
         // Setting the Expense and Saving Unique Id and Chart Series
         this.setExpenseSaving();
-        addPrototype(['addDays', 'getDayString']);
+        addPrototype(['addDays', 'getDayString', 'getYears']);
     }
     componentWillUnmount() {
-        removePrototype(['addDays', 'getDayString']);
+        removePrototype(['addDays', 'getDayString', 'getYears']);
     }
     handlePeriodSelection = (e) => {
         let charts = componentSchema(this.componentName, 'charts');
@@ -86,8 +86,8 @@ export default class Analyse extends Component {
                 }
                 else if (charts[i].period === 'yearly') {
                     let temp = new Date();
-                    fromDate = new Date(temp.getFullYear() + periodStatus, 0, 1);
-                    toDate = new Date(fromDate.getFullYear(), 12, 0);
+                    fromDate = new Date(temp.getFullYear() + (periodStatus * 5) - 5, 0, 1);
+                    toDate = new Date(temp.getFullYear() + (periodStatus * 5), 11, 1);
                 }
                 fromDate.setHours(0, 0, 0);
                 toDate.setHours(23, 59, 59);
@@ -152,7 +152,7 @@ export default class Analyse extends Component {
             },
             title: {
                 text: charts[0].text,
-                style:{
+                style: {
                     fontFamily: 'monospace',
                     fontWeight: 'bold'
                 }
@@ -186,7 +186,7 @@ export default class Analyse extends Component {
             },
             title: {
                 text: charts[1].text,
-                style:{
+                style: {
                     fontFamily: 'monospace',
                     fontWeight: 'bold'
                 }
@@ -212,7 +212,7 @@ export default class Analyse extends Component {
             },
             title: {
                 text: charts[2].text,
-                style:{
+                style: {
                     fontFamily: 'monospace',
                     fontWeight: 'bold'
                 }
@@ -297,11 +297,11 @@ export default class Analyse extends Component {
                     if (matchInd !== -1) {
                         cognitiveResult[transactionClassification + 'Only'][matchInd].data[ind] += obj.amount;
                     }
-                }                
+                }
             });
         }
         else if (chart.period === 'monthly') {
-            let dateSet = [1,2,3,4,5,6,7,8,9,10,11,12];
+            let dateSet = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
             let dateHyphenSet = [];
             dateSet.map(date => {
                 dateHyphenSet.push(date);
@@ -326,7 +326,36 @@ export default class Analyse extends Component {
                         cognitiveResult[transactionClassification + 'Only'][matchInd].data[ind] += obj.amount;
                     }
                 }
-                
+
+            });
+        }
+        else if (chart.period === 'yearly') {
+            let dateSet = new Date().getYears(new Date(chart.query.fromDate), new Date(chart.query.toDate));;
+            let dateHyphenSet = [];
+            dateSet.map(date => {
+                dateHyphenSet.push(date);
+                cognitiveResult.dates.push(date);
+                cognitiveResult.expense.push(0);
+                cognitiveResult.saving.push(0);
+                for (let i = 0; i < cognitiveResult.expenseOnly.length; i++) {
+                    cognitiveResult.expenseOnly[i].data.push(0);
+                }
+                for (let i = 0; i < cognitiveResult.savingOnly.length; i++) {
+                    cognitiveResult.savingOnly[i].data.push(0);
+                }
+            });
+            result.map((obj) => {
+                let transactionClassification = this.identifyExpenseOrSaving(obj);
+                let dateValue = new Date(obj.timeStamp).getFullYear();
+                let ind = dateHyphenSet.indexOf(dateValue);
+                if (ind !== -1) {
+                    cognitiveResult[transactionClassification][ind] += obj.amount;
+                    let matchInd = this[transactionClassification + 'Only'].id.indexOf(obj.transactionTypeId);
+                    if (matchInd !== -1) {
+                        cognitiveResult[transactionClassification + 'Only'][matchInd].data[ind] += obj.amount;
+                    }
+                }
+
             });
         }
         return cognitiveResult;

@@ -47,8 +47,8 @@ export const componentSchema = (_component, _obj) => {
                             cognitiveResult: {
                                 expense: [],
                                 saving: [],
-                                expenseOnly : [],
-                                savingOnly : []
+                                expenseOnly: [],
+                                savingOnly: []
                             }
                         },
                         {
@@ -65,10 +65,10 @@ export const componentSchema = (_component, _obj) => {
                             cognitiveResult: {
                                 expense: [],
                                 saving: [],
-                                expenseOnly : [],
-                                savingOnly : []
+                                expenseOnly: [],
+                                savingOnly: []
                             }
-                        }, 
+                        },
                         {
                             id: 'saving',
                             text: 'Saving',
@@ -83,10 +83,10 @@ export const componentSchema = (_component, _obj) => {
                             cognitiveResult: {
                                 expense: [],
                                 saving: [],
-                                expenseOnly : [],
-                                savingOnly : []
+                                expenseOnly: [],
+                                savingOnly: []
                             }
-                        },                       
+                        },
                     ];
                 }
                 case 'periodSet': {
@@ -103,10 +103,10 @@ export const componentSchema = (_component, _obj) => {
                             value: 'monthly',
                             label: 'Monthly'
                         },
-                        // {
-                        //     value: 'yearly',
-                        //     label: 'Yearly'
-                        // }
+                        {
+                            value: 'yearly',
+                            label: 'Yearly'
+                        }
                     ]
 
                 }
