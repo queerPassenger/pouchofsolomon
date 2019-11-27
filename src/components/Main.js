@@ -64,15 +64,15 @@ class Main extends Component {
         })
     }
     render() {
-        let popUpStyle={
-            width:'300px',
-            left:(window.innerWidth-300)/2,
-            top:(window.innerHeight-150)/2
+        let popUpStyle = {
+            width: '300px',
+            left: (window.innerWidth - 300) / 2,
+            top: (window.innerHeight - 150) / 2
         }
-        let loadingStyle={
-            width:'150px',
-            left:(window.innerWidth-150)/2,
-            top:(window.innerHeight-150)/2
+        let loadingStyle = {
+            width: '150px',
+            left: (window.innerWidth - 150) / 2,
+            top: (window.innerHeight - 150) / 2
         }
         return (
             <>
@@ -112,23 +112,23 @@ class Main extends Component {
                         <div className="popUp-wrapper" style={popUpStyle}>
                             <div className="popUp-header-wrapper">
                                 <div className="popUp-header-text-wrapper">
-                                    {this.props.popUp.header.text.map(text => {
+                                    {this.props.popUp.header.text.map((text,ind) => {
                                         return (
-                                            <div className="popUp-header-text">
+                                            <div key={'popUpHeaderText' + ind} className="popUp-header-text">
                                                 {text}
                                             </div>
                                         )
                                     })}
                                 </div>
-                                <div className="popUp-close" onClick={()=>{this.props.updatePopUp(null,'disablePopUp')}}>
+                                <div className="popUp-close" onClick={() => { this.props.updatePopUp(null, 'disablePopUp') }}>
                                     <span>x</span>
                                 </div>
                             </div>
                             <div className="popUp-body-wrapper">
                                 <div className="popUp-body-text-wrapper">
-                                    {this.props.popUp.body.text.map(text => {
+                                    {this.props.popUp.body.text.map((text, ind) => {
                                         return (
-                                            <div className="popUp-body-text">
+                                            <div key={'popUpBodyText' + ind} className="popUp-body-text">
                                                 {text}
                                             </div>
                                         )
@@ -137,21 +137,21 @@ class Main extends Component {
                             </div>
                             <div className="popUp-footer-wrapper">
                                 <div className="popUp-footer-text-wrapper">
-                                    {this.props.popUp.footer.text.map(text => {
+                                    {this.props.popUp.footer.text.map((text, ind) => {
                                         return (
-                                            <div className="popUp-footer-text">
+                                            <div key={'popUpFooterText' + ind} className="popUp-footer-text">
                                                 {text}
                                             </div>
                                         )
                                     })}
-                                </div>  
+                                </div>
                                 <div className="popUp-footer-button-wrapper">
-                                    {this.props.popUp.footer.button.name.map((obj,ind) => {
+                                    {this.props.popUp.footer.button.name.map((obj, ind) => {
                                         return (
-                                           <button onClick={this.props.popUp.footer.button.onClickHandlers[ind]}>{obj}</button>
+                                            <button key={'popUpBtn' + ind} onClick={this.props.popUp.footer.button.onClickHandlers[ind]}>{obj}</button>
                                         )
                                     })}
-                                </div>    
+                                </div>
                             </div>
                         </div>
                         <div className="overlay"></div>

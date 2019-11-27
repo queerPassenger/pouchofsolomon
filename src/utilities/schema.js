@@ -99,10 +99,10 @@ export const componentSchema = (_component, _obj) => {
                             value: 'weekly',
                             label: 'Weekly'
                         },
-                        // {
-                        //     value: 'monthly',
-                        //     label: 'Monthly'
-                        // },
+                        {
+                            value: 'monthly',
+                            label: 'Monthly'
+                        },
                         // {
                         //     value: 'yearly',
                         //     label: 'Yearly'

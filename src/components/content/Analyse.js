@@ -81,8 +81,8 @@ export default class Analyse extends Component {
                 }
                 else if (charts[i].period === 'monthly') {
                     let temp = new Date();
-                    fromDate = new Date(temp.getFullYear(), temp.getMonth() + periodStatus, 1);
-                    toDate = new Date(fromDate.getFullYear(), fromDate.getMonth() + 1, 0);
+                    fromDate = new Date(temp.getFullYear() + periodStatus, 0, 1);
+                    toDate = new Date(fromDate.getFullYear(), 12, 0);
                 }
                 else if (charts[i].period === 'yearly') {
                     let temp = new Date();
@@ -293,11 +293,40 @@ export default class Analyse extends Component {
                 let ind = dateHyphenSet.indexOf(dateValue);
                 if (ind !== -1) {
                     cognitiveResult[transactionClassification][ind] += obj.amount;
+                    let matchInd = this[transactionClassification + 'Only'].id.indexOf(obj.transactionTypeId);
+                    if (matchInd !== -1) {
+                        cognitiveResult[transactionClassification + 'Only'][matchInd].data[ind] += obj.amount;
+                    }
+                }                
+            });
+        }
+        else if (chart.period === 'monthly') {
+            let dateSet = [1,2,3,4,5,6,7,8,9,10,11,12];
+            let dateHyphenSet = [];
+            dateSet.map(date => {
+                dateHyphenSet.push(date);
+                cognitiveResult.dates.push(date + '/' + new Date(chart.query.fromDate).getFullYear());
+                cognitiveResult.expense.push(0);
+                cognitiveResult.saving.push(0);
+                for (let i = 0; i < cognitiveResult.expenseOnly.length; i++) {
+                    cognitiveResult.expenseOnly[i].data.push(0);
                 }
-                let matchInd = this[transactionClassification + 'Only'].id.indexOf(obj.transactionTypeId);
-                if (matchInd !== -1) {
-                    cognitiveResult[transactionClassification + 'Only'][matchInd].data[ind] += obj.amount;
+                for (let i = 0; i < cognitiveResult.savingOnly.length; i++) {
+                    cognitiveResult.savingOnly[i].data.push(0);
                 }
+            });
+            result.map((obj) => {
+                let transactionClassification = this.identifyExpenseOrSaving(obj);
+                let dateValue = new Date(obj.timeStamp).getMonth() + 1;
+                let ind = dateHyphenSet.indexOf(dateValue);
+                if (ind !== -1) {
+                    cognitiveResult[transactionClassification][ind] += obj.amount;
+                    let matchInd = this[transactionClassification + 'Only'].id.indexOf(obj.transactionTypeId);
+                    if (matchInd !== -1) {
+                        cognitiveResult[transactionClassification + 'Only'][matchInd].data[ind] += obj.amount;
+                    }
+                }
+                
             });
         }
         return cognitiveResult;
